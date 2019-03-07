@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard1.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,4 +15,17 @@
             <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
+
+    <PropertyGroup>
+        <Authors>Manuel Riezebosch</Authors>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <AssemblyTitle>Unmockable</AssemblyTitle>
+        <Description>Inject wrappers around unmockable objects.</Description>
+        <PackageReleaseNotes></PackageReleaseNotes>
+        <PackageTags>unmockable;mock;wrapper;dependency;solid;inversion;virtual;interface</PackageTags>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/riezebosch/Unmockable.git</RepositoryUrl>
+        <Version>0.0.1</Version>
+    </PropertyGroup>
 </Project>

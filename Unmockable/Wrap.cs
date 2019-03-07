@@ -1,0 +1,39 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+
+namespace Unmockable
+{
+    public class Wrap<T> : IUnmockable<T>
+    {
+        private readonly T _item;
+        private Dictionary<int, object> _cache = new Dictionary<int, object>();
+
+        public Wrap(T item)
+        {
+            _item = item;
+        }
+
+        public TResult Execute<TResult>(Expression<Func<T, TResult>> m)
+        {
+            Func<T, TResult> method;
+            if (_cache.TryGetValue(ToKey(m), out var o))
+            {
+                method = (Func<T, TResult>) o;
+            }
+            else
+            {
+                _cache[ToKey(m)] = method = m.Compile();
+            }
+             
+            return method.Invoke(_item);
+        }
+
+        private static int ToKey<TResult>(Expression<Func<T, TResult>> m)
+        {
+            var call = m.Body as MethodCallExpression;
+            return call.Arguments.Aggregate(call.Method.Name.GetHashCode(), (hash, arg) => hash ^ arg.GetHashCode());
+        }
+    }
+}
