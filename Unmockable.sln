@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unmockable", "Unmockable\Unmockable.csproj", "{37EE405F-5C70-446C-87BB-1470207F1674}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unmockable.Tests", "Unmockable.Tests\Unmockable.Tests.csproj", "{77D49786-DC73-4E85-A90B-A6BE7C16BAEA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{4C96C55F-79E9-4CC6-AFD6-FE2A65C7AAC8}"
+ProjectSection(SolutionItems) = preProject
+	.gitignore = .gitignore
+EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37EE405F-5C70-446C-87BB-1470207F1674}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37EE405F-5C70-446C-87BB-1470207F1674}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37EE405F-5C70-446C-87BB-1470207F1674}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37EE405F-5C70-446C-87BB-1470207F1674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77D49786-DC73-4E85-A90B-A6BE7C16BAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77D49786-DC73-4E85-A90B-A6BE7C16BAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77D49786-DC73-4E85-A90B-A6BE7C16BAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77D49786-DC73-4E85-A90B-A6BE7C16BAEA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
