@@ -10,7 +10,7 @@ namespace Unmockable
         {
             var call = (m.Body as MethodCallExpression) ?? throw new NotInstanceMethodCallException(m.ToString());
             return call.Arguments.Aggregate(call.Method.Name.GetHashCode(), 
-                (hash, arg) => hash ^ Expression.Lambda(arg).Compile().DynamicInvoke()?.GetHashCode() ?? 0);
+                (hash, arg) => hash ^ (Expression.Lambda(arg).Compile().DynamicInvoke()?.GetHashCode() ?? 0));
         }
     }
 }

@@ -64,6 +64,15 @@ namespace Unmockable.Tests
 
                 m.ToKey().Should().Be(n.ToKey());
             }
+            
+            [Fact]
+            public void IgnoreNullsDoesNotInterfereWithOtherMethods()
+            {
+                Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
+                Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(4, null);
+
+                m.ToKey().Should().NotBe(n.ToKey());
+            }
         }
     }
 }
