@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Unmockable.Exceptions;
 using Xunit;
@@ -13,7 +14,11 @@ namespace Unmockable.Tests
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Foo()).Returns(5);
 
-            mock.Execute(x => x.Foo()).Should().Be(5);
+            mock
+                .Execute(x => x.Foo())
+                .Should()
+                .Be(5);
+            mock.Verify();
         }
 
         [Fact]
@@ -21,9 +26,11 @@ namespace Unmockable.Tests
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(x => x.Bar());
-            mock.Execute(x => x.Bar());
             
-            mock.Verify();
+            mock
+                .Execute(x => x.Bar());
+            mock
+                .Verify();
         }
         
         [Fact]
@@ -32,7 +39,10 @@ namespace Unmockable.Tests
             var mock = new Intercept<SomeUnmockableObject>();
             
             var ex = Assert.Throws<NoSetupException>(() => mock.Execute(m => m.Foo()));
-            ex.Message.Should().Contain("m => m.Foo()");
+            ex
+                .Message
+                .Should()
+                .Contain("m => m.Foo()");
         }
 
         [Fact]
@@ -42,7 +52,40 @@ namespace Unmockable.Tests
             mock.Setup(m => m.Foo());
             
             var ex = Assert.Throws<NoSetupResultException>(() => mock.Execute(m => m.Foo()));
-            ex.Message.Should().Contain("m => m.Foo()");
+            ex
+                .Message
+                .Should()
+                .Contain("m => m.Foo()");
+        }
+
+        [Fact]
+        public async Task ResultAsync()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock
+                .Setup(x => x.Wait())
+                .Returns(7);
+            
+            var result = await mock.Execute(x => x.Wait());
+            result
+                .Should()
+                .Be(7);
+            
+            mock.Verify();
+        }
+        
+        [Fact]
+        public async Task NoSetupResultAsyncTest()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock.
+                Setup(m => m.Wait());
+            
+            var ex = await Assert.ThrowsAsync<NoSetupResultException>(() => mock.Execute(m => m.Wait()));
+            ex
+                .Message
+                .Should()
+                .Contain("m => m.Wait()");
         }
 
         [Fact]
@@ -62,6 +105,18 @@ namespace Unmockable.Tests
             mock.Setup(m => m.Bar()).Throws<NotImplementedException>();
 
             Assert.Throws<NotImplementedException>(() => mock.Execute(m => m.Bar()));
+            mock.Verify();
+        }
+        
+        [Fact]
+        public async Task SetupThrowsAsync()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock
+                .Setup(x => x.ThrowAsync())
+                .Throws<NotImplementedException>();
+            
+            await Assert.ThrowsAsync<NotImplementedException>(() => mock.Execute(m => m.ThrowAsync()));
             mock.Verify();
         }
 

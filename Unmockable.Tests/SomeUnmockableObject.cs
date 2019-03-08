@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Unmockable.Tests
 {
@@ -20,5 +21,9 @@ namespace Unmockable.Tests
         {
             throw new NotImplementedException();
         }
+
+        public Task<int> Wait() => Task.FromResult(4);
+
+        public Task<int> ThrowAsync() => throw new NotImplementedException();
     }
 }

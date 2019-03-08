@@ -76,7 +76,7 @@ Inject an interceptor from a test:
 var client = new Intercept<HttpClient>();
 client
     .Setup(x => x.DownloadAsync(...))
-    .Returns(Task.Completed);
+    .Returns(...);
 
 var target = new SomeLogic(client);
 await target.DoSomething(3);
@@ -100,7 +100,7 @@ Luckily this is easily solved by passing in `default` for all arguments:
 ```
 client
     .Setup(x => x.InstallExtensionByNameAsync("asdf", "setvar", default, default, default))
-    .Returns(Task.FromResult(new InstalledExtension()));
+    .Returns(new InstalledExtension());
 ``` 
 
 **Remark**: This is the default value of the *type*, not necessarily the same as the default value of the *optional argument*!
