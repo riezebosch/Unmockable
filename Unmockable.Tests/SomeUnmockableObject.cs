@@ -1,3 +1,5 @@
+using System;
+
 namespace Unmockable.Tests
 {
     public class SomeUnmockableObject
@@ -5,5 +7,6 @@ namespace Unmockable.Tests
         public int Foo() => 3;
     
         public int Foo(int i) => i;
+        public int Foo(int i, IDisposable some) => 5;
     }
 }

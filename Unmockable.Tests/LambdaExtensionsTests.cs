@@ -55,6 +55,15 @@ namespace Unmockable.Tests
 
                 ex.Message.Should().Contain(m.ToString());
             }
+
+            [Fact]
+            public void IgnoreNulls()
+            {
+                Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
+                Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(3, null);
+
+                m.ToKey().Should().Be(n.ToKey());
+            }
         }
     }
 }
