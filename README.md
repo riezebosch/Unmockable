@@ -13,7 +13,7 @@ That's where this tiny library comes in. It acts as that handwritten wrapper for
 
 For dependencies you have under control, introduce interfaces and regular mocking frameworks like [NSubstitute](https://nsubstitute.github.io/) and [Moq](https://github.com/moq/moq). 
 Kindly send an email to the vendor of the SDK you're using if they could pretty please introduce some interfaces. It is a no brainer
-to extract an interface and it helps you to do [SOLID](https://en.wikipedia.org/wiki/SOLID).
+to extract an interface and it helps you to be [SOLID](https://en.wikipedia.org/wiki/SOLID).
 
 
 ## Feature slim
@@ -24,14 +24,14 @@ the hash code of the value of the arguments.
 
 ## Different
 
-What makes this framework different from [Microsoft Fakes](https://docs.microsoft.com/en-us/visualstudio/test/isolating-code-under-test-with-microsoft-fakes) or [Smocks](https://www.nuget.org/packages/Smocks/) is
-that it only uses C# language constructs. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
+What makes it different from [Microsoft Fakes](https://docs.microsoft.com/en-us/visualstudio/test/isolating-code-under-test-with-microsoft-fakes) or [Smocks](https://www.nuget.org/packages/Smocks/) is
+that only uses C# language constructs are used. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
 your dependency, but please, don't let us clean up someone else's dirt.
 
 ## Usage
 
 I prefer `NSubstitute` over `Moq` for its clean API. However, since we are (already) dealing
-with `Expressions,` I felt it was more convenient (and easier for me to implement) to resemble the `Moq` API.  
+with `Expressions`, I felt it was more convenient (and easier for me to implement) to resemble the `Moq` API.  
 
 Inject an unmockable* object:
 
@@ -66,7 +66,7 @@ services
 Or wrap an existing object:
 
 ```cs
-    var client = new HttpClient().Wrap();
+var client = new HttpClient().Wrap();
     
 ```
 
@@ -84,15 +84,17 @@ await target.DoSomething(3);
 client.Verify();
 ```
 
-\* The `HttpClient` is just a hand-picked example and not necessarily unmockable. 
-Unmockable types I had to deal with recently are the [`ExtensionManagementHttpClient`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.services.extensionmanagement.webapi.extensionmanagementhttpclient) 
+\* The `HttpClient` is just a hand-picked example and not necessarily unmockable. In fact there has been [some debate](https://github.com/aspnet/HttpClientFactory/issues/67)
+around this type and it turns out to be mockable. As long as you are not afraid of message handlers. 
+
+Concrete unmockable types (pun intented) I had to deal with recently are the [`ExtensionManagementHttpClient`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.services.extensionmanagement.webapi.extensionmanagementhttpclient) 
 and the [`AzureServiceTokenProvider`](https://github.com/Azure/azure-sdk-for-net/blob/master/src/SdkCommon/AppAuthentication/Azure.Services.AppAuthentication/AzureServiceTokenProvider.cs).
 
 ## Optional arguments
 
+Because `Expressions` are used it is not possible make use of default values for optional arguments.
 > An expression tree cannot contain a call or invocation that uses optional arguments
-
-Because `Expressions` are used it is not possible make use of default values for optional arguments. 
+ 
 Luckily this is easily solved by passing in `default` for all arguments:
 
 ```
@@ -100,6 +102,16 @@ client
     .Setup(x => x.InstallExtensionByNameAsync("asdf", "setvar", default, default, default))
     .Returns(Task.FromResult(new InstalledExtension()));
 ``` 
+
+**Remark**: This is the default value of the *type*, not necessarily the same as the default value of the *optional argument*!
+
+## References
+
+Unfortunately dealing with inline constructed reference types is (currently) not supported. I deliberately
+try not to create a `YAMF`. Strife for injecting these values from the test so the same instances are used 
+inside `Setup` and `Execute`. I'm aware this doesn't workout when the SUT uses Linq queries or wraps collections 
+around provided objects. 
+
 
 ## Shout-out
 
