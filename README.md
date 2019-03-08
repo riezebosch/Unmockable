@@ -1,3 +1,6 @@
+[![build status](https://ci.appveyor.com/api/projects/status/layshtg2fh5fu5fu/branch/master?svg=true)](https://ci.appveyor.com/project/riezebosch/unmockable/branch/master)
+[![nuget](https://img.shields.io/nuget/v/Unmockable.svg)](https://www.nuget.org/packages/Unmockable/)
+
 # Unmockable
 
 Imagine you need a dependency on a 3rd party SDK where all types carry no interfaces, and all methods are not virtual.
