@@ -1,9 +1,10 @@
 using System;
 using System.Linq.Expressions;
+using Unmockable.Exceptions;
 
 namespace Unmockable
 {
-    public class InterceptSetup<T>
+    internal class InterceptSetup<T> : IActionResult<T>
     {
         private Exception _exception;
         protected readonly Intercept<T> _intercept;
@@ -35,15 +36,26 @@ namespace Unmockable
 
             return this;
         }
+
+        public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m)
+        {
+            return _intercept.Setup(m);
+        }
+
+        public IActionResult<T> Setup(Expression<Action<T>> m)
+        {
+            return _intercept.Setup(m);
+        }
     }
-    
-    public class InterceptSetup<T, TResult> : InterceptSetup<T>
+
+    internal class InterceptSetup<T, TResult> : InterceptSetup<T>, IFuncResult<T, TResult>
     {
-        private Func<TResult> _result = () => default(TResult);
+        private Func<TResult> _result;
         public TResult Result => _result();
 
         public InterceptSetup(Intercept<T> intercept, Expression expression) : base(intercept, expression)
         {
+            _result = () => throw new NoSetupResultException(expression.ToString());
         }
 
         public Intercept<T> Returns(TResult result)

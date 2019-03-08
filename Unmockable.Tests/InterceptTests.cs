@@ -8,21 +8,41 @@ namespace Unmockable.Tests
     public class InterceptTests
     {
         [Fact]
-        public void NotSetupTest()
-        {
-            var mock = new Intercept<SomeUnmockableObject>();
-            var ex = Assert.Throws<NotSetupException>(() => mock.Execute(m => m.Foo()));
-
-            ex.Message.Should().Contain("m => m.Foo()");
-        }
-        
-        [Fact]
-        public void SetupTest()
+        public void ExecuteTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Foo()).Returns(5);
 
             mock.Execute(x => x.Foo()).Should().Be(5);
+        }
+
+        [Fact]
+        public void ExecuteActionTest()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock.Setup(x => x.Bar());
+            mock.Execute(x => x.Bar());
+            
+            mock.Verify();
+        }
+        
+        [Fact]
+        public void NoSetupTest()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            
+            var ex = Assert.Throws<NoSetupException>(() => mock.Execute(m => m.Foo()));
+            ex.Message.Should().Contain("m => m.Foo()");
+        }
+
+        [Fact]
+        public void NoSetupResultTest()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock.Setup(m => m.Foo());
+            
+            var ex = Assert.Throws<NoSetupResultException>(() => mock.Execute(m => m.Foo()));
+            ex.Message.Should().Contain("m => m.Foo()");
         }
 
         [Fact]
@@ -52,6 +72,7 @@ namespace Unmockable.Tests
             mock
                 .Setup(m => m.Foo(5)).Returns(2)
                 .Setup(y => y.Foo(4)).Throws<NotSupportedException>()
+                .Setup(x => x.Bar())
                 .Setup(x => x.Foo(3)).Returns(1);
 
             mock.Execute(r => r.Foo(5)).Should().Be(2);
@@ -75,16 +96,6 @@ namespace Unmockable.Tests
             mock.Setup(m => m.Foo());
 
             Assert.Throws<NotExecutedException>(() => mock.Verify());
-        }
-
-        [Fact]
-        public void ExecuteActionTest()
-        {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(x => x.Bar());
-            mock.Execute(x => x.Bar());
-            
-            mock.Verify();
         }
     }
 }

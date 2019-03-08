@@ -6,11 +6,17 @@ using Unmockable.Exceptions;
 
 namespace Unmockable
 {
-    public class Intercept<T> : IUnmockable<T>
+    public interface IIntercept<T>
+    {
+        IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m);
+        IActionResult<T> Setup(Expression<Action<T>> m);
+    }
+
+    public class Intercept<T> : IUnmockable<T>, IIntercept<T>
     {
         private readonly IDictionary<int, InterceptSetup<T>> _setups = new Dictionary<int, InterceptSetup<T>>();
 
-        public InterceptSetup<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m)
+        public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m)
         {
             var setup = new InterceptSetup<T, TResult>(this, m);
             _setups[m.ToKey()] = setup;
@@ -18,7 +24,7 @@ namespace Unmockable
             return setup;
         }
         
-        public InterceptSetup<T> Setup(Expression<Action<T>> m)
+        public IActionResult<T> Setup(Expression<Action<T>> m)
         {
             var setup = new InterceptSetup<T>(this, m);
             _setups[m.ToKey()] = setup;
@@ -53,7 +59,7 @@ namespace Unmockable
             var key = m.ToKey();
             if (!_setups.TryGetValue(key, out var setup))
             {
-                throw new NotSetupException(m.ToString());
+                throw new NoSetupException(m.ToString());
             }
 
             return setup.Execute();
