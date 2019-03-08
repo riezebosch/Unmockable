@@ -46,5 +46,24 @@ namespace Unmockable.Tests
             mock.Execute(r => r.Foo(5)).Should().Be(2);
             mock.Execute(q => q.Foo(3)).Should().Be(1);
         }
+
+        [Fact]
+        public void VerifyTest()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock.Setup(m => m.Foo()).Returns(5);
+            mock.Execute(x => x.Foo());
+
+            mock.Verify();
+        }
+        
+        [Fact]
+        public void VerifyNotExecutedTest()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock.Setup(m => m.Foo());
+
+            Assert.Throws<NotExecutedException<SomeUnmockableObject>>(() => mock.Verify());
+        }
     }
 }

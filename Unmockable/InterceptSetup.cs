@@ -1,16 +1,28 @@
 using System;
+using System.Linq.Expressions;
 
 namespace Unmockable
 {
-    public class InterceptSetup<T, TResult>
+    public class InterceptSetup<T>
     {
-        private readonly Intercept<T> _intercept;
+        public Expression Expression { get; }
+        protected readonly Intercept<T> _intercept;
+        public bool IsExecuted { get; internal set; }
+
+        public InterceptSetup(Intercept<T> intercept, Expression expression)
+        {
+            Expression = expression;
+            _intercept = intercept;
+        }
+    }
+    
+    public class InterceptSetup<T, TResult> : InterceptSetup<T>
+    {
         private Func<TResult> _result;
         public TResult Result => _result();
 
-        public InterceptSetup(Intercept<T> intercept)
+        public InterceptSetup(Intercept<T> intercept, Expression expression) : base(intercept, expression)
         {
-            _intercept = intercept;
         }
 
         public Intercept<T> Returns(TResult result)

@@ -19,8 +19,14 @@ to extract an interface and it helps you to do [SOLID](https://en.wikipedia.org/
 ## Feature slim
 
 All mocks are strict, each invocation requires explicit setup, and there are no wild card argument matchers.
-Probably we need added some argument matcher for reference types in the feature because matching currently relies on
+Probably we need some argument matcher for reference types in the future because matching currently relies on
 the hash code of the value of the arguments.
+
+## Different
+
+What makes this framework different from [Microsoft Fakes](https://docs.microsoft.com/en-us/visualstudio/test/isolating-code-under-test-with-microsoft-fakes) or [Smocks](https://www.nuget.org/packages/Smocks/) is
+that it only uses C# language constructs. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
+your dependency, but please, don't let us clean up someone else's dirt.
 
 ## Usage
 
@@ -67,11 +73,26 @@ client
 
 var target = new SomeLogic(client);
 await target.DoSomething(3);
+
+client.Verify();
 ```
 
 \* The `HttpClient` is just a hand-picked example and not necessarily unmockable. 
 Unmockable types I had to deal with recently are the [`ExtensionManagementHttpClient`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.services.extensionmanagement.webapi.extensionmanagementhttpclient) 
 and the [`AzureServiceTokenProvider`](https://github.com/Azure/azure-sdk-for-net/blob/master/src/SdkCommon/AppAuthentication/Azure.Services.AppAuthentication/AzureServiceTokenProvider.cs).
+
+## Optional arguments
+
+> An expression tree cannot contain a call or invocation that uses optional arguments
+
+Because `Expressions` are used it is not possible make use of default values for optional arguments. 
+Luckily this is easily solved by passing in `default` for all arguments:
+
+```
+client
+    .Setup(x => x.InstallExtensionByNameAsync("asdf", "setvar", default, default, default))
+    .Returns(Task.FromResult(new InstalledExtension()));
+``` 
 
 ## Shout-out
 
