@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Unmockable.Tests
 {
@@ -8,6 +10,7 @@ namespace Unmockable.Tests
     
         public int Foo(int i) => i;
         public int Foo(int i, IDisposable some) => 5;
+        public int Foo(IEnumerable<int> items) => items.Sum();
 
         public void Bar()
         {

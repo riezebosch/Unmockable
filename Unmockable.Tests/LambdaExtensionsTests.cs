@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using FluentAssertions;
 using Unmockable.Exceptions;
@@ -72,6 +73,15 @@ namespace Unmockable.Tests
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(4, null);
 
                 m.ToKey().Should().NotBe(n.ToKey());
+            }
+
+            [Fact]
+            public void UnwrapCollections()
+            {
+                Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(new[] { 1, 2, 3 });
+                Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(new List<int>{ 1, 2, 3});
+
+                m.ToKey().Should().Be(n.ToKey());
             }
         }
     }

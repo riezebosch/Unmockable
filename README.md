@@ -109,8 +109,10 @@ client
 
 Unfortunately dealing with inline constructed reference types is (currently) not supported. I deliberately
 try not to create a `YAMF`. Strife for injecting these values from the test so the same instances are used 
-inside `Setup` and `Execute`. I'm aware this doesn't workout when the SUT uses Linq queries or wraps collections 
-around provided objects. 
+inside `Setup` and `Execute`. 
+
+Collection arguments are already unwrapped when matching the actual call with provided setups! 
+Value types, anonymous types *and* reference types with a custom `GetHashCode()` should be safe.
 
 
 ## Shout-out
