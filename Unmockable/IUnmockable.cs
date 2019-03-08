@@ -6,5 +6,6 @@ namespace Unmockable
     public interface IUnmockable<T>
     {
         TResult Execute<TResult>(Expression<Func<T, TResult>> m);
+        void Execute(Expression<Action<T>> m);
     }
 }

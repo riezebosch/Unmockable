@@ -17,20 +17,25 @@ namespace Unmockable
 
         public TResult Execute<TResult>(Expression<Func<T, TResult>> m)
         {
-            Func<T, TResult> method;
-            if (_cache.TryGetValue(ToKey(m), out var o))
-            {
-                method = (Func<T, TResult>) o;
-            }
-            else
-            {
-                _cache[ToKey(m)] = method = m.Compile();
-            }
-             
-            return method.Invoke(_item);
+             return Methods<Func<T, TResult>>(m).Invoke(_item);
         }
 
-        private static int ToKey<TResult>(Expression<Func<T, TResult>> m)
+        public void Execute(Expression<Action<T>> m)
+        {
+            Methods<Action<T>>(m).Invoke(_item);
+        }
+
+        private TMethod Methods<TMethod>(LambdaExpression m)
+        {
+            if (_cache.TryGetValue(ToKey(m), out var o))
+            {
+                return (TMethod) o;
+            }
+
+            return (TMethod)(_cache[ToKey(m)] = m.Compile());
+        }
+
+        private static int ToKey(LambdaExpression m)
         {
             var call = m.Body as MethodCallExpression;
             return call.Arguments.Aggregate(call.Method.Name.GetHashCode(), (hash, arg) => hash ^ arg.GetHashCode());

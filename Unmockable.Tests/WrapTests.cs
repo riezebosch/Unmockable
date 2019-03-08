@@ -10,30 +10,37 @@ namespace Unmockable.Tests
         [Fact]
         public void ExecuteOnRealItem()
         {
-            IUnmockable<SomeUnmockableObject> mock = new Wrap<SomeUnmockableObject>(new SomeUnmockableObject());
-            mock.Execute(x => x.Foo()).Should().Be(3);
+            var wrap = new SomeUnmockableObject().Wrap();
+            wrap.Execute(x => x.Foo()).Should().Be(3);
+        }
+
+        [Fact]
+        public void ExecuteAction()
+        {
+            var wrap = new SomeUnmockableObject().Wrap();
+            Assert.Throws<NotImplementedException>(() => wrap.Execute(x => x.Throw()));
         }
 
         [Fact]
         public void CachingUnique()
         {
             const int i = 6;
-            var real = new Wrap<SomeUnmockableObject>(new SomeUnmockableObject());
-            real.Execute(x => x.Foo(5)).Should().Be(5);
-            real.Execute(x => x.Foo(3)).Should().Be(3);
-            real.Execute(x => x.Foo(new Func<int>(() => 4)())).Should().Be(4);
-            real.Execute(x => x.Foo(i)).Should().Be(6);
+            var wrap = new SomeUnmockableObject().Wrap();
+            wrap.Execute(x => x.Foo(5)).Should().Be(5);
+            wrap.Execute(x => x.Foo(3)).Should().Be(3);
+            wrap.Execute(x => x.Foo(new Func<int>(() => 4)())).Should().Be(4);
+            wrap.Execute(x => x.Foo(i)).Should().Be(6);
         }
 
         [Fact]
         public void PerfTest()
         {
-            var real = new Wrap<SomeUnmockableObject>(new SomeUnmockableObject());
+            var wrap = new Wrap<SomeUnmockableObject>(new SomeUnmockableObject());
 
             var sw = Stopwatch.StartNew();
             for (var i = 0; i < 100000; i++)
             {
-                real.Execute(m => m.Foo());
+                wrap.Execute(m => m.Foo());
             }
 
             sw.Elapsed.TotalSeconds.Should().BeLessThan(1);

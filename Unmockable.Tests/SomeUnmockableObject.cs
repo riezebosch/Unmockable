@@ -8,5 +8,14 @@ namespace Unmockable.Tests
     
         public int Foo(int i) => i;
         public int Foo(int i, IDisposable some) => 5;
+
+        public void Bar()
+        {
+        }
+
+        public void Throw()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

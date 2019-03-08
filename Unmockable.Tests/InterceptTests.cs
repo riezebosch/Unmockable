@@ -32,6 +32,17 @@ namespace Unmockable.Tests
             mock.Setup(m => m.Foo()).Throws<NotImplementedException>();
 
             Assert.Throws<NotImplementedException>(() => mock.Execute(m => m.Foo()));
+            mock.Verify();
+        }
+        
+        [Fact]
+        public void SetupActionThrows()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock.Setup(m => m.Bar()).Throws<NotImplementedException>();
+
+            Assert.Throws<NotImplementedException>(() => mock.Execute(m => m.Bar()));
+            mock.Verify();
         }
 
         [Fact]
@@ -63,7 +74,17 @@ namespace Unmockable.Tests
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Foo());
 
-            Assert.Throws<NotExecutedException<SomeUnmockableObject>>(() => mock.Verify());
+            Assert.Throws<NotExecutedException>(() => mock.Verify());
+        }
+
+        [Fact]
+        public void ExecuteActionTest()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock.Setup(x => x.Bar());
+            mock.Execute(x => x.Bar());
+            
+            mock.Verify();
         }
     }
 }
