@@ -63,6 +63,13 @@ services
     .AddScoped<HttpClient>();
 ```
 
+Or wrap an existing object:
+
+```cs
+    var client = new HttpClient().Wrap();
+    
+```
+
 Inject an interceptor from a test:
 
 ```cs

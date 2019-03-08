@@ -38,5 +38,11 @@ namespace Unmockable.Tests
 
             sw.Elapsed.TotalSeconds.Should().BeLessThan(1);
         }
+
+        [Fact]
+        public void WrapObject()
+        {
+            new object().Wrap().Should().BeOfType<Wrap<object>>();
+        }
     }
 }
