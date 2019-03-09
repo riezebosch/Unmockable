@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using FluentAssertions;
+using Unmockable.Exceptions;
 using Xunit;
 
 namespace Unmockable.Tests
@@ -30,6 +31,11 @@ namespace Unmockable.Tests
             wrap.Execute(x => x.Foo(3)).Should().Be(3);
             wrap.Execute(x => x.Foo(new Func<int>(() => 4)())).Should().Be(4);
             wrap.Execute(x => x.Foo(i)).Should().Be(6);
+
+            for (var j = 0; j < 200; j++)
+            {
+                wrap.Execute(x => x.Foo(j)).Should().Be(j);
+            }
         }
 
         [Fact]
@@ -40,10 +46,18 @@ namespace Unmockable.Tests
             var sw = Stopwatch.StartNew();
             for (var i = 0; i < 100000; i++)
             {
-                wrap.Execute(m => m.Foo());
+                wrap.Execute(m => m.Foo(i));
             }
 
-            sw.Elapsed.TotalSeconds.Should().BeLessThan(1);
+            sw.Elapsed.TotalSeconds.Should().BeLessThan(3);
+        }
+
+        [Fact]
+        public void NotAnInstanceMethodCall()
+        {
+            var wrap = new SomeUnmockableObject().Wrap();
+            var ex = Assert.Throws<NotInstanceMethodCallException>(() => wrap.Execute(x => 3));
+            ex.Message.Should().Contain("x => 3");
         }
 
         [Fact]

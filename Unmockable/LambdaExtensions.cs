@@ -7,13 +7,19 @@ namespace Unmockable
 {
     public static class LambdaExtensions
     {
-        public static int ToKey(this LambdaExpression m)
+        public static int ToKeyFromArgumentValues(this LambdaExpression m)
         {
             var call = (m.Body as MethodCallExpression) ?? throw new NotInstanceMethodCallException(m.ToString());
             return call.Arguments.Aggregate(call.Method.Name.GetHashCode(), 
                 (hash, arg) => hash ^ Hash(arg));
         }
 
+        public static int ToKey(this LambdaExpression m)
+        {
+            var call = m.Body as MethodCallExpression ?? throw new NotInstanceMethodCallException(m.ToString());
+            return call.ToString().GetHashCode();
+        }
+        
         private static int Hash(Expression arg)
         {
             var value = Expression.Lambda(arg).Compile().DynamicInvoke();
