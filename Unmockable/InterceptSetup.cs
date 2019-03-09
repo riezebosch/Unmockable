@@ -56,7 +56,9 @@ namespace Unmockable
 
         public InterceptSetup(Intercept<T> intercept, Expression expression) : base(intercept, expression)
         {
-            _result = () => throw new NoSetupResultException(expression.ToString());
+            _result = typeof(TResult) == typeof(Task)
+                ? (Func<TResult>) (() => (TResult) (object) Task.CompletedTask)
+                : () => throw new NoResultConfiguredException(expression.ToString());
         }
 
         public Intercept<T> Returns(TResult result)

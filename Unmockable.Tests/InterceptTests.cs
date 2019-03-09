@@ -51,7 +51,7 @@ namespace Unmockable.Tests
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Foo());
             
-            var ex = Assert.Throws<NoSetupResultException>(() => mock.Execute(m => m.Foo()));
+            var ex = Assert.Throws<NoResultConfiguredException>(() => mock.Execute(m => m.Foo()));
             ex
                 .Message
                 .Should()
@@ -63,10 +63,10 @@ namespace Unmockable.Tests
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock
-                .Setup(x => x.Wait())
+                .Setup(x => x.FooAsync())
                 .Returns(7);
             
-            var result = await mock.Execute(x => x.Wait());
+            var result = await mock.Execute(x => x.FooAsync());
             result
                 .Should()
                 .Be(7);
@@ -79,13 +79,25 @@ namespace Unmockable.Tests
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.
-                Setup(m => m.Wait());
-            
-            var ex = await Assert.ThrowsAsync<NoSetupResultException>(() => mock.Execute(m => m.Wait()));
+                Setup(m => m.FooAsync());
+
+            var ex = await Assert.ThrowsAsync<NoResultConfiguredException>(() => mock.Execute(m => m.FooAsync()));
             ex
                 .Message
                 .Should()
-                .Contain("m => m.Wait()");
+                .Contain("m => m.FooAsync()");
+
+        }
+
+        [Fact]
+        public async Task NonGenericAsyncTest()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock.
+                Setup(m => m.Wait());
+
+
+            await mock.Execute(m => m.Wait());
         }
 
         [Fact]

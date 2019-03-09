@@ -13,7 +13,7 @@ namespace Unmockable
         public InterceptSetupAsync(Intercept<T> intercept, Expression expression) : base(
             intercept, expression)
         {
-            _result = () => throw new NoSetupResultException(expression.ToString());
+            _result = () => throw new NoResultConfiguredException(expression.ToString());
         }
 
         public Intercept<T> Returns(TResult result)

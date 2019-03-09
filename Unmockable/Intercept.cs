@@ -7,16 +7,7 @@ using Unmockable.Exceptions;
 
 namespace Unmockable
 {
-    public interface IIntercept<T>
-    {
-        IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m);
-
-        IActionResult<T> Setup(Expression<Action<T>> m);
-    }
-
-   
-
-    public class Intercept<T> : IUnmockable<T>, IIntercept<T>
+    public class Intercept<T> : IUnmockable<T>, ISetup<T>
     {
         private readonly IDictionary<int, InterceptSetup<T>> _setups = new Dictionary<int, InterceptSetup<T>>();
 
@@ -35,7 +26,7 @@ namespace Unmockable
 
             return setup;
         }
-
+        
         public IActionResult<T> Setup(Expression<Action<T>> m)
         {
             var setup = new InterceptSetup<T>(this, m);

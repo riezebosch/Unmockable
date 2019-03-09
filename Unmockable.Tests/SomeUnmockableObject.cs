@@ -13,17 +13,14 @@ namespace Unmockable.Tests
         public int Foo(int i, IDisposable some) => 5;
         public int Foo(IEnumerable<int> items) => items.Sum();
 
-        public void Bar()
-        {
-        }
+        public void Bar() { }
 
-        public void Throw()
-        {
-            throw new NotImplementedException();
-        }
+        public void Throw() => throw new NotImplementedException();
 
-        public Task<int> Wait() => Task.FromResult(4);
+        public Task Wait() => Task.CompletedTask;
 
-        public Task<int> ThrowAsync() => throw new NotImplementedException();
+        public Task ThrowAsync() => throw new NotImplementedException();
+
+        public Task<int> FooAsync() => Task.FromResult(9);
     }
 }
