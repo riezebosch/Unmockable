@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
+using Unmockable.Exceptions;
 
 namespace Unmockable
 {
@@ -12,9 +11,9 @@ namespace Unmockable
         private readonly MethodCallExpression _call;
         private readonly ArgumentsMatcher _arguments;
 
-        public MethodMatcher(MethodCallExpression call)
+        public MethodMatcher(LambdaExpression m)
         {
-            _call = call;
+            _call = m.Body as MethodCallExpression ?? throw new NotInstanceMethodCallException(m.ToString());
             _arguments = new ArgumentsMatcher(_call.Arguments);
         }
 
@@ -44,20 +43,6 @@ namespace Unmockable
             
             public override bool Equals(object obj) => 
                 obj is ArgumentsMatcher x && x._arguments.SequenceEqual(_arguments);
-            
-            private static IArgumentMatcher ToMatcher(Expression arg)
-            {
-                var value = Expression.Lambda(arg).Compile().DynamicInvoke();
-                switch (value)
-                {
-                    case null:
-                        return new NullArgument();
-                    case IEnumerable collection:
-                        return new CollectionArgument(collection.Cast<object>());
-                    default:
-                        return new ValueArgument(value);
-                }
-            }
         }
         
         private interface IArgumentMatcher
@@ -88,10 +73,10 @@ namespace Unmockable
         
         private class CollectionArgument : IArgumentMatcher
         {
-            private readonly IEnumerable<object> _collection;
+            private readonly IEnumerable<IArgumentMatcher> _collection;
 
             public CollectionArgument(IEnumerable<object> collection) => 
-                _collection = collection;
+                _collection = collection.Select(ToMatcher);
 
             public override int GetHashCode() => 
                 _collection.Aggregate(0, (hash, item) => hash ^ item.GetHashCode());
@@ -101,6 +86,24 @@ namespace Unmockable
 
             public override bool Equals(object obj) =>
                 obj is CollectionArgument x && x._collection.SequenceEqual(_collection);
+        }
+        
+        private static IArgumentMatcher ToMatcher(Expression arg)
+        {
+            return ToMatcher(Expression.Lambda(arg).Compile().DynamicInvoke());
+        }
+
+        private static IArgumentMatcher ToMatcher(object value)
+        {
+            switch (value)
+            {
+                case null:
+                    return new NullArgument();
+                case IEnumerable collection:
+                    return new CollectionArgument(collection.Cast<object>());
+                default:
+                    return new ValueArgument(value);
+            }
         }
     }
 }

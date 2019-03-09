@@ -11,10 +11,9 @@ namespace Unmockable
             return call.ToString().GetHashCode();
         }
         
-        public static MethodMatcher ToKeyFromArgumentValues(this LambdaExpression m)
+        public static MethodMatcher ToMatcher(this LambdaExpression m)
         {
-            var call = (m.Body as MethodCallExpression) ?? throw new NotInstanceMethodCallException(m.ToString());
-            return new MethodMatcher(call); 
+            return new MethodMatcher(m); 
         }
     }
 }

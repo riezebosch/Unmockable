@@ -17,7 +17,7 @@ namespace Unmockable.Tests
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo();
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo();
 
-                m.ToKeyFromArgumentValues().Should().Be(n.ToKeyFromArgumentValues());
+                m.ToMatcher().Should().Be(n.ToMatcher());
             }
 
             [Fact]
@@ -26,7 +26,7 @@ namespace Unmockable.Tests
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(4);
 
-                m.ToKeyFromArgumentValues().Should().NotBe(n.ToKeyFromArgumentValues());
+                m.ToMatcher().Should().NotBe(n.ToMatcher());
             }
 
             [Fact]
@@ -36,7 +36,7 @@ namespace Unmockable.Tests
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(i);
 
-                m.ToKeyFromArgumentValues().Should().Be(n.ToKeyFromArgumentValues());
+                m.ToMatcher().Should().Be(n.ToMatcher());
             }
 
             [Fact]
@@ -45,14 +45,14 @@ namespace Unmockable.Tests
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(new Func<int>(() => 3)());
 
-                m.ToKeyFromArgumentValues().Should().Be(n.ToKeyFromArgumentValues());
+                m.ToMatcher().Should().Be(n.ToMatcher());
             }
 
             [Fact]
             public void OnlyMethodCallsSupported()
             {
                 Expression<Func<int>> m = () => 3;
-                var ex = Assert.Throws<NotInstanceMethodCallException>(() => m.ToKeyFromArgumentValues());
+                var ex = Assert.Throws<NotInstanceMethodCallException>(() => m.ToMatcher());
 
                 ex.Message.Should().Contain(m.ToString());
             }
@@ -63,7 +63,7 @@ namespace Unmockable.Tests
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(3, null);
 
-                m.ToKeyFromArgumentValues().Should().Be(n.ToKeyFromArgumentValues());
+                m.ToMatcher().Should().Be(n.ToMatcher());
             }
             
             [Fact]
@@ -72,7 +72,7 @@ namespace Unmockable.Tests
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(4, null);
 
-                m.ToKeyFromArgumentValues().Should().NotBe(n.ToKeyFromArgumentValues());
+                m.ToMatcher().Should().NotBe(n.ToMatcher());
             }
 
             [Fact]
@@ -81,7 +81,16 @@ namespace Unmockable.Tests
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(new[] { 1, 2, 3 });
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(new List<int>{ 1, 2, 3});
 
-                m.ToKeyFromArgumentValues().Should().Be(n.ToKeyFromArgumentValues());
+                m.ToMatcher().Should().Be(n.ToMatcher());
+            }
+            
+            [Fact]
+            public void UnwrapNestedCollections()
+            {
+                Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(new[] { new[] { 1, 2 }, new[] { 3, 4} });
+                Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(new[] { new[] { 1, 2 }, new[] { 3, 4} });
+
+                m.ToMatcher().Should().Be(n.ToMatcher());
             }
         }
     }

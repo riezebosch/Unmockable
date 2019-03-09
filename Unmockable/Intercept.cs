@@ -14,7 +14,7 @@ namespace Unmockable
         public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m)
         {
             var setup = new InterceptSetup<T, TResult>(this, m);
-            _setups[m.ToKeyFromArgumentValues()] = setup;
+            _setups[m.ToMatcher()] = setup;
 
             return setup;
         }
@@ -22,7 +22,7 @@ namespace Unmockable
         public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, Task<TResult>>> m)
         {
             var setup = new InterceptSetupAsync<T, TResult>(this, m);
-            _setups[m.ToKeyFromArgumentValues()] = setup;
+            _setups[m.ToMatcher()] = setup;
 
             return setup;
         }
@@ -30,7 +30,7 @@ namespace Unmockable
         public IActionResult<T> Setup(Expression<Action<T>> m)
         {
             var setup = new InterceptSetup<T>(this, m);
-            _setups[m.ToKeyFromArgumentValues()] = setup;
+            _setups[m.ToMatcher()] = setup;
 
             return setup;
         }
@@ -64,7 +64,7 @@ namespace Unmockable
 
         private InterceptSetup<T> Do(LambdaExpression m)
         {
-            var key = m.ToKeyFromArgumentValues();
+            var key = m.ToMatcher();
             if (!_setups.TryGetValue(key, out var setup))
             {
                 throw new NoSetupException(key.ToString());

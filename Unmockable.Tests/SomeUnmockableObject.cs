@@ -22,5 +22,7 @@ namespace Unmockable.Tests
         public Task ThrowAsync() => throw new NotImplementedException();
 
         public Task<int> FooAsync() => Task.FromResult(9);
+
+        public int Foo(int[][] items) => throw new NotImplementedException();
     }
 }
