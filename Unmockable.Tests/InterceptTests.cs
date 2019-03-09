@@ -42,7 +42,7 @@ namespace Unmockable.Tests
             ex
                 .Message
                 .Should()
-                .Contain("m => m.Foo()");
+                .Contain("Foo()");
         }
 
         [Fact]
@@ -86,7 +86,16 @@ namespace Unmockable.Tests
                 .Message
                 .Should()
                 .Contain("m => m.FooAsync()");
+        }
 
+        [Fact]
+        public void NoSetupExceptionIncludesArgumentValues()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            var items = new[] {1, 2, 3, 4};
+            
+            var ex = Assert.Throws<NoSetupException>(() => mock.Execute(x => x.Foo(items)));
+            ex.Message.Should().Contain("Foo([1, 2, 3, 4])");
         }
 
         [Fact]

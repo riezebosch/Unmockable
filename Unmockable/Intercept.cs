@@ -9,7 +9,7 @@ namespace Unmockable
 {
     public class Intercept<T> : IUnmockable<T>, ISetup<T>
     {
-        private readonly IDictionary<int, InterceptSetup<T>> _setups = new Dictionary<int, InterceptSetup<T>>();
+        private readonly IDictionary<MethodMatcher, InterceptSetup<T>> _setups = new Dictionary<MethodMatcher, InterceptSetup<T>>();
 
         public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m)
         {
@@ -67,7 +67,7 @@ namespace Unmockable
             var key = m.ToKeyFromArgumentValues();
             if (!_setups.TryGetValue(key, out var setup))
             {
-                throw new NoSetupException(m.ToString());
+                throw new NoSetupException(key.ToString());
             }
 
             return setup.Execute();
