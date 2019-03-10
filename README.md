@@ -15,7 +15,6 @@ For dependencies you have under control, introduce interfaces and regular mockin
 Kindly send an email to the vendor of the SDK you're using if they could pretty please introduce some interfaces. It is a no brainer
 to extract an interface and it helps you to be [SOLID](https://en.wikipedia.org/wiki/SOLID).
 
-
 ## Feature slim
 
 All mocks are strict, each invocation requires explicit setup, and there are no wild card argument matchers.
@@ -97,7 +96,7 @@ Because `Expressions` are used it is not possible make use of default values for
  
 Luckily this is easily solved by passing in `default` for all arguments:
 
-```
+```cs
 client
     .Setup(x => x.InstallExtensionByNameAsync("asdf", "setvar", default, default, default))
     .Returns(new InstalledExtension());
@@ -114,12 +113,11 @@ inside `Setup` and `Execute`.
 Collection arguments are already unwrapped when matching the actual call with provided setups! 
 Value types, anonymous types *and* reference types with a custom `GetHashCode()` should be safe.
 
-
 ## Shout-out
 
 A big shoutout to Microsoft and other vendors to start **unit testing your SDKs** so you'll share our pain and give us some freaking extension points.
 
 > [*Dependency Inversion Principle*](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod)  
-  One should "depend upon abstractions, not on concretions."
+> One should "depend upon abstractions, not on concretions."
 
 Please, don't give us the `Unmockable<🖕>`.

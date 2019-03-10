@@ -9,21 +9,21 @@ namespace Unmockable.Tests
     public class WrapTests
     {
         [Fact]
-        public void ExecuteOnRealItem()
+        public static void ExecuteOnRealItem()
         {
             var wrap = new SomeUnmockableObject().Wrap();
             wrap.Execute(x => x.Foo()).Should().Be(3);
         }
 
         [Fact]
-        public void ExecuteAction()
+        public static void ExecuteAction()
         {
             var wrap = new SomeUnmockableObject().Wrap();
-            Assert.Throws<NotImplementedException>(() => wrap.Execute(x => x.Throw()));
+            Assert.Throws<NotImplementedException>(() => wrap.Execute(x => x.Bar()));
         }
 
         [Fact]
-        public void CachingUnique()
+        public static void CachingUnique()
         {
             const int i = 6;
             var wrap = new SomeUnmockableObject().Wrap();
@@ -39,7 +39,7 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public void PerfTest()
+        public static void PerfTest()
         {
             var wrap = new Wrap<SomeUnmockableObject>(new SomeUnmockableObject());
 
@@ -53,7 +53,7 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public void NotAnInstanceMethodCall()
+        public static void NotAnInstanceMethodCall()
         {
             var wrap = new SomeUnmockableObject().Wrap();
             var ex = Assert.Throws<NotInstanceMethodCallException>(() => wrap.Execute(x => 3));
@@ -61,7 +61,7 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public void WrapObject()
+        public static void WrapObject()
         {
             new object().Wrap().Should().BeOfType<Wrap<object>>();
         }

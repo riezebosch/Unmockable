@@ -12,7 +12,7 @@ namespace Unmockable.Tests
         public class ToKey
         {
             [Fact]
-            public void MatchExpressionByMethodName()
+            public static void MatchExpressionByMethodName()
             {
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo();
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo();
@@ -21,7 +21,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public void IncludeVariables()
+            public static void IncludeVariables()
             {
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(4);
@@ -30,7 +30,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public void IncludeCapturedOuterVariables()
+            public static void IncludeCapturedOuterVariables()
             {
                 const int i = 3;
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
@@ -40,7 +40,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public void IncludeResultFromMethodCall()
+            public static void IncludeResultFromMethodCall()
             {
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(new Func<int>(() => 3)());
@@ -49,7 +49,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public void OnlyMethodCallsSupported()
+            public static void OnlyMethodCallsSupported()
             {
                 Expression<Func<int>> m = () => 3;
                 var ex = Assert.Throws<NotInstanceMethodCallException>(() => m.ToMatcher());
@@ -58,7 +58,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public void IgnoreNulls()
+            public static void IgnoreNulls()
             {
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(3, null);
@@ -67,7 +67,7 @@ namespace Unmockable.Tests
             }
             
             [Fact]
-            public void IgnoreNullsDoesNotInterfereWithOtherMethods()
+            public static void IgnoreNullsDoesNotInterfereWithOtherMethods()
             {
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(4, null);
@@ -76,7 +76,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public void UnwrapCollections()
+            public static void UnwrapCollections()
             {
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(new[] { 1, 2, 3 });
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(new List<int>{ 1, 2, 3});
@@ -85,7 +85,7 @@ namespace Unmockable.Tests
             }
             
             [Fact]
-            public void UnwrapNestedCollections()
+            public static void UnwrapNestedCollections()
             {
                 Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(new[] { new[] { 1, 2 }, new[] { 3, 4} });
                 Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(new[] { new[] { 1, 2 }, new[] { 3, 4} });

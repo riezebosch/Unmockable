@@ -9,7 +9,7 @@ namespace Unmockable.Tests
     public class InterceptTests
     {
         [Fact]
-        public void ExecuteTest()
+        public static void ExecuteTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Foo()).Returns(5);
@@ -22,19 +22,18 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public void ExecuteActionTest()
+        public static void ExecuteActionTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(x => x.Bar());
             
-            mock
-                .Execute(x => x.Bar());
+            mock.Execute(x => x.Bar());
             mock
                 .Verify();
         }
         
         [Fact]
-        public void NoSetupTest()
+        public static void NoSetupTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             
@@ -46,7 +45,7 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public void NoSetupResultTest()
+        public static void NoSetupResultTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Foo());
@@ -59,7 +58,7 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public async Task ResultAsync()
+        public static async Task ResultAsync()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock
@@ -75,7 +74,7 @@ namespace Unmockable.Tests
         }
         
         [Fact]
-        public async Task NoSetupResultAsyncTest()
+        public static async Task NoSetupResultAsyncTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.
@@ -89,7 +88,7 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public void NoSetupExceptionIncludesArgumentValues()
+        public static void NoSetupExceptionIncludesArgumentValues()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             var items = new[] {1, 2, 3, 4};
@@ -99,18 +98,18 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public async Task NonGenericAsyncTest()
+        public static async Task NonGenericAsyncTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.
-                Setup(m => m.Wait());
+                Setup(m => m.BarAsync());
 
 
-            await mock.Execute(m => m.Wait());
+            await mock.Execute(m => m.BarAsync());
         }
 
         [Fact]
-        public void SetupThrows()
+        public static void SetupThrows()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Foo()).Throws<NotImplementedException>();
@@ -120,7 +119,7 @@ namespace Unmockable.Tests
         }
         
         [Fact]
-        public void SetupActionThrows()
+        public static void SetupActionThrows()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Bar()).Throws<NotImplementedException>();
@@ -130,19 +129,19 @@ namespace Unmockable.Tests
         }
         
         [Fact]
-        public async Task SetupThrowsAsync()
+        public static async Task SetupThrowsAsync()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock
-                .Setup(x => x.ThrowAsync())
+                .Setup(x => x.BarAsync())
                 .Throws<NotImplementedException>();
             
-            await Assert.ThrowsAsync<NotImplementedException>(() => mock.Execute(m => m.ThrowAsync()));
+            await Assert.ThrowsAsync<NotImplementedException>(() => mock.Execute(m => m.BarAsync()));
             mock.Verify();
         }
 
         [Fact]
-        public void SetupChainTest()
+        public static void SetupChainTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock
@@ -156,7 +155,7 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public void VerifyTest()
+        public static void VerifyTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Foo()).Returns(5);
@@ -166,7 +165,7 @@ namespace Unmockable.Tests
         }
         
         [Fact]
-        public void VerifyNotExecutedTest()
+        public static void VerifyNotExecutedTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Foo());
