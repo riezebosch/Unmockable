@@ -1,9 +1,8 @@
 using System;
-using System.Threading.Tasks;
 
 namespace Unmockable
 {
-    public interface IFuncResult<T, TResult>
+    public interface IFuncResult<T, in TResult>
     {
         Intercept<T> Returns(TResult result);
         

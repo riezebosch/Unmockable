@@ -17,9 +17,7 @@ to extract an interface and it helps you to be [SOLID](https://en.wikipedia.org/
 
 ## Feature slim
 
-All mocks are strict, each invocation requires explicit setup, and there are no wild card argument matchers.
-Probably we need some argument matcher for reference types in the future because matching currently relies on
-the hash code of the value of the arguments.
+All mocks are strict, each invocation requires explicit setup, <s>and there are no wild card argument matchers</s>.
 
 ## Different
 
@@ -104,14 +102,17 @@ client
 
 **Remark**: This is the default value of the *type*, not necessarily the same as the default value of the *optional argument*!
 
-## References
+## Matchers
 
-Unfortunately dealing with inline constructed reference types is (currently) not supported. I deliberately
+<s>Unfortunately dealing with inline constructed reference types is (currently) not supported. I deliberately
 try not to create a `YAMF`. Strife for injecting these values from the test so the same instances are used 
-inside `Setup` and `Execute`. 
+inside `Setup` and `Execute`.</s> 
 
-Collection arguments are already unwrapped when matching the actual call with provided setups! 
+Collection arguments are unwrapped when matching the actual call with provided setups! 
 Value types, anonymous types *and* reference types with a custom `GetHashCode()` should be safe.
+
+Custom matching is done with `Arg.Ignore<T>()` and `Arg.Equals<T>(x => true/false)`, though the recommendation
+still is to be explicit. 
 
 ## Shout-out
 

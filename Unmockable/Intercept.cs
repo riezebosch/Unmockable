@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Unmockable.Exceptions;
+using Unmockable.Matchers;
 
 namespace Unmockable
 {
@@ -55,7 +56,8 @@ namespace Unmockable
             var not = _setups
                 .Values
                 .Where(x => !x.IsExecuted)
-                .Select(x => x.Expression);
+                .Select(x => x.Expression)
+                .ToList();
             if (not.Any())
             {
                 throw new NotExecutedException(not);

@@ -8,7 +8,7 @@ namespace Unmockable
     internal class InterceptSetup<T> : IActionResult<T>
     {
         private Exception _exception;
-        protected readonly Intercept<T> _intercept;
+        protected Intercept<T> Intercept { get; }
         public Expression Expression { get; }
 
 
@@ -17,14 +17,14 @@ namespace Unmockable
         public InterceptSetup(Intercept<T> intercept, Expression expression)
         {
             Expression = expression;
-            _intercept = intercept;
+            Intercept = intercept;
         }
         
         public Intercept<T> Throws<TException>() 
             where TException: Exception, new()
         {
             _exception = new TException();
-            return _intercept;
+            return Intercept;
         }
 
         public InterceptSetup<T> Execute()
@@ -40,12 +40,12 @@ namespace Unmockable
 
         public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m)
         {
-            return _intercept.Setup(m);
+            return Intercept.Setup(m);
         }
 
         public IActionResult<T> Setup(Expression<Action<T>> m)
         {
-            return _intercept.Setup(m);
+            return Intercept.Setup(m);
         }
     }
 
@@ -64,7 +64,7 @@ namespace Unmockable
         public Intercept<T> Returns(TResult result)
         {
             _result = () => result;
-            return _intercept;
+            return Intercept;
         }
     }
 }

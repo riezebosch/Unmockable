@@ -19,7 +19,7 @@ namespace Unmockable
         public Intercept<T> Returns(TResult result)
         {
             _result = () => Task.FromResult(result);
-            return _intercept;
+            return Intercept;
         }
     }
 }
