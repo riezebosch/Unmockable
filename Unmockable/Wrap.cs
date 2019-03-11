@@ -8,7 +8,7 @@ namespace Unmockable
     public class Wrap<T> : IUnmockable<T>
     {
         private readonly T _item;
-        private Dictionary<int, object> _cache = new Dictionary<int, object>();
+        private readonly Dictionary<int, object> _cache = new Dictionary<int, object>();
 
         public Wrap(T item)
         {
@@ -33,14 +33,13 @@ namespace Unmockable
         private TMethod Methods<TMethod>(LambdaExpression m)
         {
             var key = m.ToKey();
-            if (_cache.TryGetValue(key, out var o))
+            if (_cache.TryGetValue(key, out var method))
             {
-                return (TMethod) o;
+                return (TMethod) method;
             }
 
-            return (TMethod)(_cache[key] = m.Compile());
+            method = m.Compile();
+            return (TMethod)(_cache[key] = method);
         }
-
-        
     }
 }

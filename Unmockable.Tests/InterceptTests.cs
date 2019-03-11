@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Unmockable.Tests
 {
-    public class InterceptTests
+    public static class InterceptTests
     {
         [Fact]
         public static void ExecuteTest()
@@ -22,7 +22,7 @@ namespace Unmockable.Tests
         }
 
         [Fact]
-        public void IgnoreArgument()
+        public static void IgnoreArgument()
         {
             var mock = new Intercept<SomeUnmockableObject>();
             mock

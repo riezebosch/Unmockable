@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Unmockable.Tests
 {
-    public class WrapTests
+    public static class WrapTests
     {
         [Fact]
         public static void ExecuteOnRealItem()
