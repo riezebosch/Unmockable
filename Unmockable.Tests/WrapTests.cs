@@ -10,16 +10,16 @@ namespace Unmockable.Tests
     public static class WrapTests
     {
         [Fact]
-        public static void ExecuteOnRealItem()
+        public static void Execute()
         {
-            var wrap = new SomeUnmockableObject().Wrap();
+            var wrap = new SomeUnmockableObject { Dummy = 3 }.Wrap();
             wrap.Execute(x => x.Foo()).Should().Be(3);
         }
 
         [Fact]
         public static async Task ExecuteAsync()
         {
-            var wrap = new SomeUnmockableObject().Wrap();
+            var wrap = new SomeUnmockableObject { Dummy =  9 }.Wrap();
             var result = await wrap.Execute(x => x.FooAsync());
             result.Should().Be(9);
         }
@@ -28,7 +28,12 @@ namespace Unmockable.Tests
         public static void ExecuteAction()
         {
             var wrap = new SomeUnmockableObject().Wrap();
-            Assert.Throws<NotImplementedException>(() => wrap.Execute(x => x.Bar()));
+            wrap.Execute(x => x.Bar(10));
+
+            wrap
+                .Execute(x => x.Dummy)
+                .Should()
+                .Be(10);
         }
 
         [Fact]
@@ -59,14 +64,6 @@ namespace Unmockable.Tests
             }
 
             sw.Elapsed.TotalSeconds.Should().BeLessThan(3);
-        }
-
-        [Fact]
-        public static void NotAnInstanceMethodCall()
-        {
-            var wrap = new SomeUnmockableObject().Wrap();
-            var ex = Assert.Throws<NotInstanceMethodCallException>(() => wrap.Execute(x => 3));
-            ex.Message.Should().Contain("x => 3");
         }
 
         [Fact]

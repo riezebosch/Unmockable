@@ -7,14 +7,16 @@ namespace Unmockable.Tests
 {
     public class SomeUnmockableObject
     {
-        public int Foo() => 3;
-        public int Foo(int i) => i;
-        public int Foo(int i, IDisposable _) => i;
-        public int Foo(IEnumerable<int> items) => items.Sum();
-        public int Foo(IEnumerable<IEnumerable<int>> _) => throw new NotImplementedException();
-        public bool Foo(Person p) => throw new NotImplementedException();
-        public Task<int> FooAsync() => Task.FromResult(9);
-        public void Bar() => throw new NotImplementedException();
-        public Task BarAsync() => Task.CompletedTask;
+        public int Dummy { get; set; }
+
+        public int Foo() => Dummy;
+        public int Foo(int i) => Dummy = i;
+        public int Foo(int i, IDisposable _) => Dummy;
+        public int Foo(IEnumerable<int> items) => Dummy = items.Sum();
+        public int Foo(IEnumerable<IEnumerable<int>> _) => Dummy;
+        public int Foo(Person p) => Dummy;
+        public Task<int> FooAsync() => Task.FromResult(Dummy);
+        public void Bar(int i) => Dummy = 10;
+        public async Task BarAsync() => await FooAsync();
     }
 }
