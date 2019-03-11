@@ -22,6 +22,21 @@ namespace Unmockable.Tests
         }
 
         [Fact]
+        public void IgnoreArgument()
+        {
+            var mock = new Intercept<SomeUnmockableObject>();
+            mock
+                .Setup(m => m.Foo(Arg.Ignore<int>()))
+                .Returns(5);
+
+            mock
+                .Execute(x => x.Foo(13))
+                .Should()
+                .Be(5);
+            mock.Verify();
+        }
+
+        [Fact]
         public static void ExecuteActionTest()
         {
             var mock = new Intercept<SomeUnmockableObject>();

@@ -92,6 +92,15 @@ namespace Unmockable.Tests
 
                 m.ToMatcher().Should().Be(n.ToMatcher());
             }
+
+            [Fact]
+            public static void IgnoreArgument()
+            {
+                Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
+                Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(Arg.Ignore<int>());
+
+                n.ToMatcher().Should().Be(m.ToMatcher());
+            }
         }
     }
 }
