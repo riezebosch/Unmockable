@@ -80,7 +80,7 @@ namespace Unmockable.Tests
                 .Setup(x => x.FooAsync())
                 .Returns(7);
             
-            var result = await mock.Execute(x => x.FooAsync());
+            var result = await ((IUnmockable<SomeUnmockableObject>)mock).Execute(x => x.FooAsync());
             result
                 .Should()
                 .Be(7);
@@ -120,7 +120,7 @@ namespace Unmockable.Tests
                 Setup(m => m.BarAsync());
 
 
-            await mock.Execute(m => m.BarAsync());
+            await ((IUnmockable<SomeUnmockableObject>)mock).Execute(m => m.BarAsync());
         }
 
         [Fact]

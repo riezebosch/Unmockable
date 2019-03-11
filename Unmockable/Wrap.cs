@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Unmockable
 {
@@ -17,6 +18,11 @@ namespace Unmockable
         public TResult Execute<TResult>(Expression<Func<T, TResult>> m)
         {
              return Methods<Func<T, TResult>>(m).Invoke(_item);
+        }
+
+        public Task<TResult> Execute<TResult>(Expression<Func<T, Task<TResult>>> m)
+        {
+            return Methods<Func<T, Task<TResult>>>(m).Invoke(_item);
         }
 
         public void Execute(Expression<Action<T>> m)

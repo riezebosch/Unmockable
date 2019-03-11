@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Unmockable.Exceptions;
 using Xunit;
@@ -13,6 +14,14 @@ namespace Unmockable.Tests
         {
             var wrap = new SomeUnmockableObject().Wrap();
             wrap.Execute(x => x.Foo()).Should().Be(3);
+        }
+
+        [Fact]
+        public static async Task ExecuteAsync()
+        {
+            var wrap = new SomeUnmockableObject().Wrap();
+            var result = await wrap.Execute(x => x.FooAsync());
+            result.Should().Be(9);
         }
 
         [Fact]
