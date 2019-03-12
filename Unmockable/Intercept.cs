@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Unmockable.Exceptions;
-using Unmockable.Matchers;
 
 namespace Unmockable
 {
@@ -33,7 +32,7 @@ namespace Unmockable
     
     public class Intercept<T> : IUnmockable<T>, ISetup<T>
     {
-        private readonly IDictionary<MethodMatcher, InterceptSetup<T>> _setups = new Dictionary<MethodMatcher, InterceptSetup<T>>();
+        private readonly IDictionary<IUnmockableMatcher, InterceptSetup<T>> _setups = new Dictionary<IUnmockableMatcher, InterceptSetup<T>>();
 
         public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m)
         {

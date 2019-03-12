@@ -50,7 +50,7 @@ namespace Unmockable.Tests
         public static void OnlyMethodCallsSupported()
         {
             Expression<Func<int>> m = () => 3;
-            var ex = Assert.Throws<NotInstanceMethodCallException>(() => m.ToMatcher());
+            var ex = Assert.Throws<NotSupportedExpressionException>(() => m.ToMatcher());
 
             ex.Message.Should().Contain(m.ToString());
         }
@@ -99,12 +99,12 @@ namespace Unmockable.Tests
 
             m.ToMatcher().Should().Be(n.ToMatcher());
         }
-        
+
         [Fact]
         public static void EqualsArgument()
         {
             Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(Arg.Equals<Person>(p => p.Age == 32));
-            Expression<Func<SomeUnmockableObject, int>> n = x => x.Foo(new Person { Age = 32 });
+            Expression<Func<SomeUnmockableObject, int>> n = x => x.Foo(new Person {Age = 32});
 
             m.ToMatcher().Should().Be(n.ToMatcher());
         }
@@ -116,7 +116,27 @@ namespace Unmockable.Tests
             Expression<Func<double>> n = () => double.Parse("a");
 
             m.ToMatcher().Should().NotBe(n.ToMatcher());
+        }
 
+        public static class PropertyMatcher
+        {
+            [Fact]
+            public static void PropertyTest()
+            {
+                Expression<Func<DateTime>> m = () => DateTime.Now;
+                Expression<Func<DateTime>> n = () => DateTime.Now;
+
+                m.ToMatcher().Should().Be(n.ToMatcher());
+            }
+
+            [Fact]
+            public static void NotEqual()
+            {
+                Expression<Func<DateTime>> m = () => DateTime.Now;
+                Expression<Func<DateTime>> n = () => DateTime.Today;
+
+                m.ToMatcher().Should().NotBe(n.ToMatcher());
+            }
         }
     }
 }

@@ -62,7 +62,7 @@ namespace Unmockable.Tests
                 wrap.Execute(m => m.Foo(i));
             }
 
-            sw.Elapsed.TotalSeconds.Should().BeLessThan(3);
+            sw.Elapsed.TotalSeconds.Should().BeLessThan(5);
         }
 
         [Fact]

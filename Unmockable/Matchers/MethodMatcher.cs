@@ -1,16 +1,15 @@
 using System.Linq.Expressions;
-using Unmockable.Exceptions;
 
 namespace Unmockable.Matchers
 {
-    internal class MethodMatcher
+    internal class MethodMatcher : IUnmockableMatcher
     {
         private readonly MethodCallExpression _body;
         private readonly ArgumentsMatcher _arguments;
 
-        public MethodMatcher(LambdaExpression m)
+        public MethodMatcher(MethodCallExpression m)
         {
-            _body = m.Body as MethodCallExpression ?? throw new NotInstanceMethodCallException(m.ToString());
+            _body = m;
             _arguments = new ArgumentsMatcher(_body.Arguments);
         }
 

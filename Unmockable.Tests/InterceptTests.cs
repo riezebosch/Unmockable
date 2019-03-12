@@ -231,6 +231,19 @@ namespace Unmockable.Tests
                     .Should()
                     .Be(4);
             }
+
+            [Fact]
+            public static void ExecuteProperty()
+            {
+                var mock = new Intercept();
+                mock.Setup(() => DateTime.Today)
+                    .Returns(new DateTime(2009, 9, 11));
+
+                mock.As<IStatic>()
+                    .Execute(() => DateTime.Today)
+                    .Should()
+                    .Be(new DateTime(2009, 9, 11));
+            }
             
             [Fact]
             public static void Throws()

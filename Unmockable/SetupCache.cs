@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Unmockable.Exceptions;
-using Unmockable.Matchers;
 
 namespace Unmockable
 {
     internal class SetupCache
     {
-        private readonly IDictionary<MethodMatcher, InterceptSetupBase<Intercept>> _setups = new Dictionary<MethodMatcher, InterceptSetupBase<Intercept>>();
+        private readonly IDictionary<IUnmockableMatcher, InterceptSetupBase<Intercept>> _setups = new Dictionary<IUnmockableMatcher, InterceptSetupBase<Intercept>>();
 
         public TItem ToCache<TItem>(TItem setup) where TItem: InterceptSetupBase<Intercept>
         {

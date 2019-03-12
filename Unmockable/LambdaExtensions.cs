@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Unmockable.Exceptions;
 using Unmockable.Matchers;
 
 namespace Unmockable
@@ -10,9 +11,17 @@ namespace Unmockable
             return m.ToString().GetHashCode();
         }
         
-        public static MethodMatcher ToMatcher(this LambdaExpression m)
+        public static IUnmockableMatcher ToMatcher(this LambdaExpression m)
         {
-            return new MethodMatcher(m); 
+            switch (m.Body)
+            {
+                case MemberExpression arg:
+                    return new PropertyMatcher(arg);
+                case MethodCallExpression arg:
+                    return new MethodMatcher(arg);
+                default:
+                    throw new NotSupportedExpressionException(m.ToString());
+            }
         }
     }
 }
