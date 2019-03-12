@@ -14,12 +14,22 @@ namespace Unmockable
             return _cache.ToCache(new StaticSetup<TResult>(this, m));
         }
 
+        public IActionResult Setup(Expression<Action> m)
+        {
+            return _cache.ToCache(new StaticSetup(this, m));
+        }
+
         TResult IStatic.Execute<TResult>(Expression<Func<TResult>> m)
         {
             var setup = _cache.FromCache<StaticSetup<TResult>>(m);
             setup.Execute();
             
             return setup.Result;
+        }
+
+        void IStatic.Execute(Expression<Action> m)
+        {
+            _cache.FromCache<StaticSetup>(m).Execute();
         }
 
         public void Verify()

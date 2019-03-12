@@ -17,6 +17,13 @@ namespace Unmockable.Tests
         }
         
         [Fact]
+        public static void WrapStaticAction()
+        {
+            IStatic wrap = new Static();
+            Assert.Throws<NotImplementedException>(() => wrap.Execute(() => SomeUnmockableObject.ThrowStatic()));
+        }
+        
+        [Fact]
         public static void WrapStaticProperty()
         {
             IStatic wrap = new Static();

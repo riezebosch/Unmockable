@@ -274,6 +274,27 @@ namespace Unmockable.Tests
                     .Should()
                     .Contain(@"Parse(""4"")");
             }
+
+            [Fact]
+            public static void SetupChaining()
+            {
+                var mock = new Intercept();
+                mock.Setup(() => int.Parse("3")).Throws<NotImplementedException>()
+                    .Setup(() => double.Parse("4")).Returns(4)
+                    .Setup(() => int.Parse("2")).Returns(3);
+            }
+
+            [Fact]
+            public static void Action()
+            {
+                var mock = new Intercept();
+                mock.Setup(() => Console.WriteLine("hello"));
+
+                mock.As<IStatic>()
+                    .Execute(() => Console.WriteLine("hello"));
+                
+                mock.Verify();
+            }
         }
     }
 }
