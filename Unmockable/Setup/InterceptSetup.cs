@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Unmockable.Exceptions;
 
-namespace Unmockable
+namespace Unmockable.Setup
 {
     internal class InterceptSetup<T> : SetupBase<Intercept<T>>, IActionResult<T>
     {

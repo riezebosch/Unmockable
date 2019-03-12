@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Unmockable.Exceptions;
 
-namespace Unmockable
+namespace Unmockable.Setup
 {
     internal class SetupCache
     {

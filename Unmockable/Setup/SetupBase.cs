@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace Unmockable
+namespace Unmockable.Setup
 {
     internal abstract class SetupBase<TIntercept> : ISetup
     {

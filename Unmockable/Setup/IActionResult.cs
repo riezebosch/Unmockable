@@ -1,6 +1,6 @@
 using System;
 
-namespace Unmockable
+namespace Unmockable.Setup
 {
     public interface IActionResult<T> : ISetup<T>
     {
