@@ -1,8 +1,10 @@
+using System;
+
 namespace Unmockable.Matchers
 {
     internal class NullArgument : ValueArgument
     {
-        public override int GetHashCode() => 0;
+        public override int GetHashCode() => throw new NotImplementedException();
 
         public override string ToString() => "null";
 
