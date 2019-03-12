@@ -38,24 +38,15 @@ namespace Unmockable
         }
     }
     
-    public class Intercept<T> : IUnmockable<T>, ISetup<T>
+    public class Intercept<T> : IUnmockable<T>, ISetupFunc<T>
     {
         private readonly SetupCache _setups = new SetupCache();
 
-        public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m)
-        {
-            return _setups.ToCache(new InterceptSetup<T, TResult>(this, m));
-        }
+        public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, TResult>> m) => _setups.ToCache(new InterceptSetup<T, TResult>(this, m));
 
-        public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, Task<TResult>>> m)
-        {
-            return _setups.ToCache(new InterceptSetupAsync<T, TResult>(this, m));
-        }
-        
-        public IActionResult<T> Setup(Expression<Action<T>> m)
-        {
-            return _setups.ToCache(new InterceptSetup<T>(this, m));
-        }
+        public IFuncResult<T, TResult> Setup<TResult>(Expression<Func<T, Task<TResult>>> m) => _setups.ToCache(new InterceptSetupAsync<T, TResult>(this, m));
+
+        public IActionResult<T> Setup(Expression<Action<T>> m) => _setups.ToCache(new InterceptSetup<T>(this, m));
 
         TResult IUnmockable<T>.Execute<TResult>(Expression<Func<T, TResult>> m)
         {
@@ -79,9 +70,6 @@ namespace Unmockable
             setup.Execute();
         }
 
-        public void Verify()
-        {
-           _setups.Verify();
-        }
+        public void Verify() => _setups.Verify();
     }
 }

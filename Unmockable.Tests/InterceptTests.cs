@@ -185,6 +185,11 @@ namespace Unmockable.Tests
                     .Setup(x => x.Foo(3)).Returns(1);
 
                 mock
+                    .Setup(x => x.Bar(3))
+                    .Setup(x => x.Bar(3)).Throws<NotImplementedException>()
+                    .Setup(x => x.Bar(3));
+
+                mock
                     .As<IUnmockable<SomeUnmockableObject>>()
                     .Execute(r => r.Foo(5))
                     .Should()
@@ -282,6 +287,11 @@ namespace Unmockable.Tests
                 mock.Setup(() => int.Parse("3")).Throws<NotImplementedException>()
                     .Setup(() => double.Parse("4")).Returns(4)
                     .Setup(() => int.Parse("2")).Returns(3);
+
+                mock.Setup(() => SomeUnmockableObject.ThrowStatic())
+                    .Setup(() => SomeUnmockableObject.ThrowStatic()).Throws<NotImplementedException>()
+                    .Setup(() => SomeUnmockableObject.ThrowStatic())
+                    .Setup(() => int.Parse("3"));
             }
 
             [Fact]

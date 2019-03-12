@@ -8,6 +8,8 @@ namespace Unmockable.Setup
         public StaticSetup(Intercept intercept, Expression<Action> expression) : base(intercept, expression)
         {
         }
+
+        public IActionResult Setup(Expression<Action> m) => Intercept.Setup(m);
     }
     
     internal class StaticSetup<TResult> : SetupBase<Intercept>, IFuncResult<TResult>

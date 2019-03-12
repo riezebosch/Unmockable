@@ -11,10 +11,9 @@ namespace Unmockable.Setup
         {
         }
         
-        IFuncResult<T, TResult> ISetup<T>.Setup<TResult>(Expression<Func<T, TResult>> m)
-        {
-            return Intercept.Setup(m);
-        }
+        IFuncResult<T, TResult> ISetupFunc<T>.Setup<TResult>(Expression<Func<T, TResult>> m) => Intercept.Setup(m);
+
+        public IActionResult<T> Setup(Expression<Action<T>> m) => Intercept.Setup(m);
     }
 
     internal class InterceptSetup<T, TResult> : InterceptSetup<T>, IFuncResult<T, TResult>
