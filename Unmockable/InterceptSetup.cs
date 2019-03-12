@@ -5,7 +5,7 @@ using Unmockable.Exceptions;
 
 namespace Unmockable
 {
-    internal class InterceptSetup<T> : InterceptSetupBase<Intercept<T>>, IActionResult<T>
+    internal class InterceptSetup<T> : SetupBase<Intercept<T>>, IActionResult<T>
     {
         public InterceptSetup(Intercept<T> intercept, LambdaExpression expression) : base(intercept, expression)
         {

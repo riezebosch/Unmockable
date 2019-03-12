@@ -7,15 +7,15 @@ namespace Unmockable
 {
     internal class SetupCache
     {
-        private readonly IDictionary<IUnmockableMatcher, InterceptSetupBase<Intercept>> _setups = new Dictionary<IUnmockableMatcher, InterceptSetupBase<Intercept>>();
+        private readonly IDictionary<IUnmockableMatcher, ISetup> _setups = new Dictionary<IUnmockableMatcher, ISetup>();
 
-        public TItem ToCache<TItem>(TItem setup) where TItem: InterceptSetupBase<Intercept>
+        public TItem ToCache<TItem>(TItem setup) where TItem: ISetup
         {
             _setups[setup.Expression.ToMatcher()] = setup;
             return setup;
         }
 
-        public TItem FromCache<TItem>(LambdaExpression m) where TItem: InterceptSetupBase<Intercept>
+        public TItem FromCache<TItem>(LambdaExpression m) where TItem: ISetup
         {
             var key = m.ToMatcher();
             if (!_setups.TryGetValue(key, out var setup))

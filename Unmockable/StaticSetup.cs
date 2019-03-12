@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Unmockable
 {
-    internal class StaticSetup<TResult> : InterceptSetupBase<Intercept>, IFuncResult<TResult>
+    internal class StaticSetup<TResult> : SetupBase<Intercept>, IFuncResult<TResult>
     {
         public StaticSetup(Intercept intercept, Expression<Func<TResult>> expression) : base(intercept, expression)
         {

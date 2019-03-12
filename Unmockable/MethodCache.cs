@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Unmockable
 {
-    class MethodCache
+    internal class MethodCache
     {
         private readonly Dictionary<int, object> _cache = new Dictionary<int, object>();
 

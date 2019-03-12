@@ -3,14 +3,14 @@ using System.Linq.Expressions;
 
 namespace Unmockable
 {
-    internal abstract class InterceptSetupBase<TIntercept>
+    internal abstract class SetupBase<TIntercept> : ISetup
     {
         private Exception _exception;
         protected TIntercept Intercept { get; }
         public LambdaExpression Expression { get; }
         public bool IsExecuted { get; private set; }
 
-        protected InterceptSetupBase(TIntercept intercept, LambdaExpression expression)
+        protected SetupBase(TIntercept intercept, LambdaExpression expression)
         {
             Intercept = intercept;
             Expression = expression;
