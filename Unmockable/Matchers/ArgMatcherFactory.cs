@@ -1,3 +1,4 @@
+using System;
 using System.Linq.Expressions;
 
 namespace Unmockable.Matchers
@@ -14,6 +15,8 @@ namespace Unmockable.Matchers
                         return new IgnoreArgument();
                     case "Equals":
                         return new EqualsArgument(call.Arguments[0]);
+                    default:
+                        throw new NotImplementedException();
                 }
             }
 
