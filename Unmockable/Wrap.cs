@@ -14,17 +14,17 @@ namespace Unmockable
             _item = item;
         }
 
-        public TResult Execute<TResult>(Expression<Func<T, TResult>> m)
+        TResult IUnmockable<T>.Execute<TResult>(Expression<Func<T, TResult>> m)
         {
             return _cache.Methods<Func<T, TResult>>(m).Invoke(_item);
         }
 
-        public Task<TResult> Execute<TResult>(Expression<Func<T, Task<TResult>>> m)
+        Task<TResult> IUnmockable<T>.Execute<TResult>(Expression<Func<T, Task<TResult>>> m)
         {
             return _cache.Methods<Func<T, Task<TResult>>>(m).Invoke(_item);
         }
 
-        public void Execute(Expression<Action<T>> m)
+        void IUnmockable<T>.Execute(Expression<Action<T>> m)
         {
             _cache.Methods<Action<T>>(m).Invoke(_item);
         }
