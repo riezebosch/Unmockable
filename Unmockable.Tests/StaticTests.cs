@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using FluentAssertions;
 using Xunit;
 
@@ -20,7 +21,7 @@ namespace Unmockable.Tests
         public static void WrapStaticAction()
         {
             IStatic wrap = new Static();
-            Assert.Throws<NotImplementedException>(() => wrap.Execute(() => SomeUnmockableObject.ThrowStatic()));
+            Assert.Throws<FileNotFoundException>(() => wrap.Execute(() => SomeUnmockableObject.ThrowStatic()));
         }
         
         [Fact]

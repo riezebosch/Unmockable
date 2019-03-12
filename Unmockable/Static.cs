@@ -13,7 +13,7 @@ namespace Unmockable
 
         void IStatic.Execute(Expression<Action> m)
         {
-            throw new NotImplementedException();
+            _cache.Methods<Action>(m).Invoke();
         }
     }
 }

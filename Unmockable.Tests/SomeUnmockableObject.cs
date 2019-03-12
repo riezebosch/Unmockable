@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,6 +19,6 @@ namespace Unmockable.Tests
         public Task<int> FooAsync() => Task.FromResult(Dummy);
         public void Bar(int i) => Dummy = 10;
         public async Task BarAsync() => await FooAsync();
-        public static void ThrowStatic() => throw new NotImplementedException();
+        public static void ThrowStatic() => throw new FileNotFoundException();
     }
 }
