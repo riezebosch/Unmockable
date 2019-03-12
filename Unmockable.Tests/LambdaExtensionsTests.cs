@@ -108,5 +108,15 @@ namespace Unmockable.Tests
 
             m.ToMatcher().Should().Be(n.ToMatcher());
         }
+
+        [Fact]
+        public static void UniquePerType()
+        {
+            Expression<Func<int>> m = () => int.Parse("a");
+            Expression<Func<double>> n = () => double.Parse("a");
+
+            m.ToMatcher().Should().NotBe(n.ToMatcher());
+
+        }
     }
 }

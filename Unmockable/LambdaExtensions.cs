@@ -1,5 +1,4 @@
 using System.Linq.Expressions;
-using Unmockable.Exceptions;
 using Unmockable.Matchers;
 
 namespace Unmockable

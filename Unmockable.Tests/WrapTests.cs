@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Unmockable.Exceptions;
 using Xunit;
 
 namespace Unmockable.Tests

@@ -10,13 +10,13 @@ namespace Unmockable
         private Func<Task<TResult>> _result;
         public Task<TResult> Result => _result();
 
-        public InterceptSetupAsync(Intercept<T> intercept, Expression expression) : base(
+        public InterceptSetupAsync(Intercept<T> intercept, LambdaExpression expression) : base(
             intercept, expression)
         {
             _result = () => throw new NoResultConfiguredException(expression.ToString());
         }
 
-        public Intercept<T> Returns(TResult result)
+        Intercept<T> IFuncResult<T, TResult>.Returns(TResult result)
         {
             _result = () => Task.FromResult(result);
             return Intercept;
