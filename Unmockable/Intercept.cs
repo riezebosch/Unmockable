@@ -5,40 +5,22 @@ using Unmockable.Setup;
 
 namespace Unmockable
 {
-    public class Intercept : IStatic
+    public class Intercept : IStatic, IIntercept
     {
         private readonly SetupCache _cache = new SetupCache();
         
-        public IFuncResult<TResult> Setup<TResult>(Expression<Func<TResult>> m)
-        {
-            return _cache.ToCache(new StaticSetup<TResult>(this, m));
-        }
+        public IFuncResult<TResult> Setup<TResult>(Expression<Func<TResult>> m) => _cache.ToCache(new StaticSetup<TResult>(this, m));
 
-        public IActionResult Setup(Expression<Action> m)
-        {
-            return _cache.ToCache(new StaticSetup(this, m));
-        }
+        public IActionResult Setup(Expression<Action> m) => _cache.ToCache(new StaticSetup(this, m));
 
-        TResult IStatic.Execute<TResult>(Expression<Func<TResult>> m)
-        {
-            var setup = _cache.FromCache<StaticSetup<TResult>>(m);
-            setup.Execute();
-            
-            return setup.Result;
-        }
+        TResult IStatic.Execute<TResult>(Expression<Func<TResult>> m) => _cache.FromCache<TResult>(m).Result;
 
-        void IStatic.Execute(Expression<Action> m)
-        {
-            _cache.FromCache<StaticSetup>(m).Execute();
-        }
+        void IStatic.Execute(Expression<Action> m) => _cache.FromCache(m).Execute();
 
-        public void Verify()
-        {
-            _cache.Verify();
-        }
+        public void Verify() => _cache.Verify();
     }
-    
-    public class Intercept<T> : IUnmockable<T>, ISetupFunc<T>
+
+    public class Intercept<T> : IUnmockable<T>, IIntercept<T>
     {
         private readonly SetupCache _setups = new SetupCache();
 
@@ -48,27 +30,11 @@ namespace Unmockable
 
         public IActionResult<T> Setup(Expression<Action<T>> m) => _setups.ToCache(new InterceptSetup<T>(this, m));
 
-        TResult IUnmockable<T>.Execute<TResult>(Expression<Func<T, TResult>> m)
-        {
-            var setup = _setups.FromCache<InterceptSetup<T, TResult>>(m);
-            setup.Execute();
-            
-            return setup.Result;
-        }
-        
-        Task<TResult> IUnmockable<T>.Execute<TResult>(Expression<Func<T, Task<TResult>>> m)
-        {
-            var setup = _setups.FromCache<InterceptSetupAsync<T, TResult>>(m);
-            setup.Execute();
-            
-            return setup.Result;
-        }
+        TResult IUnmockable<T>.Execute<TResult>(Expression<Func<T, TResult>> m) => _setups.FromCache<TResult>(m).Result;
 
-        void IUnmockable<T>.Execute(Expression<Action<T>> m)
-        {
-            var setup = _setups.FromCache<InterceptSetup<T>>(m);
-            setup.Execute();
-        }
+        Task<TResult> IUnmockable<T>.Execute<TResult>(Expression<Func<T, Task<TResult>>> m) => _setups.FromCache<Task<TResult>>(m).Result;
+
+        void IUnmockable<T>.Execute(Expression<Action<T>> m) => _setups.FromCache(m).Execute();
 
         public void Verify() => _setups.Verify();
     }

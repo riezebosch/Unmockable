@@ -11,15 +11,21 @@ namespace Unmockable.Tests
         public static class InstanceMock
         {
             [Fact]
-            public static void ExecuteTest()
+            public static void SetupTest()
             {
                 var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(m => m.Foo()).Returns(5);
+                mock.Setup(m => m.Foo()).Returns(5)
+                    .Setup(m => m.Foo(5)).Returns(6);
 
                 mock.As<IUnmockable<SomeUnmockableObject>>()
                     .Execute(x => x.Foo())
                     .Should()
                     .Be(5);
+                
+                mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(x => x.Foo(5))
+                    .Should()
+                    .Be(6);
 
                 mock.Verify();
             }
@@ -86,7 +92,9 @@ namespace Unmockable.Tests
                 mock.Setup(x => x.FooAsync())
                     .Returns(7);
 
-                var result = await mock.As<IUnmockable<SomeUnmockableObject>>().Execute(x => x.FooAsync());
+                var result = await mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(x => x.FooAsync());
+                
                 result
                     .Should()
                     .Be(7);
@@ -225,16 +233,23 @@ namespace Unmockable.Tests
         public static class StaticMock
         {
             [Fact]
-            public static void ExecuteTest()
+            public static void SetupTest()
             {
                 var mock = new Intercept();
-                mock.Setup(() => int.Parse("3"))
-                    .Returns(4);
+                mock.Setup(() => int.Parse("3")).Returns(4)
+                    .Setup(() => int.Parse("4")).Returns(5);
 
                 mock.As<IStatic>()
                     .Execute(() => int.Parse("3"))
                     .Should()
                     .Be(4);
+                
+                mock.As<IStatic>()
+                    .Execute(() => int.Parse("4"))
+                    .Should()
+                    .Be(5);
+
+                mock.Verify();
             }
 
             [Fact]

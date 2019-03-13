@@ -4,17 +4,17 @@ namespace Unmockable.Setup
 {
     public interface IFuncResult<in TResult>
     {
-        Intercept Returns(TResult result);
+        IIntercept Returns(TResult result);
         
-        Intercept Throws<TException>() 
+        IIntercept Throws<TException>() 
             where TException: Exception, new();
     }
 
     public interface IFuncResult<T, in TResult>
     {
-        Intercept<T> Returns(TResult result);
+        IIntercept<T> Returns(TResult result);
         
-        Intercept<T> Throws<TException>() 
+        IIntercept<T> Throws<TException>() 
             where TException: Exception, new();
     }
 }

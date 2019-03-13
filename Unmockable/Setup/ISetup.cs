@@ -6,5 +6,12 @@ namespace Unmockable.Setup
     {
         LambdaExpression Expression { get; }
         bool IsExecuted { get; }
+
+        void Execute();
+    }
+
+    internal interface ISetup<out TResult> : ISetup
+    {
+        TResult Result { get; }
     }
 }

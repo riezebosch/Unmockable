@@ -3,27 +3,38 @@ using System.Linq.Expressions;
 
 namespace Unmockable.Setup
 {
-    internal class StaticSetup : SetupBase<Intercept>, IActionResult
+    internal class StaticSetup : SetupBase<IIntercept>, IActionResult
     {
-        public StaticSetup(Intercept intercept, Expression<Action> expression) : base(intercept, expression)
+        public StaticSetup(IIntercept intercept, Expression<Action> expression) : base(intercept, expression)
         {
         }
 
         public IActionResult Setup(Expression<Action> m) => Intercept.Setup(m);
+        public IFuncResult<TResult> Setup<TResult>(Expression<Func<TResult>> m) => Intercept.Setup(m);
     }
     
-    internal class StaticSetup<TResult> : SetupBase<Intercept>, IFuncResult<TResult>
+    internal class StaticSetup<TResult> : SetupBase<IIntercept>, ISetup<TResult>, IFuncResult<TResult>
     {
-        public StaticSetup(Intercept intercept, Expression<Func<TResult>> expression) : base(intercept, expression)
+        private TResult _result;
+
+        public StaticSetup(IIntercept intercept, Expression<Func<TResult>> expression) : base(intercept, expression)
         {
         }
 
-        Intercept IFuncResult<TResult>.Returns(TResult result)
+        IIntercept IFuncResult<TResult>.Returns(TResult result)
         {
-            Result = result;
+            _result = result;
             return Intercept;
         }
 
-        public TResult Result { get; private set; }
+        
+        public TResult Result
+        {
+            get
+            {
+                Execute();
+                return _result;
+            }
+        }
     }
 }

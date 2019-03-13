@@ -2,15 +2,15 @@ using System;
 
 namespace Unmockable.Setup
 {
-    public interface IActionResult : ISetupAction
+    public interface IActionResult : IIntercept
     {
-        Intercept Throws<TException>() 
+        IIntercept Throws<TException>() 
             where TException: Exception, new();
     }
 
-    public interface IActionResult<T> : ISetupFunc<T>, ISetupAction<T>
+    public interface IActionResult<T> : IIntercept<T>
     {
-        Intercept<T> Throws<TException>() 
+        IIntercept<T> Throws<TException>() 
             where TException: Exception, new();
     }
 }
