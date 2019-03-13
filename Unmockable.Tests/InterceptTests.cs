@@ -320,6 +320,16 @@ namespace Unmockable.Tests
                 
                 mock.Verify();
             }
+
+            [Fact]
+            public static void NoResultThrows()
+            {
+                var mock = new Intercept();
+                mock.Setup(() => int.Parse("3"));
+                
+                Assert.Throws<NoResultConfiguredException>(() => 
+                    mock.As<IStatic>().Execute(() => int.Parse("3")));
+            }
         }
     }
 }

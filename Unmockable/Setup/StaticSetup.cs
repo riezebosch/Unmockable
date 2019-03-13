@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using Unmockable.Exceptions;
 
 namespace Unmockable.Setup
 {
@@ -15,15 +16,16 @@ namespace Unmockable.Setup
     
     internal class StaticSetup<TResult> : SetupBase<IIntercept>, ISetup<TResult>, IFuncResult<TResult>
     {
-        private TResult _result;
+        private Func<TResult> _result;
 
         public StaticSetup(IIntercept intercept, Expression<Func<TResult>> expression) : base(intercept, expression)
         {
+            _result = () => throw new NoResultConfiguredException(expression.ToString());
         }
 
         IIntercept IFuncResult<TResult>.Returns(TResult result)
         {
-            _result = result;
+            _result = () => result;
             return Intercept;
         }
 
@@ -33,7 +35,7 @@ namespace Unmockable.Setup
             get
             {
                 Execute();
-                return _result;
+                return _result();
             }
         }
     }
