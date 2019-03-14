@@ -13,6 +13,10 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unmockable.Intercept", "Unmockable.Intercept\Unmockable.Intercept.csproj", "{FB42ADB6-84FB-4161-A2D5-7489F2ED8619}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unmockable.Wrap", "Unmockable.Wrap\Unmockable.Wrap.csproj", "{FDDA2E17-3C31-4EA9-8D63-8F25C12051C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unmockable.Wrap.Tests", "Unmockable.Wrap.Tests\Unmockable.Wrap.Tests.csproj", "{EA701759-52DE-46A4-ABBE-195BEDBE6946}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,5 +35,13 @@ Global
 		{FB42ADB6-84FB-4161-A2D5-7489F2ED8619}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB42ADB6-84FB-4161-A2D5-7489F2ED8619}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB42ADB6-84FB-4161-A2D5-7489F2ED8619}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDDA2E17-3C31-4EA9-8D63-8F25C12051C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDDA2E17-3C31-4EA9-8D63-8F25C12051C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDDA2E17-3C31-4EA9-8D63-8F25C12051C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDDA2E17-3C31-4EA9-8D63-8F25C12051C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA701759-52DE-46A4-ABBE-195BEDBE6946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA701759-52DE-46A4-ABBE-195BEDBE6946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA701759-52DE-46A4-ABBE-195BEDBE6946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA701759-52DE-46A4-ABBE-195BEDBE6946}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

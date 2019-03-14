@@ -4,23 +4,11 @@
         <TargetFramework>netstandard1.3</TargetFramework>
     </PropertyGroup>
 
-    <ItemGroup>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>$(MSBuildProjectName).Tests</_Parameter1>
-        </AssemblyAttribute>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>$(MSBuildProjectName).IntegrationTests</_Parameter1>
-        </AssemblyAttribute>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
-        </AssemblyAttribute>
-    </ItemGroup>
-
     <PropertyGroup>
         <Authors>Manuel Riezebosch</Authors>
         <NeutralLanguage>en-US</NeutralLanguage>
         <AssemblyTitle>Unmockable</AssemblyTitle>
-        <Description>Inject wrappers around unmockable objects.</Description>
+        <Description>Inject wrappers around unmockable objects. Use [Wrap](../Unmockable.Wrap) to wrap  and [Intercept](../Unmockable.Intercept) to intercept calls to the unmockable object.</Description>
         <PackageReleaseNotes></PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>unmockable;mock;wrapper;dependency;solid;inversion;virtual;interface</PackageTags>

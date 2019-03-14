@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
-namespace Unmockable.Tests
+namespace Unmockable.Wrap.Tests
 {
     public static class WrapTests
     {

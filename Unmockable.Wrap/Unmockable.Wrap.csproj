@@ -19,7 +19,7 @@
         <Authors>Manuel Riezebosch</Authors>
         <NeutralLanguage>en-US</NeutralLanguage>
         <AssemblyTitle>Unmockable</AssemblyTitle>
-        <Description>Intercept calls on wrappers around unmockable objects.</Description>
+        <Description>Wrap unmockable objects.</Description>
         <PackageReleaseNotes></PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>unmockable;mock;wrapper;dependency;solid;inversion;virtual;interface</PackageTags>
