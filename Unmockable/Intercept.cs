@@ -15,9 +15,9 @@ namespace Unmockable
 
         public IActionResult<T> Setup(Expression<Action<T>> m) => _setups.Store(new InterceptSetup<T, Unit>(this, m));
 
-        TResult IUnmockable<T>.Execute<TResult>(Expression<Func<T, TResult>> m) => _setups.Load<TResult>(m).Result;
+        TResult IUnmockable<T>.Execute<TResult>(Expression<Func<T, TResult>> m) => _setups.Load<TResult>(m).Execute();
 
-        Task<TResult> IUnmockable<T>.Execute<TResult>(Expression<Func<T, Task<TResult>>> m) => _setups.Load<Task<TResult>>(m).Result;
+        Task<TResult> IUnmockable<T>.Execute<TResult>(Expression<Func<T, Task<TResult>>> m) => _setups.Load<Task<TResult>>(m).Execute();
 
         void IUnmockable<T>.Execute(Expression<Action<T>> m) => _setups.Load<Unit>(m).Execute();
 

@@ -13,7 +13,7 @@ namespace Unmockable.Setup
 
         IIntercept<T> IFuncResult<T, TResult>.Returns(TResult result)
         {
-            Result = Task.FromResult(result);
+            Result = () => Task.FromResult(result);
             return Intercept;
         }
     }

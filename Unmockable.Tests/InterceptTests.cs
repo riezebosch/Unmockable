@@ -213,7 +213,10 @@ namespace Unmockable.Tests
             public static void VerifyTest()
             {
                 var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(m => m.Foo()).Returns(5);
+                mock
+                    .Setup(m => m.Foo())
+                    .Returns(5);
+                
                 mock.As<IUnmockable<SomeUnmockableObject>>()
                     .Execute(x => x.Foo());
 

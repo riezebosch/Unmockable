@@ -10,9 +10,7 @@ namespace Unmockable.Setup
         IFuncResult<T, TResult>, 
         IActionResult<T>
     {
-        private Func<TResult> _result;
-        
-        private Exception _exception;
+        protected Func<TResult> Result;
         protected IIntercept<T> Intercept { get; }
         public LambdaExpression Expression { get; }
         public bool IsExecuted { get; private set; }
@@ -21,41 +19,36 @@ namespace Unmockable.Setup
         {
             Intercept = intercept;
             Expression = expression;
-            _result = typeof(TResult) == typeof(Task)
-                ? (Func<TResult>) (() => (TResult) (object) Task.CompletedTask)
-                : () => throw new NoResultConfiguredException(expression.ToString());
+            Result = InitializeResult(expression);
         }
 
-        public void Execute()
+        private static Func<TResult> InitializeResult(LambdaExpression expression)
         {
-            IsExecuted = true;
-            if (_exception != null)
-            {
-                throw _exception;
-            }
+            if (typeof(TResult) == typeof(Task))
+                return () => (TResult)(object)Task.CompletedTask;
+
+            if (typeof(TResult) == typeof(Unit))
+                return () => (TResult)(object)default(Unit);
+            
+            return () => throw new NoResultConfiguredException(expression.ToString());
         }
 
         public IIntercept<T> Throws<TException>() where TException : Exception, new()
         {
-            _exception = new TException();
+            Result = () => throw new TException();
             return Intercept;
         }
 
         public IIntercept<T> Returns(TResult result)
         {
-            Result = result;
+            Result =  () => result;
             return Intercept;
         }
 
-        public virtual TResult Result 
+        public virtual TResult Execute()
         {
-            get
-            {
-                Execute();
-                return _result();
-            }
-
-            protected set => _result = () => value;
+            IsExecuted = true;
+            return Result();
         }
 
         IActionResult<T> ISetupAction<T>.Setup(Expression<Action<T>> m) => Intercept.Setup(m);
