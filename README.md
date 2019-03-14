@@ -22,13 +22,13 @@ All mocks are strict, each invocation requires explicit setup, <s>and there are 
 ## Different
 
 What makes it different from [Microsoft Fakes](https://docs.microsoft.com/en-us/visualstudio/test/isolating-code-under-test-with-microsoft-fakes) or [Smocks](https://www.nuget.org/packages/Smocks/) is
-that only uses C# language constructs are used. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
+that it only uses C# language constructs. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
 your dependency, but please, don't let us clean up someone else's dirt.
 
 ## Usage
 
 I prefer `NSubstitute` over `Moq` for its clean API. However, since we are (already) dealing
-with `Expressions`, I felt it was more convenient (and easier for me to implement) to resemble the `Moq` API.  
+with `Expressions,` I felt it was more convenient (and easier for me to implement) to resemble the `Moq` API.  
 
 Inject an unmockable* object:
 
@@ -67,7 +67,7 @@ var client = new HttpClient().Wrap();
     
 ```
 
-Or add wrappers for all services with [Unmockable.DependencyInjection](https://www.nuget.org/packages/Unmockable.DependencyInection/):
+Or add wrappers for all services with [Unmockable.DependencyInjection](https://www.nuget.org/packages/Unmockable.DependencyInjection/):
 
 ```cs
 services
@@ -90,7 +90,7 @@ await target.DoSomething(3);
 client.Verify();
 ```
 
-\* The `HttpClient` is just a hand-picked example and not necessarily unmockable. In fact there has been [some debate](https://github.com/aspnet/HttpClientFactory/issues/67)
+\* The `HttpClient` is just a hand-picked example and not necessarily unmockable. In fact, there has been [some debate](https://github.com/aspnet/HttpClientFactory/issues/67)
 around this type and it turns out to be mockable. As long as you are not afraid of message handlers. 
 
 Concrete unmockable types (pun intented) I had to deal with recently are the [`ExtensionManagementHttpClient`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.services.extensionmanagement.webapi.extensionmanagementhttpclient) 
@@ -98,7 +98,7 @@ and the [`AzureServiceTokenProvider`](https://github.com/Azure/azure-sdk-for-net
 
 ## Optional arguments
 
-Because `Expressions` are used it is not possible make use of default values for optional arguments.
+Because of the `Expressions`, it is not possible use default values from optional arguments.
 > An expression tree cannot contain a call or invocation that uses optional arguments
  
 Luckily this is easily solved by passing in `default` for all arguments:
@@ -114,11 +114,10 @@ client
 ## Matchers
 
 <s>Unfortunately dealing with inline constructed reference types is (currently) not supported. I deliberately
-try not to create a `YAMF`. Strife for injecting these values from the test so the same instances are used 
-inside `Setup` and `Execute`.</s> 
+try not to create a `YAMF`. Strife for injecting these values from the test, so the instances are the same 
+in `Setup` and `Execute`.</s> 
 
-Collection arguments are unwrapped when matching the actual call with provided setups! 
-Value types, anonymous types *and* reference types with a custom `GetHashCode()` should be safe.
+Collection arguments are unwrapped when matching the actual call with provided setups! Value types, anonymous types *and* reference types with a custom `GetHashCode()` should be safe.
 
 Custom matching is done with `Arg.Ignore<T>()` and `Arg.Equals<T>(x => true/false)`, though the recommendation
 still is to be explicit. 
@@ -126,8 +125,7 @@ still is to be explicit.
 ## Static
 
 I first added and then removed support for 'wrapping' static classes and invoking static methods.
-Because it is not an unmockable *object*! If you're dependant, let's say, on `DateTime.Now` you can 
-already create an overloaded method that accepts the datetime. You don't need a framework for that.
+Because it is not an unmockable *object*! If you're dependent, let's say, on `DateTime.Now` you can already create an overloaded method that accepts the DateTime. You don't need a framework for that.
 
 ```cs
 public void DoSomething(DateTime when)
@@ -138,7 +136,7 @@ public void DoSomething() => DoSomething(DateTime.Now)
 ```
 
 If you don't like this as a public API, you can extract an interface and only
-include the second method or you mark the upper method internal and
+include the second method or you mark the top method internal and
 make it visible to your test project using `[InternalsVisibleTo]`.  
 
 ## Shout-out
