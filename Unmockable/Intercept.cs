@@ -5,21 +5,6 @@ using Unmockable.Setup;
 
 namespace Unmockable
 {
-    public class Intercept : IStatic, IIntercept
-    {
-        private readonly SetupCache _cache = new SetupCache();
-        
-        public IFuncResult<TResult> Setup<TResult>(Expression<Func<TResult>> m) => _cache.ToCache(new StaticSetup<TResult>(this, m));
-
-        public IActionResult Setup(Expression<Action> m) => _cache.ToCache(new StaticSetup(this, m));
-
-        TResult IStatic.Execute<TResult>(Expression<Func<TResult>> m) => _cache.FromCache<TResult>(m).Result;
-
-        void IStatic.Execute(Expression<Action> m) => _cache.FromCache(m).Execute();
-
-        public void Verify() => _cache.Verify();
-    }
-
     public class Intercept<T> : IUnmockable<T>, IIntercept<T>
     {
         private readonly SetupCache _setups = new SetupCache();
