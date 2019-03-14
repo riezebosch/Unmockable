@@ -114,6 +114,24 @@ Value types, anonymous types *and* reference types with a custom `GetHashCode()`
 Custom matching is done with `Arg.Ignore<T>()` and `Arg.Equals<T>(x => true/false)`, though the recommendation
 still is to be explicit. 
 
+## Static
+
+I first added and then removed support for 'wrapping' static classes and invoking static methods.
+Because it is not an unmockable *object*! If you're dependant, let's say, on `DateTime.Now` you can 
+already create an overloaded method that accepts the datetime. You don't need a framework for that.
+
+```cs
+public void DoSomething(DateTime when)
+{
+}
+
+public void DoSomething() => DoSomething(DateTime.Now)
+```
+
+If you don't like this as a public API, you can extract an interface and only
+include the second method or you mark the upper method internal and
+make it visible to your test project using `[InternalsVisibleTo]`.  
+
 ## Shout-out
 
 A big shoutout to Microsoft and other vendors to start **unit testing your SDKs** so you'll share our pain and give us some freaking extension points.
