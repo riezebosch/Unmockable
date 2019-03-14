@@ -27,8 +27,8 @@ namespace Unmockable.Setup
             if (typeof(TResult) == typeof(Task))
                 return () => (TResult)(object)Task.CompletedTask;
 
-            if (typeof(TResult) == typeof(Unit))
-                return () => (TResult)(object)default(Unit);
+            if (typeof(TResult) == typeof(Nothing))
+                return () => (TResult)(object)default(Nothing);
             
             return () => throw new NoResultConfiguredException(expression.ToString());
         }
