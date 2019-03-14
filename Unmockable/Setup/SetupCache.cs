@@ -15,8 +15,8 @@ namespace Unmockable.Setup
             _setups[setup.Expression.ToMatcher()] = setup;
             return setup;
         }
-
-        public ISetup FromCache(LambdaExpression m)
+        
+        public ISetup<TResult> FromCache<TResult>(LambdaExpression m)
         {
             var key = m.ToMatcher();
             if (!_setups.TryGetValue(key, out var setup))
@@ -24,12 +24,7 @@ namespace Unmockable.Setup
                 throw new NoSetupException(key.ToString());
             }
 
-            return setup;
-        }
-        
-        public ISetup<TResult> FromCache<TResult>(LambdaExpression m)
-        {
-            return (ISetup<TResult>)FromCache(m);
+            return (ISetup<TResult>)setup;
         }
 
         public void Verify()
