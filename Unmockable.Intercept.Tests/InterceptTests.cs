@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Unmockable.Exceptions;
@@ -8,10 +9,10 @@ namespace Unmockable.Tests
 {
     public static class InterceptTests
     {
-        public static class InstanceMock
+        public static class Setup
         {
             [Fact]
-            public static void SetupTest()
+            public static void Func()
             {
                 var mock = new Intercept<SomeUnmockableObject>();
                 mock.Setup(m => m.Foo()).Returns(5)
@@ -21,7 +22,7 @@ namespace Unmockable.Tests
                     .Execute(x => x.Foo())
                     .Should()
                     .Be(5);
-                
+
                 mock.As<IUnmockable<SomeUnmockableObject>>()
                     .Execute(x => x.Foo(5))
                     .Should()
@@ -30,6 +31,47 @@ namespace Unmockable.Tests
                 mock.Verify();
             }
 
+            [Fact]
+            public static void Action()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(x => x.Bar(5));
+
+                mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(x => x.Bar(5));
+
+                mock.Verify();
+            }
+            
+            [Fact]
+            public static async Task FuncAsync()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(x => x.FooAsync())
+                    .Returns(7);
+
+                var result = await mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(x => x.FooAsync());
+
+                result
+                    .Should()
+                    .Be(7);
+
+                mock.Verify();
+            }
+            
+            [Fact]
+            public static async Task ActionAsync()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(m => m.BarAsync());
+
+                await mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.BarAsync());
+
+                mock.Verify();
+            }
+            
             [Fact]
             public static void IgnoreArgument()
             {
@@ -46,19 +88,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public static void ExecuteActionTest()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(x => x.Bar(5));
-
-                mock.As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(x => x.Bar(5));
-
-                mock.Verify();
-            }
-
-            [Fact]
-            public static void NoSetupTest()
+            public static void NoSetup()
             {
                 var mock = new Intercept<SomeUnmockableObject>();
 
@@ -72,53 +102,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public static void NoSetupResultTest()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(m => m.Foo());
-
-                var ex = Assert.Throws<NoResultConfiguredException>(() => mock.As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(m => m.Foo()));
-
-                ex.Message
-                    .Should()
-                    .Contain("m => m.Foo()");
-            }
-
-            [Fact]
-            public static async Task ResultAsync()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(x => x.FooAsync())
-                    .Returns(7);
-
-                var result = await mock.As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(x => x.FooAsync());
-                
-                result
-                    .Should()
-                    .Be(7);
-
-                mock.Verify();
-            }
-
-            [Fact]
-            public static async Task NoSetupResultAsyncTest()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(m => m.FooAsync());
-
-                var ex = await Assert.ThrowsAsync<NoResultConfiguredException>(() => mock
-                    .As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(m => m.FooAsync()));
-
-                ex.Message
-                    .Should()
-                    .Contain("m => m.FooAsync()");
-            }
-
-            [Fact]
-            public static void NoSetupExceptionIncludesArgumentValues()
+            public static void NoSetupEnumerable()
             {
                 var mock = new Intercept<SomeUnmockableObject>();
                 var items = new[] {1, 2, 3, 4};
@@ -130,60 +114,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public static async Task NonGenericAsyncTest()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(m => m.BarAsync());
-
-                await mock.As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(m => m.BarAsync());
-
-                mock.Verify();
-            }
-
-            [Fact]
-            public static void SetupThrows()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(m => m.Foo()).Throws<NotImplementedException>();
-
-                Assert.Throws<NotImplementedException>(() => mock
-                    .As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(m => m.Foo()));
-
-                mock.Verify();
-            }
-
-            [Fact]
-            public static void SetupActionThrows()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(m => m.Bar(5))
-                    .Throws<NotImplementedException>();
-
-                Assert.Throws<NotImplementedException>(() => mock
-                    .As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(m => m.Bar(5)));
-
-                mock.Verify();
-            }
-
-            [Fact]
-            public static async Task SetupThrowsAsync()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(x => x.BarAsync())
-                    .Throws<NotImplementedException>();
-
-                await Assert.ThrowsAsync<NotImplementedException>(() => mock
-                    .As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(m => m.BarAsync()));
-
-                mock.Verify();
-            }
-
-            [Fact]
-            public static void SetupChainTest()
+            public static void SetupChain()
             {
                 var mock = new Intercept<SomeUnmockableObject>();
                 mock
@@ -194,7 +125,7 @@ namespace Unmockable.Tests
 
                 mock
                     .Setup(x => x.Bar(3))
-                    .Setup(x => x.Bar(3)).Throws<NotImplementedException>()
+                    .Setup(x => x.Bar(3)).Throws<FileNotFoundException>()
                     .Setup(x => x.Bar(3));
 
                 mock
@@ -208,9 +139,103 @@ namespace Unmockable.Tests
                     .Should()
                     .Be(1);
             }
+        }
+
+        public static class Result
+        {
+            [Fact]
+            public static void NoResult()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(m => m.Foo());
+
+                var ex = Assert.Throws<NoResultConfiguredException>(() => mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.Foo()));
+
+                ex.Message
+                    .Should()
+                    .Contain("m => m.Foo()");
+            }
+
+            
+            [Fact]
+            public static async Task NoResultAsync()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(m => m.FooAsync());
+
+                var ex = await Assert.ThrowsAsync<NoResultConfiguredException>(() => mock
+                    .As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.FooAsync()));
+
+                ex.Message
+                    .Should()
+                    .Contain("m => m.FooAsync()");
+            }
+        }
+        
+        public static class Throws
+        {
+            [Fact]
+            public static void FuncThrows()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(m => m.Foo()).Throws<FileNotFoundException>();
+
+                Assert.Throws<FileNotFoundException>(() => mock
+                    .As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.Foo()));
+
+                mock.Verify();
+            }
 
             [Fact]
-            public static void VerifyTest()
+            public static void ActionThrows()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(m => m.Bar(5))
+                    .Throws<FileNotFoundException>();
+
+                Assert.Throws<FileNotFoundException>(() => mock
+                    .As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.Bar(5)));
+
+                mock.Verify();
+            }
+
+            [Fact]
+            public static async Task FuncAsyncThrows()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(x => x.FooAsync())
+                    .Throws<FileNotFoundException>();
+
+                await Assert.ThrowsAsync<FileNotFoundException>(() => mock
+                    .As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.FooAsync()));
+
+                mock.Verify();
+            }
+            
+            [Fact]
+            public static async Task ActionAsyncThrows()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(x => x.BarAsync())
+                    .Throws<FileNotFoundException>();
+
+                await Assert.ThrowsAsync<FileNotFoundException>(() => mock
+                    .As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.BarAsync()));
+
+                mock.Verify();
+            }
+        }
+        
+        public static class Verify
+        {
+            [Fact]
+            public static void Executed()
             {
                 var mock = new Intercept<SomeUnmockableObject>();
                 mock
@@ -224,7 +249,7 @@ namespace Unmockable.Tests
             }
 
             [Fact]
-            public static void VerifyNotExecutedTest()
+            public static void NotExecuted()
             {
                 var mock = new Intercept<SomeUnmockableObject>();
                 mock.Setup(m => m.Foo());
