@@ -10,13 +10,13 @@ namespace Unmockable.Setup
     {
         private readonly IDictionary<IUnmockableMatcher, ISetup> _setups = new Dictionary<IUnmockableMatcher, ISetup>();
 
-        public TItem ToCache<TItem>(TItem setup) where TItem: ISetup
+        public TItem Store<TItem>(TItem setup) where TItem: ISetup
         {
             _setups[setup.Expression.ToMatcher()] = setup;
             return setup;
         }
         
-        public ISetup<TResult> FromCache<TResult>(LambdaExpression m)
+        public ISetup<TResult> Load<TResult>(LambdaExpression m)
         {
             var key = m.ToMatcher();
             if (!_setups.TryGetValue(key, out var setup))
