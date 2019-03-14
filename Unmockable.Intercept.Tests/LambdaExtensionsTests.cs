@@ -117,26 +117,5 @@ namespace Unmockable.Tests
 
             m.ToMatcher().Should().NotBe(n.ToMatcher());
         }
-
-        public static class PropertyMatcher
-        {
-            [Fact]
-            public static void PropertyTest()
-            {
-                Expression<Func<DateTime>> m = () => DateTime.Now;
-                Expression<Func<DateTime>> n = () => DateTime.Now;
-
-                m.ToMatcher().Should().Be(n.ToMatcher());
-            }
-
-            [Fact]
-            public static void NotEqual()
-            {
-                Expression<Func<DateTime>> m = () => DateTime.Now;
-                Expression<Func<DateTime>> n = () => DateTime.Today;
-
-                m.ToMatcher().Should().NotBe(n.ToMatcher());
-            }
-        }
     }
 }
