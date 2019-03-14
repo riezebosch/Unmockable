@@ -9,5 +9,7 @@ namespace Unmockable.Matchers
         public bool Equals(IgnoreArgument other) => true;
 
         public override bool Equals(object obj) => obj is IArgumentMatcher;
+
+        public override string ToString() => "<ignore>";
     }
 }
