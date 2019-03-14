@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unmockable.Wrap", "Unmockab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unmockable.Wrap.Tests", "Unmockable.Wrap.Tests\Unmockable.Wrap.Tests.csproj", "{EA701759-52DE-46A4-ABBE-195BEDBE6946}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unmockable.DependencyInjection", "Unmockable.DependencyInjection\Unmockable.DependencyInjection.csproj", "{6CE7E5DB-D5B1-4C68-97C7-E454AE3EDB5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unmockable.DependencyInjection.Tests", "Unmockable.DependencyInjection.Tests\Unmockable.DependencyInjection.Tests.csproj", "{890A543E-5565-4F58-A071-2047B9545982}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,5 +47,13 @@ Global
 		{EA701759-52DE-46A4-ABBE-195BEDBE6946}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA701759-52DE-46A4-ABBE-195BEDBE6946}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA701759-52DE-46A4-ABBE-195BEDBE6946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CE7E5DB-D5B1-4C68-97C7-E454AE3EDB5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CE7E5DB-D5B1-4C68-97C7-E454AE3EDB5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CE7E5DB-D5B1-4C68-97C7-E454AE3EDB5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CE7E5DB-D5B1-4C68-97C7-E454AE3EDB5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{890A543E-5565-4F58-A071-2047B9545982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{890A543E-5565-4F58-A071-2047B9545982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{890A543E-5565-4F58-A071-2047B9545982}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{890A543E-5565-4F58-A071-2047B9545982}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

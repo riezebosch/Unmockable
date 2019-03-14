@@ -51,11 +51,11 @@ public async Task DoSomething(int input)
 }
 ```
 
-Inject the wrapper object:
+Inject the wrapper object using [Unmockable.Wrap](https://www.nuget.org/packages/Unmockable.Wrap/):
 
 ```cs
 services
-    .AddScoped<IUnmockable<HttpClient>, Wrap<HttpClient>>();
+    .AddTransient<IUnmockable<HttpClient>, Wrap<HttpClient>>();
 services
     .AddScoped<HttpClient>();
 ```
@@ -67,7 +67,16 @@ var client = new HttpClient().Wrap();
     
 ```
 
-Inject an interceptor from a test:
+Or add wrappers for all services with [Unmockable.DependencyInjection](https://www.nuget.org/packages/Unmockable.DependencyInection/):
+
+```cs
+services
+    .AddScoped<HttpClient>();
+services
+    .AddUnmockables();
+```
+
+Inject an interceptor from a test using [Unmockable.Intercept](https://www.nuget.org/packages/Unmockable.Intercept/):
 
 ```cs
 var client = new Intercept<HttpClient>();

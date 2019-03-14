@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <RootNamespace>Unmockable</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Unmockable.Wrap\Unmockable.Wrap.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <Authors>Manuel Riezebosch</Authors>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <AssemblyTitle>Unmockable</AssemblyTitle>
+        <Description>Add wrappers for all unmockable objects to the service collection.</Description>
+        <PackageReleaseNotes></PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageTags>unmockable;mock;wrapper;dependency;solid;inversion;virtual;interface</PackageTags>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/riezebosch/Unmockable.git</RepositoryUrl>
+        <Version>0.0.1</Version>
+    </PropertyGroup>
+</Project>
