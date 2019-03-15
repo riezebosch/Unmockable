@@ -14,21 +14,19 @@ namespace Unmockable.Setup
 
         IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result)
         {
-            Result.Clear();
-            Result.Enqueue(() => Task.FromResult(result));
-            
+            Result.Add(() => Task.FromResult(result));
             return this;
         }
         
         IResult<T, TResult> IResult<T, TResult>.Then(TResult result)
         {
-            Result.Enqueue(() => Task.FromResult(result));
+            Result.Add(() => Task.FromResult(result));
             return this;
         }
         
         IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>()
         {
-            Result.Enqueue(() => throw new TException());
+            Result.Add(() => throw new TException());
             return this;
         }
     }
