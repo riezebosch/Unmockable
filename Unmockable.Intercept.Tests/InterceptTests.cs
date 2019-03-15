@@ -172,6 +172,27 @@ namespace Unmockable.Tests
                     .Should()
                     .Contain("m => m.FooAsync()");
             }
+
+            [Fact]
+            public static void Then()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(m => m.Foo())
+                    .Returns(5)
+                    .Then(6);
+
+                mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.Foo())
+                    .Should()
+                    .Be(5);
+                    
+                mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.Foo())
+                    .Should()
+                    .Be(6);
+                
+                mock.Verify();
+            }
         }
         
         public static class Throws
@@ -229,6 +250,12 @@ namespace Unmockable.Tests
                     .Execute(m => m.BarAsync()));
 
                 mock.Verify();
+            }
+
+            [Fact]
+            public static void ThenThrows()
+            {
+                
             }
         }
         

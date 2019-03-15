@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Unmockable.Exceptions;
@@ -8,18 +10,19 @@ namespace Unmockable.Setup
     internal class InterceptSetup<T, TResult> : 
         ISetup<TResult>, 
         IFuncResult<T, TResult>, 
+        IResult<T, TResult>,
         IActionResult<T>
     {
-        protected Func<TResult> Result;
+        protected Queue<Func<TResult>> Result = new Queue<Func<TResult>>();
         protected IIntercept<T> Intercept { get; }
         public LambdaExpression Expression { get; }
-        public bool IsExecuted { get; private set; }
+        public bool IsExecuted => !Result.Any();
 
         public InterceptSetup(IIntercept<T> intercept, LambdaExpression expression)
         {
             Intercept = intercept;
             Expression = expression;
-            Result = InitializeResult(expression);
+            Result.Enqueue(InitializeResult(expression));
         }
 
         private static Func<TResult> InitializeResult(LambdaExpression expression)
@@ -35,24 +38,32 @@ namespace Unmockable.Setup
 
         public IIntercept<T> Throws<TException>() where TException : Exception, new()
         {
-            Result = () => throw new TException();
+            Result.Clear();
+            Result.Enqueue(() => throw new TException());
+            
             return Intercept;
         }
 
-        public IIntercept<T> Returns(TResult result)
+        IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result)
         {
-            Result =  () => result;
-            return Intercept;
+            Result.Clear();
+            Result.Enqueue(() => result);
+            
+            return this;
         }
 
-        public virtual TResult Execute()
+        public TResult Execute()
         {
-            IsExecuted = true;
-            return Result();
+            return Result.Dequeue()();
         }
 
         IActionResult<T> ISetupAction<T>.Setup(Expression<Action<T>> m) => Intercept.Setup(m);
 
         IFuncResult<T, TNewResult> ISetupFunc<T>.Setup<TNewResult>(Expression<Func<T, TNewResult>> m) => Intercept.Setup(m);
+        IResult<T, TResult> IResult<T, TResult>.Then(TResult result)
+        {
+            Result.Enqueue(() => result);
+            return this;
+        }
     }
 }
