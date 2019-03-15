@@ -13,35 +13,37 @@ namespace Unmockable.Setup
         IResult<T, TResult>,
         IActionResult<T>
     {
-        protected Queue<Func<TResult>> Result = new Queue<Func<TResult>>();
-        protected IIntercept<T> Intercept { get; }
+        protected readonly Queue<Func<TResult>> Result = new Queue<Func<TResult>>();
+        
+        private readonly IIntercept<T> _intercept;
         public LambdaExpression Expression { get; }
         public bool IsExecuted => !Result.Any();
 
         public InterceptSetup(IIntercept<T> intercept, LambdaExpression expression)
         {
-            Intercept = intercept;
+            _intercept = intercept;
             Expression = expression;
-            Result.Enqueue(InitializeResult(expression));
+            Result.Enqueue(DefaultResult(expression));
         }
 
-        private static Func<TResult> InitializeResult(LambdaExpression expression)
-        {
-            if (typeof(TResult) == typeof(Task))
-                return () => (TResult)(object)Task.CompletedTask;
+        IActionResult<T> ISetupAction<T>.Setup(Expression<Action<T>> m) => _intercept.Setup(m);
 
-            if (typeof(TResult) == typeof(Nothing))
-                return () => (TResult)(object)default(Nothing);
-            
-            return () => throw new NoResultConfiguredException(expression.ToString());
-        }
-
+        IFuncResult<T, TNewResult> ISetupFunc<T>.Setup<TNewResult>(Expression<Func<T, TNewResult>> m) => _intercept.Setup(m);
+        
+        IFuncResult<T, TResultNew> ISetupFuncAsync<T>.Setup<TResultNew>(Expression<Func<T, Task<TResultNew>>> m) => _intercept.Setup(m);
+        
         public IIntercept<T> Throws<TException>() where TException : Exception, new()
         {
             Result.Clear();
             Result.Enqueue(() => throw new TException());
             
-            return Intercept;
+            return _intercept;
+        }
+        
+        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>()
+        {
+            Result.Enqueue(() => throw new TException());
+            return this;
         }
 
         IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result)
@@ -51,25 +53,27 @@ namespace Unmockable.Setup
             
             return this;
         }
-
-        public TResult Execute()
-        {
-            return Result.Dequeue()();
-        }
-
-        IActionResult<T> ISetupAction<T>.Setup(Expression<Action<T>> m) => Intercept.Setup(m);
-
-        IFuncResult<T, TNewResult> ISetupFunc<T>.Setup<TNewResult>(Expression<Func<T, TNewResult>> m) => Intercept.Setup(m);
+        
         IResult<T, TResult> IResult<T, TResult>.Then(TResult result)
         {
             Result.Enqueue(() => result);
             return this;
         }
         
-        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>()
+        public TResult Execute()
         {
-            Result.Enqueue(() => throw new TException());
-            return this;
+            return Result.Dequeue()();
+        }
+
+        private static Func<TResult> DefaultResult(LambdaExpression expression)
+        {
+            if (typeof(TResult) == typeof(Task))
+                return () => (TResult)(object)Task.CompletedTask;
+
+            if (typeof(TResult) == typeof(Nothing))
+                return () => (TResult)(object)default(Nothing);
+            
+            return () => throw new NoResultConfiguredException(expression.ToString());
         }
     }
 }
