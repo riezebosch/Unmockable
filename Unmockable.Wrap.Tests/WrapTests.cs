@@ -59,8 +59,9 @@ namespace Unmockable.Wrap.Tests
             var sw = Stopwatch.StartNew();
             for (var i = 0; i < 100000; i++)
             {
+                var j = i;
                 wrap.As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(m => m.Foo(i));
+                    .Execute(m => m.Foo(j));
             }
 
             sw.Elapsed.TotalSeconds.Should().BeLessThan(5);

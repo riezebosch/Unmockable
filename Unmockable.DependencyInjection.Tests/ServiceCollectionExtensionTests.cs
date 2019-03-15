@@ -1,4 +1,5 @@
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -7,7 +8,7 @@ namespace Unmockable.DependencyInjection.Tests
     public static class ServiceCollectionExtensionTests
     {
         [Fact]
-        public static void AddUnmockables_ServiceResolved()
+        public static async Task AddUnmockables_ServiceResolved()
         {
             var provider = new ServiceCollection()
                 .AddScoped<DemoController>()
@@ -15,7 +16,8 @@ namespace Unmockable.DependencyInjection.Tests
                 .AddUnmockables()
                 .BuildServiceProvider();
 
-            provider.GetService<DemoController>();
+            var controller = provider.GetService<DemoController>();
+            Assert.NotEmpty(await controller.Do());
         }
     }
 }
