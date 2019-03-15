@@ -65,5 +65,11 @@ namespace Unmockable.Setup
             Result.Enqueue(() => result);
             return this;
         }
+        
+        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>()
+        {
+            Result.Enqueue(() => throw new TException());
+            return this;
+        }
     }
 }
