@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Unmockable.Exceptions;
 
 namespace Unmockable.Setup
 {
@@ -13,15 +10,13 @@ namespace Unmockable.Setup
         IResult<T, TResult>,
         IActionResult<T>
     {
-        protected readonly IList<Func<TResult>> Result = new List<Func<TResult>>();
-        
+        protected ResultMachine<TResult> Results { get; } = new ResultMachine<TResult>();
+
         private readonly IIntercept<T> _intercept;
-        
-        private int _invocation;
         
         public LambdaExpression Expression { get; }
         
-        public bool IsExecuted => _invocation >= Result.Count;
+        public bool IsExecuted => Results.IsExecuted;
 
         public InterceptSetup(IIntercept<T> intercept, LambdaExpression expression)
         {
@@ -37,47 +32,31 @@ namespace Unmockable.Setup
         
         public IIntercept<T> Throws<TException>() where TException : Exception, new()
         {
-            Result.Add(() => throw new TException());
+            Results.Add<TException>();
             return _intercept;
         }
         
         IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>()
         {
-            Result.Add(() => throw new TException());
+            Results.Add<TException>();
             return this;
         }
 
         IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result)
         {
-            Result.Add(() => result);
+            Results.Add(result);
             return this;
         }
         
         IResult<T, TResult> IResult<T, TResult>.Then(TResult result)
         {
-            Result.Add(() => result);
+            Results.Add(result);
             return this;
         }
         
         public TResult Execute()
         {
-            return NextResult()();
-        }
-
-        private Func<TResult> NextResult()
-        {
-            return Result.ElementAtOrDefault(_invocation++) ?? DefaultResult();
-        }
-
-        private Func<TResult> DefaultResult()
-        {
-            if (typeof(TResult) == typeof(Task))
-                return () => (TResult)(object)Task.CompletedTask;
-
-            if (typeof(TResult) == typeof(Nothing))
-                return () => (TResult)(object)default(Nothing);
-            
-            return () => throw new NoMoreResultsSetupException(Expression.ToString());
+            return Results.NextResult(Expression)();
         }
     }
 }
