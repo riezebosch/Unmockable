@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Unmockable.Result;
 
 namespace Unmockable.Setup
 {
@@ -10,18 +11,19 @@ namespace Unmockable.Setup
         IResult<T, TResult>,
         IActionResult<T>
     {
-        protected ResultMachine<TResult> Results { get; } = new ResultMachine<TResult>();
+        protected ResultContext<TResult> Results { get; }
 
         private readonly IIntercept<T> _intercept;
         
         public LambdaExpression Expression { get; }
         
-        public bool IsExecuted => Results.IsExecuted;
+        public bool IsExecuted => Results.IsDone;
 
         public InterceptSetup(IIntercept<T> intercept, LambdaExpression expression)
         {
             _intercept = intercept;
             Expression = expression;
+            Results = new ResultContext<TResult>(expression);
         }
 
         IActionResult<T> ISetupAction<T>.Setup(Expression<Action<T>> m) => _intercept.Setup(m);
@@ -56,7 +58,7 @@ namespace Unmockable.Setup
         
         public TResult Execute()
         {
-            return Results.NextResult(Expression)();
+            return Results.Next();
         }
     }
 }
