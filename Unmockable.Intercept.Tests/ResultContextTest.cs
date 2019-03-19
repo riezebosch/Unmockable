@@ -1,7 +1,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Unmockable.Exceptions;
 using Unmockable.Result;
 using Unmockable.Setup;
 using Xunit;
@@ -11,10 +10,13 @@ namespace Unmockable.Tests
     public static class ResultContextTest
     {
         [Fact]
-        public static void NoResultThrows()
+        public static void NoNext()
         {
             var context = new ResultContext<int>();
-            Assert.Throws<NoResultsSetupException>(() => context.Next());
+            context
+                .HasNext
+                .Should()
+                .BeFalse();
         }
         
         [Fact]
@@ -23,7 +25,10 @@ namespace Unmockable.Tests
             var context = new ResultContext<int>();
             context.Add(3);
 
-            context.Next().Should().Be(3);
+            context
+                .Next()
+                .Should()
+                .Be(3);
         }
 
         [Fact]
@@ -97,7 +102,7 @@ namespace Unmockable.Tests
         }
         
         [Fact]
-        public static void IsDoneIsTrueWhenAllExecuted()
+        public static void IsDoneIsTrueWhenExecuted()
         {
             var context = new ResultContext<int>();
             context.Add(3);
