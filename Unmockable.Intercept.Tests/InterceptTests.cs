@@ -216,6 +216,23 @@ namespace Unmockable.Tests
                 
                 mock.Verify();
             }
+            
+            [Fact]
+            public static void Multiple()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock
+                    .Setup(m => m.Foo())
+                    .Returns(3);
+
+                mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.Foo())
+                    .Should().Be(3);
+
+                mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.Foo())
+                    .Should().Be(3);
+            }
         }
         
         public static class Throws

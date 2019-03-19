@@ -20,13 +20,16 @@ namespace Unmockable.Setup
             return _results.ElementAtOrDefault(_invocation++) ?? DefaultResult(expression);
         }
 
-        private static Func<TResult> DefaultResult(LambdaExpression expression)
+        private Func<TResult> DefaultResult(LambdaExpression expression)
         {
             if (typeof(TResult) == typeof(Task))
                 return () => (TResult)(object)Task.CompletedTask;
 
             if (typeof(TResult) == typeof(Nothing))
                 return () => (TResult)(object)default(Nothing);
+
+            if (_results.Any())
+                return _results.Last();
 
             return () => throw new NoMoreResultsSetupException(expression.ToString());
         }
