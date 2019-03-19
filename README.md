@@ -9,11 +9,6 @@ more than passing through calls to the underlying object.
 
 That's where this tiny library comes in. It acts as that handwritten wrapper for you.
 
-Support this initiative by retweeting:
-
-<blockquote class="twitter-tweet" data-cards="hidden" data-lang="nl"><p lang="en" dir="ltr">Shout-out to all software craftsman, check out my tiny shiny library to wrap unmockable objects: <a href="https://t.co/M2lPz06Rpt">https://t.co/M2lPz06Rpt</a> <a href="https://twitter.com/hashtag/TDD?src=hash&amp;ref_src=twsrc%5Etfw">#TDD</a>  <a href="https://twitter.com/hashtag/unittest?src=hash&amp;ref_src=twsrc%5Etfw">#unittest</a>  <a href="https://twitter.com/hashtag/SOLID?src=hash&amp;ref_src=twsrc%5Etfw">#SOLID</a> <a href="https://twitter.com/hashtag/craftsmanship?src=hash&amp;ref_src=twsrc%5Etfw">#craftsmanship</a> <a href="https://twitter.com/hashtag/dotnet?src=hash&amp;ref_src=twsrc%5Etfw">#dotnet</a></p>&mdash; Manuel Riezebosch (@MRiezebosch) <a href="https://twitter.com/MRiezebosch/status/1103973591782166528?ref_src=twsrc%5Etfw">8 maart 2019</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
-
 ## Not a replacement 
 
 For dependencies you have under control, introduce interfaces and regular mocking frameworks like [NSubstitute](https://nsubstitute.github.io/) and [Moq](https://github.com/moq/moq). 
@@ -29,6 +24,8 @@ All mocks are strict, each invocation requires explicit setup, <s>and there are 
 What makes it different from [Microsoft Fakes](https://docs.microsoft.com/en-us/visualstudio/test/isolating-code-under-test-with-microsoft-fakes) or [Smocks](https://www.nuget.org/packages/Smocks/) is
 that it only uses C# language constructs. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
 your dependency, but please, don't let us clean up someone else's dirt.
+
+To be honest, [Pose](https://github.com/tonerdo/pose) looks also promising!
 
 ## Usage
 
@@ -164,7 +161,7 @@ If you don't like this as a public API, you can extract an interface and only
 include the second method or you mark the top method internal and
 make it visible to your test project using `[InternalsVisibleTo]`.  
 
-## Shout-out &#128226;
+## &#128226; Shout-out
 
 A big shoutout to Microsoft and other vendors to start **unit testing your SDKs** so you'll share our pain and give us some freaking extension points.
 
@@ -172,3 +169,10 @@ A big shoutout to Microsoft and other vendors to start **unit testing your SDKs*
 > One should "depend upon abstractions, not on concretions."
 
 Please, don't give us the `Unmockable<🖕>`.
+
+## Support 
+
+Please, retweet:
+
+[![tweet](tweet.png)](https://twitter.com/MRiezebosch/status/1103973591782166528)
+
