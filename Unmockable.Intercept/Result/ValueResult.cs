@@ -1,6 +1,6 @@
 namespace Unmockable.Result
 {
-    public class ValueResult<T> : INextResult<T>
+    internal class ValueResult<T> : INextResult<T>
     {
         private INextResult<T> _next;
         public T Result { get; }

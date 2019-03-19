@@ -1,25 +1,30 @@
 using System;
 using System.Linq.Expressions;
+using Unmockable.Exceptions;
 
 namespace Unmockable.Result
 {
-    public class ResultContext<TResult>
+    internal class ResultContext<TResult>
     {
         private readonly LambdaExpression _expression;
         private INextResult<TResult> _current ;
         private INextResult<TResult> _last;
 
-        public ResultContext(LambdaExpression expression = null)
+        public ResultContext() : this(LambdaExpression.Lambda(LambdaExpression.Empty()))
         {
-            _expression = expression ?? LambdaExpression.Lambda(LambdaExpression.Empty());
-            _last = _current = new First<TResult>(_expression);
+        }
+
+        public ResultContext(LambdaExpression expression)
+        {
+            _expression = expression;
+            _last = _current = new First<TResult>();
         }
 
         public bool IsDone => _current == _last || _current == _current.Next;
 
         public TResult Next()
         {
-            return (_current = _current.Next ?? new Done<TResult>(_expression)).Result;
+            return (_current = _current.Next ?? throw new NoMoreResultsSetupException(_expression.ToString())).Result;
         }
 
         public void Add(TResult result)
