@@ -22,7 +22,7 @@ namespace Unmockable.Result
 
         public bool IsDone => _current == _last || _current == _current.Next;
 
-        public TResult Next() => (_current = _current.Next ?? throw new NoMoreResultsSetupException(_expression.ToString())).Result;
+        public TResult Next() => (_current = _current.Next ?? throw new NoResultsSetupException(_expression.ToString())).Result;
 
         public void Add(TResult result) => Add(new ValueResult<TResult>(result));
 

@@ -149,7 +149,7 @@ namespace Unmockable.Tests
                 var mock = new Intercept<SomeUnmockableObject>();
                 mock.Setup(m => m.Foo());
 
-                var ex = Assert.Throws<NoMoreResultsSetupException>(() => mock.As<IUnmockable<SomeUnmockableObject>>()
+                var ex = Assert.Throws<NoResultsSetupException>(() => mock.As<IUnmockable<SomeUnmockableObject>>()
                     .Execute(m => m.Foo()));
 
                 ex.Message
@@ -164,7 +164,7 @@ namespace Unmockable.Tests
                 var mock = new Intercept<SomeUnmockableObject>();
                 mock.Setup(m => m.FooAsync());
 
-                var ex = await Assert.ThrowsAsync<NoMoreResultsSetupException>(() => mock
+                var ex = await Assert.ThrowsAsync<NoResultsSetupException>(() => mock
                     .As<IUnmockable<SomeUnmockableObject>>()
                     .Execute(m => m.FooAsync()));
 

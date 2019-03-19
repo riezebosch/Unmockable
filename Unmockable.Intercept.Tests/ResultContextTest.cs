@@ -14,7 +14,7 @@ namespace Unmockable.Tests
         public static void NoResultThrows()
         {
             var context = new ResultContext<int>();
-            Assert.Throws<NoMoreResultsSetupException>(() => context.Next());
+            Assert.Throws<NoResultsSetupException>(() => context.Next());
         }
         
         [Fact]
