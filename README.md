@@ -30,6 +30,8 @@ your dependency, but please, don't let us clean up someone else's dirt.
 I prefer `NSubstitute` over `Moq` for its clean API. However, since we are (already) dealing
 with `Expressions,` I felt it was more convenient (and easier for me to implement) to resemble the `Moq` API.  
 
+### Inject
+
 Inject an unmockable* object:
 
 ```cs
@@ -50,6 +52,8 @@ public async Task DoSomething(int input)
     await _client.Execute(x => x.DownloadAsync(...));
 }
 ```
+
+### Wrap
 
 Inject the wrapper object using [Unmockable.Wrap](https://www.nuget.org/packages/Unmockable.Wrap/):
 
@@ -76,6 +80,11 @@ services
     .AddUnmockables();
 ```
 
+**Remark:** The expressions are compiled on every invocation so it'll affect performance. 
+I tried to add caching here but that turns out not te be a sinecure.
+
+### Intercept
+
 Inject an interceptor from a test using [Unmockable.Intercept](https://www.nuget.org/packages/Unmockable.Intercept/):
 
 ```cs
@@ -90,7 +99,7 @@ await target.DoSomething(3);
 client.Verify();
 ```
 
-\* The `HttpClient` is just a hand-picked example and not necessarily unmockable. In fact, there has been [some debate](https://github.com/aspnet/HttpClientFactory/issues/67)
+\* The `HttpClient` is just a hand-picked example and not necessarily unmockable. There have been [some debate](https://github.com/aspnet/HttpClientFactory/issues/67)
 around this type and it turns out to be mockable. As long as you are not afraid of message handlers. 
 
 Concrete unmockable types (pun intented) I had to deal with recently are the [`ExtensionManagementHttpClient`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.services.extensionmanagement.webapi.extensionmanagementhttpclient) 
@@ -98,7 +107,7 @@ and the [`AzureServiceTokenProvider`](https://github.com/Azure/azure-sdk-for-net
 
 ## Optional arguments
 
-Because of the `Expressions`, it is not possible use default values from optional arguments.
+Because of the `Expressions`, it is not possible to use default values from optional arguments.
 > An expression tree cannot contain a call or invocation that uses optional arguments
  
 Luckily this is easily solved by passing in `default` for all arguments:
@@ -122,24 +131,35 @@ Collection arguments are unwrapped when matching the actual call with provided s
 Custom matching is done with `Arg.Ignore<T>()` and `Arg.Equals<T>(x => true/false)`, though the recommendation
 still is to be explicit. 
 
-## Static
+## Statics
 
 I first added and then removed support for 'wrapping' static classes and invoking static methods.
 Because it is not an unmockable *object*! If you're dependent, let's say, on `DateTime.Now` you can already create an overloaded method that accepts the DateTime. You don't need a framework for that.
 
 ```cs
-public void DoSomething(DateTime when)
+public void DoSomething(DateTime now)
 {
+    if (now ...) {}
 }
 
 public void DoSomething() => DoSomething(DateTime.Now)
+```
+
+Or with a factory method.
+```cs
+public void DoSomething(Func<DateTime> now)
+{
+    if (now() ...) {}
+}
+
+public void DoSomething() => DoSomething(() => DateTime.Now)
 ```
 
 If you don't like this as a public API, you can extract an interface and only
 include the second method or you mark the top method internal and
 make it visible to your test project using `[InternalsVisibleTo]`.  
 
-## Shout-out
+## Shout-out &#128226;
 
 A big shoutout to Microsoft and other vendors to start **unit testing your SDKs** so you'll share our pain and give us some freaking extension points.
 
