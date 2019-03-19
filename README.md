@@ -7,7 +7,12 @@ Imagine you need a dependency on a 3rd party SDK where all types carry no interf
 Your only option is writing a wrapper that either implements an interface or has it methods marked virtual and does nothing 
 more than passing through calls to the underlying object.
 
-That's where this tiny library comes in. It acts as that handwritten wrapper for you.  
+That's where this tiny library comes in. It acts as that handwritten wrapper for you.
+
+Support this initiative by retweeting:
+
+<blockquote class="twitter-tweet" data-cards="hidden" data-lang="nl"><p lang="en" dir="ltr">Shout-out to all software craftsman, check out my tiny shiny library to wrap unmockable objects: <a href="https://t.co/M2lPz06Rpt">https://t.co/M2lPz06Rpt</a> <a href="https://twitter.com/hashtag/TDD?src=hash&amp;ref_src=twsrc%5Etfw">#TDD</a>  <a href="https://twitter.com/hashtag/unittest?src=hash&amp;ref_src=twsrc%5Etfw">#unittest</a>  <a href="https://twitter.com/hashtag/SOLID?src=hash&amp;ref_src=twsrc%5Etfw">#SOLID</a> <a href="https://twitter.com/hashtag/craftsmanship?src=hash&amp;ref_src=twsrc%5Etfw">#craftsmanship</a> <a href="https://twitter.com/hashtag/dotnet?src=hash&amp;ref_src=twsrc%5Etfw">#dotnet</a></p>&mdash; Manuel Riezebosch (@MRiezebosch) <a href="https://twitter.com/MRiezebosch/status/1103973591782166528?ref_src=twsrc%5Etfw">8 maart 2019</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>  
 
 ## Not a replacement 
 
