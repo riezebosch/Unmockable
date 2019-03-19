@@ -25,7 +25,7 @@ What makes it different from [Microsoft Fakes](https://docs.microsoft.com/en-us/
 that it only uses C# language constructs. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
 your dependency, but please, don't let us clean up someone else's dirt.
 
-To be honest, [Pose](https://github.com/tonerdo/pose) looks also promising!
+To be honest, [Pose](https://github.com/tonerdo/pose) also looks promising!
 
 ## Usage
 
@@ -83,7 +83,7 @@ services
 ```
 
 **Remark:** The expressions are compiled on every invocation so it'll affect performance. 
-I tried to add caching here but that turns out not te be a sinecure.
+I tried to add caching here, but that turns out not to be a sinecure.
 
 ### Intercept
 
@@ -175,4 +175,3 @@ Please, don't give us the `Unmockable<🖕>`.
 Please, retweet:
 
 [![tweet](tweet.png)](https://twitter.com/MRiezebosch/status/1103973591782166528)
-
