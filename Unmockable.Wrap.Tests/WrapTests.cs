@@ -51,7 +51,7 @@ namespace Unmockable.Wrap.Tests
             }
         }
 
-        [Fact]
+        [Fact(Skip="cache removed")]
         public static void PerfTest()
         {
             var wrap = new Wrap<SomeUnmockableObject>(new SomeUnmockableObject());
