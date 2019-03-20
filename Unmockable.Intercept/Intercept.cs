@@ -17,8 +17,6 @@ namespace Unmockable
 
         TResult IUnmockable<T>.Execute<TResult>(Expression<Func<T, TResult>> m) => _setups.Load<TResult>(m).Execute();
 
-        Task<TResult> IUnmockable<T>.Execute<TResult>(Expression<Func<T, Task<TResult>>> m) => _setups.Load<Task<TResult>>(m).Execute();
-
         void IUnmockable<T>.Execute(Expression<Action<T>> m) => _setups.Load<Nothing>(m).Execute();
 
         public void Verify() => _setups.Verify();
