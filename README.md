@@ -55,36 +55,6 @@ public async Task DoSomething(int input)
 }
 ```
 
-### Wrap
-
-Inject the wrapper object using [Unmockable.Wrap](https://www.nuget.org/packages/Unmockable.Wrap/):
-
-```cs
-services
-    .AddTransient<IUnmockable<HttpClient>, Wrap<HttpClient>>();
-services
-    .AddScoped<HttpClient>();
-```
-
-Or wrap an existing object:
-
-```cs
-var client = new HttpClient().Wrap();
-    
-```
-
-Or add wrappers for all services with [Unmockable.DependencyInjection](https://www.nuget.org/packages/Unmockable.DependencyInjection/):
-
-```cs
-services
-    .AddScoped<HttpClient>();
-services
-    .AddUnmockables();
-```
-
-**Remark:** The expressions are compiled on every invocation so it'll affect performance. 
-I tried to add caching here, but that turns out not to be a sinecure.
-
 ### Intercept
 
 Inject an interceptor from a test using [Unmockable.Intercept](https://www.nuget.org/packages/Unmockable.Intercept/):
@@ -121,6 +91,36 @@ client
 ``` 
 
 **Remark**: This is the default value of the *type*, not necessarily the same as the default value of the *optional argument*!
+
+### Wrap
+
+Inject the wrapper object using [Unmockable.Wrap](https://www.nuget.org/packages/Unmockable.Wrap/):
+
+```cs
+services
+    .AddTransient<IUnmockable<HttpClient>, Wrap<HttpClient>>();
+services
+    .AddScoped<HttpClient>();
+```
+
+Or wrap an existing object:
+
+```cs
+var client = new HttpClient().Wrap();
+    
+```
+
+Or add wrappers for all services with [Unmockable.DependencyInjection](https://www.nuget.org/packages/Unmockable.DependencyInjection/):
+
+```cs
+services
+    .AddScoped<HttpClient>();
+services
+    .AddUnmockables();
+```
+
+**Remark:** The expressions are compiled on every invocation so it'll affect performance. 
+I tried to add caching here, but that turns out not to be a sinecure.
 
 ## Matchers
 
@@ -172,6 +172,4 @@ Please, don't give us the `Unmockable<🖕>`.
 
 ## Support 
 
-Please, retweet:
-
-[![tweet](tweet.png)](https://twitter.com/MRiezebosch/status/1103973591782166528)
+Please, [retweet](https://twitter.com/MRiezebosch/status/1103973591782166528).
