@@ -17,7 +17,7 @@ namespace Unmockable.DependencyInjection.Tests
                 .BuildServiceProvider();
 
             var controller = provider.GetService<DemoController>();
-            Assert.NotEmpty(await controller.Do());
+            await Assert.ThrowsAsync<HttpRequestException>(() => controller.Do());
         }
     }
 }

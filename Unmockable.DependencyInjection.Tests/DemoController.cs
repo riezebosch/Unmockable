@@ -14,7 +14,7 @@ namespace Unmockable.DependencyInjection.Tests
 
         public async Task<string> Do()
         {
-            var result = await _client.Execute(x => x.GetAsync("https://reqres.in/api/users"));
+            var result = await _client.Execute(x => x.GetAsync("https://none-existing-website/api/users"));
             return await result.Content.ReadAsStringAsync();
         }
     }
