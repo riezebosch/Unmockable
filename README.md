@@ -11,32 +11,41 @@ That's where this tiny library comes in. It acts as that handwritten wrapper for
 
 ## Not a replacement 
 
-For dependencies you have under control, introduce interfaces and regular mocking frameworks like [NSubstitute](https://nsubstitute.github.io/) and [Moq](https://github.com/moq/moq). 
-Kindly send an email to the vendor of the SDK you're using if they could pretty please introduce some interfaces. It is a no brainer
-to extract an interface and it helps you to be [SOLID](https://en.wikipedia.org/wiki/SOLID).
+For dependencies you have under control, introduce interfaces and use a regular mocking frameworks like [NSubstitute](https://nsubstitute.github.io/) or [Moq](https://github.com/moq/moq). 
+Kindly send an email to the vendor of the SDK you're using if they could pretty please introduce some interfaces. It is a no-brainer
+to extract an interface and it helps us to be [SOLID](https://en.wikipedia.org/wiki/SOLID).
 
 ## Feature slim
 
-All mocks are strict, each invocation requires explicit setup, <s>and there are no wild card argument matchers</s>.
+This library has a very specific purpose and is deliberately not a full fledged mocking framework. Therefore 
+I try to keep its features as slim as possible meaing:
+
+* All mocks are strict, each invocation requires explicit setup.
+* <s>There are are no wild card [argument matchers](#Matchers)</s>.
+* The API is straightforward and sparse.
+* Wrapping `static` classes is [not supported](#Statics).
+
+That being said I truly believe in *pure TDD*, so everything is written from a
+red-green-refactor cycle and refactoring is done with [SOLID principles](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod) 
+and [Design Patterns](https://dofactory.com/net/design-patterns) in hand.
+If you spot a place where another pattern could be applied, don't hesitate to let me know.
 
 ## Different
 
-What makes it different from [Microsoft Fakes](https://docs.microsoft.com/en-us/visualstudio/test/isolating-code-under-test-with-microsoft-fakes) or [Smocks](https://www.nuget.org/packages/Smocks/) is
-that it only uses C# language constructs. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
+What makes it different from [Microsoft Fakes](https://docs.microsoft.com/en-us/visualstudio/test/isolating-code-under-test-with-microsoft-fakes), [Smocks](https://www.nuget.org/packages/Smocks/) or
+ [Pose](https://github.com/tonerdo/pose) is that it only uses C# language constructs. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
 your dependency, but please, don't let us clean up someone else's dirt.
-
-To be honest, [Pose](https://github.com/tonerdo/pose) also looks promising!
 
 ## Usage
 
-I prefer `NSubstitute` over `Moq` for its clean API. However, since we are (already) dealing
+I prefer `NSubstitute` over `Moq` for its crisp API. But since we are (already) dealing
 with `Expressions,` I felt it was more convenient (and easier for me to implement) to resemble the `Moq` API.  
 
 ### Inject
 
 Inject an unmockable* object:
 
-```cs
+```c#
 public class SomeLogic
 {
     public SomeLogic(IUnmockable<HttpClient> client)
@@ -48,18 +57,24 @@ public class SomeLogic
 
 Execute using an expression:
 
-```cs
+```c#
 public async Task DoSomething(int input)
 {
     await _client.Execute(x => x.DownloadAsync(...));
 }
 ```
 
+\* The `HttpClient` is just a hand-picked example and not necessarily unmockable. There have been [some debate](https://github.com/aspnet/HttpClientFactory/issues/67)
+around this type and it turns out to be mockable. As long as you are not afraid of message handlers. 
+
+Concrete unmockable types (pun intented) I had to deal with recently are the [`ExtensionManagementHttpClient`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.services.extensionmanagement.webapi.extensionmanagementhttpclient) 
+and the [`AzureServiceTokenProvider`](https://github.com/Azure/azure-sdk-for-net/blob/master/src/SdkCommon/AppAuthentication/Azure.Services.AppAuthentication/AzureServiceTokenProvider.cs).
+
 ### Intercept
 
 Inject an interceptor from a test using [Unmockable.Intercept](https://www.nuget.org/packages/Unmockable.Intercept/):
 
-```cs
+```c#
 var client = new Intercept<HttpClient>();
 client
     .Setup(x => x.DownloadAsync(...))
@@ -71,32 +86,46 @@ await target.DoSomething(3);
 client.Verify();
 ```
 
-\* The `HttpClient` is just a hand-picked example and not necessarily unmockable. There have been [some debate](https://github.com/aspnet/HttpClientFactory/issues/67)
-around this type and it turns out to be mockable. As long as you are not afraid of message handlers. 
+Only strict 'mocks' are supported, meaning all invocations require setup and all setups demand invocation. 
+Making it strict prevents you from staring at `NullReferenceExceptions` when an expected setup wasn't hit
+and verification easy.
 
-Concrete unmockable types (pun intented) I had to deal with recently are the [`ExtensionManagementHttpClient`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.services.extensionmanagement.webapi.extensionmanagementhttpclient) 
-and the [`AzureServiceTokenProvider`](https://github.com/Azure/azure-sdk-for-net/blob/master/src/SdkCommon/AppAuthentication/Azure.Services.AppAuthentication/AzureServiceTokenProvider.cs).
+If you really want a [stub instead of a mock](https://martinfowler.com/articles/mocksArentStubs.html),
+I'd recommend [auto-mocking](https://github.com/AutoFixture/AutoFixture/wiki/Cheat-Sheet#auto-mocking-with-moq) with [AutoFixture](https://github.com/AutoFixture/AutoFixture):
+
+```c#
+var fixture = new AutoFixture();
+fixture
+    .Customize(new AutoConfiguredNSubstituteCustomization());
+
+var client = fixture
+    .Create<IUnmockable<HttpClient>>();
+
+var target = new SomeLogic(client);
+await target.DoSomething(3);
+```
 
 ## Optional arguments
 
 Because of the `Expressions`, it is not possible to use default values from optional arguments.
 > An expression tree cannot contain a call or invocation that uses optional arguments
  
-Luckily this is easily solved by passing in `default` for all arguments:
+Luckily this is easy with `default` literal for all arguments in C# 7.1:
 
-```cs
+```c#
 client
     .Setup(x => x.InstallExtensionByNameAsync("asdf", "setvar", default, default, default))
     .Returns(new InstalledExtension());
 ``` 
 
 **Remark**: This is the default value of the *type*, not necessarily the same as the default value of the *optional argument*!
+On the plus side, you now have to express it both on the `Execute` and the `Setup` making it less error-prone. 
 
 ### Wrap
 
 Inject the wrapper object using [Unmockable.Wrap](https://www.nuget.org/packages/Unmockable.Wrap/):
 
-```cs
+```c#
 services
     .AddTransient<IUnmockable<HttpClient>, Wrap<HttpClient>>();
 services
@@ -105,14 +134,14 @@ services
 
 Or wrap an existing object:
 
-```cs
+```c#
 var client = new HttpClient().Wrap();
     
 ```
 
 Or add wrappers for all services with [Unmockable.DependencyInjection](https://www.nuget.org/packages/Unmockable.DependencyInjection/):
 
-```cs
+```c#
 services
     .AddScoped<HttpClient>();
 services
@@ -124,21 +153,17 @@ I tried to add caching here, but that turns out not to be a sinecure.
 
 ## Matchers
 
-<s>Unfortunately dealing with inline constructed reference types is (currently) not supported. I deliberately
-try not to create a `YAMF`. Strife for injecting these values from the test, so the instances are the same 
-in `Setup` and `Execute`.</s> 
-
 Collection arguments are unwrapped when matching the actual call with provided setups! Value types, anonymous types *and* reference types with a custom `GetHashCode()` should be safe.
 
 Custom matching is done with `Arg.Ignore<T>()` and `Arg.Equals<T>(x => true/false)`, though the recommendation
-still is to be explicit. 
+ is to be explicit. 
 
 ## Statics
 
 I first added and then removed support for 'wrapping' static classes and invoking static methods.
 Because it is not an unmockable *object*! If you're dependent, let's say, on `DateTime.Now` you can already create an overloaded method that accepts the DateTime. You don't need a framework for that.
 
-```cs
+```c#
 public void DoSomething(DateTime now)
 {
     if (now ...) {}
@@ -147,18 +172,19 @@ public void DoSomething(DateTime now)
 public void DoSomething() => DoSomething(DateTime.Now)
 ```
 
-Or with a factory method.
-```cs
+Or with a factory method if it has to be more dynamic.
+
+```c#
 public void DoSomething(Func<DateTime> now)
 {
-    if (now() ...) {}
+    while (now() <= ...) {}
 }
 
 public void DoSomething() => DoSomething(() => DateTime.Now)
 ```
 
-If you don't like this as a public API, you can extract an interface and only
-include the second method or you mark the top method internal and
+If you don't like this change in your public API, you can extract an interface and only
+include the second method (which you should be doing anyway) or you mark the top method internal and
 make it visible to your test project using `[InternalsVisibleTo]`.  
 
 ## &#128226; Shout-out
@@ -172,4 +198,4 @@ Please, don't give us the `Unmockable<🖕>`.
 
 ## Support 
 
-Please, [retweet](https://twitter.com/MRiezebosch/status/1103973591782166528).
+Please, [retweet](https://twitter.com/MRiezebosch/status/1103973591782166528) to support this petition and `@mention` your vendor.
