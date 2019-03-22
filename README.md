@@ -9,7 +9,7 @@ more than passing through calls to the underlying object.
 
 That's where this tiny library comes in. It acts as that handwritten wrapper for you.
 
-## Not a replacement 
+## Not a replacement
 
 For dependencies you have under control, introduce interfaces and use a regular mocking frameworks like [NSubstitute](https://nsubstitute.github.io/) or [Moq](https://github.com/moq/moq). 
 Kindly send an email to the vendor of the SDK you're using if they could pretty please introduce some interfaces. It is a no-brainer
@@ -20,12 +20,12 @@ to extract an interface and it helps us to be [SOLID](https://en.wikipedia.org/w
 This library has a very specific purpose and is deliberately not a full fledged mocking framework. Therefore 
 I try to keep its features as slim as possible meaing:
 
-* All mocks are strict, each invocation requires explicit setup.
-* <s>There are are no wild card [argument matchers](#Matchers)</s>.
-* The API is straightforward and sparse.
-* Wrapping `static` classes is [not supported](#Statics).
+-   All mocks are strict, each invocation requires explicit setup.
+-   <s>There are are no</s> wild card [argument matchers](#Matchers).
+-   The API is straightforward and sparse.
+-   Wrapping `static` classes is [not supported](#Statics).
 
-That being said I truly believe in *pure TDD*, so everything is written from a
+That being said I truly believe in _pure TDD_, so everything is written from a
 red-green-refactor cycle and refactoring is done with [SOLID principles](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod) 
 and [Design Patterns](https://dofactory.com/net/design-patterns) in hand.
 If you spot a place where another pattern could be applied, don't hesitate to let me know.
@@ -35,6 +35,7 @@ If you spot a place where another pattern could be applied, don't hesitate to le
 What makes it different from [Microsoft Fakes](https://docs.microsoft.com/en-us/visualstudio/test/isolating-code-under-test-with-microsoft-fakes), [Smocks](https://www.nuget.org/packages/Smocks/) or
  [Pose](https://github.com/tonerdo/pose) is that it only uses C# language constructs. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
 your dependency, but please, don't let us clean up someone else's dirt.
+your dependency, but please, don't let us clean up someone else's dirt.
 
 ## Usage
 
@@ -43,7 +44,7 @@ with `Expressions,` I felt it was more convenient (and easier for me to implemen
 
 ### Inject
 
-Inject an unmockable* object:
+Inject an unmockable\* object:
 
 ```c#
 public class SomeLogic
@@ -108,17 +109,18 @@ await target.DoSomething(3);
 ## Optional arguments
 
 Because of the `Expressions`, it is not possible to use default values from optional arguments.
+
 > An expression tree cannot contain a call or invocation that uses optional arguments
- 
+
 Luckily this is easy with `default` literal for all arguments in C# 7.1:
 
 ```c#
 client
     .Setup(x => x.InstallExtensionByNameAsync("asdf", "setvar", default, default, default))
     .Returns(new InstalledExtension());
-``` 
+```
 
-**Remark**: This is the default value of the *type*, not necessarily the same as the default value of the *optional argument*!
+**Remark**: This is the default value of the _type_, not necessarily the same as the default value of the _optional argument_!
 On the plus side, you now have to express it both on the `Execute` and the `Setup` making it less error-prone. 
 
 ### Wrap
@@ -153,7 +155,7 @@ I tried to add caching here, but that turns out not to be a sinecure.
 
 ## Matchers
 
-Collection arguments are unwrapped when matching the actual call with provided setups! Value types, anonymous types *and* reference types with a custom `GetHashCode()` should be safe.
+Collection arguments are unwrapped when matching the actual call with provided setups! Value types, anonymous types _and_ reference types with a custom `GetHashCode()` should be safe.
 
 Custom matching is done with `Arg.Ignore<T>()` and `Arg.Equals<T>(x => true/false)`, though the recommendation
  is to be explicit. 
@@ -161,7 +163,7 @@ Custom matching is done with `Arg.Ignore<T>()` and `Arg.Equals<T>(x => true/fals
 ## Statics
 
 I first added and then removed support for 'wrapping' static classes and invoking static methods.
-Because it is not an unmockable *object*! If you're dependent, let's say, on `DateTime.Now` you can already create an overloaded method that accepts the DateTime. You don't need a framework for that.
+Because it is not an unmockable _object_! If you're dependent, let's say, on `DateTime.Now` you can already create an overloaded method that accepts the DateTime. You don't need a framework for that.
 
 ```c#
 public void DoSomething(DateTime now)
@@ -187,15 +189,15 @@ If you don't like this change in your public API, you can extract an interface a
 include the second method (which you should be doing anyway) or you mark the top method internal and
 make it visible to your test project using `[InternalsVisibleTo]`.  
 
-## &#128226; Shout-out
+## 📢 Shout-out
 
 A big shoutout to Microsoft and other vendors to start **unit testing your SDKs** so you'll share our pain and give us some freaking extension points.
 
-> [*Dependency Inversion Principle*](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod)  
+> [_Dependency Inversion Principle_](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod)  
 > One should "depend upon abstractions, not on concretions."
 
 Please, don't give us the `Unmockable<🖕>`.
 
-## Support 
+## Support
 
 Please, [retweet](https://twitter.com/MRiezebosch/status/1103973591782166528) to support this petition and `@mention` your vendor.
