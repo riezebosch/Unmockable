@@ -15,7 +15,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Unmockable.Intercept\Unmockable.Intercept.csproj" />
-      <ProjectReference Include="..\Unmockable\Unmockable.csproj" />
     </ItemGroup>
 
 </Project>
