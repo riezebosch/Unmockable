@@ -34,8 +34,16 @@ If you spot a place where another pattern could be applied, don't hesitate to le
 
 What makes it different from [Microsoft Fakes](https://docs.microsoft.com/en-us/visualstudio/test/isolating-code-under-test-with-microsoft-fakes), [Smocks](https://www.nuget.org/packages/Smocks/) or
  [Pose](https://github.com/tonerdo/pose) is that it only uses C# language constructs. There is no runtime rewriting or reflection/emit under the hood. Of course, this impacts the way you wrap and use
-your dependency, but please, don't let us clean up someone else's dirt.
-your dependency, but please, don't let us clean up someone else's dirt.
+your dependency, but please, don't let us clean up someone else's 💩.
+
+## 📢 Shout-out
+
+A big shoutout to Microsoft and other vendors to start **unit testing your SDKs** so you'll share our pain and give us some freaking extension points.
+
+> [_Dependency Inversion Principle_](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod)  
+> One should "depend upon abstractions, not on concretions."
+
+Please, don't give us the `Unmockable<🖕>`.
 
 ## Usage
 
@@ -188,15 +196,6 @@ public void DoSomething() => DoSomething(() => DateTime.Now)
 If you don't like this change in your public API, you can extract an interface and only
 include the second method (which you should be doing anyway) or you mark the top method internal and
 make it visible to your test project using `[InternalsVisibleTo]`.  
-
-## 📢 Shout-out
-
-A big shoutout to Microsoft and other vendors to start **unit testing your SDKs** so you'll share our pain and give us some freaking extension points.
-
-> [_Dependency Inversion Principle_](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod)  
-> One should "depend upon abstractions, not on concretions."
-
-Please, don't give us the `Unmockable<🖕>`.
 
 ## Support
 
