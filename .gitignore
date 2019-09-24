@@ -6,3 +6,5 @@ obj/
 .DS_Store
 *.user
 .nuget.*
+/reports/
+coverage.opencover.xml
