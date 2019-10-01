@@ -7,4 +7,5 @@ obj/
 *.user
 .nuget.*
 /reports/
+coverage.json
 coverage.opencover.xml
