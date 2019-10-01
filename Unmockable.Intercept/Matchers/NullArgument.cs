@@ -10,7 +10,7 @@ namespace Unmockable.Matchers
 
         public bool Equals(NullArgument other) => true;
 
-        public override bool Equals(object obj) => obj is NullArgument;
+        public override bool Equals(object obj) => obj is NullArgument other && Equals(other);
 
         public NullArgument() : base(null)
         {
