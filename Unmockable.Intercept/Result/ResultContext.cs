@@ -13,7 +13,7 @@ namespace Unmockable.Result
         
         public bool HasNext => _current.Next != null;
 
-        public TResult Next() => (_current = _current.Next).Result;
+        public TResult Next() => (_current = _current.Next ?? _last).Result;
 
         public void Add(TResult result) => Add(new ValueResult<TResult>(result));
 

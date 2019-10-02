@@ -5,7 +5,7 @@ namespace Unmockable.Matchers
 {
     internal static class ArgMatcherFactory
     {
-        public static IArgumentMatcher Create(Expression arg) => arg switch
+        public static IArgumentMatcher? Create(Expression arg) => arg switch
             {
                 MethodCallExpression call when call.Method.DeclaringType == typeof(Arg) => call.Method.Name switch
                 {

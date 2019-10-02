@@ -4,7 +4,7 @@ namespace Unmockable.Result
     {
         public T Result { get; }
 
-        public INextResult<T> Next { get; set; }
+        public INextResult<T>? Next { get; set; }
 
         public ValueResult(T result)
         {

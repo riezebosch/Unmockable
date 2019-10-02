@@ -10,7 +10,7 @@ namespace Unmockable.Matchers
 
         public static IArgumentMatcher Create(object value) => value switch
             {
-                null => new NullArgument(),
+                null => new NullArgument() as IArgumentMatcher,
                 IEnumerable collection => new CollectionArgument(collection.Cast<object>()),
                 _ => new ValueArgument(value)
             };

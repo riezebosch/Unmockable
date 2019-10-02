@@ -8,10 +8,10 @@ namespace Unmockable.Result
     {
         public T Result => throw new InvalidOperationException();
 
-        public INextResult<T> Next { get; set; } = Default();
+        public INextResult<T>? Next { get; set; } = Default();
 
-        private static INextResult<T> Default() =>
-            typeof(T) == typeof(Nothing) ? new ValueResult<T>(default) :
+        private static INextResult<T>? Default() =>
+            typeof(T) == typeof(Nothing) ? new NothingResult() as INextResult<T> :
             typeof(T) == typeof(Task) ? new ValueResult<T>((T) (object) Task.CompletedTask) :
             null;
     }
