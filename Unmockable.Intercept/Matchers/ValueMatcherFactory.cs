@@ -8,17 +8,11 @@ namespace Unmockable.Matchers
     {
         public static IArgumentMatcher Create(Expression arg) => Create(Expression.Lambda(arg).Compile().DynamicInvoke());
 
-        public static IArgumentMatcher Create(object value)
-        {
-            switch (value)
+        public static IArgumentMatcher Create(object value) => value switch
             {
-                case null:
-                    return new NullArgument();
-                case IEnumerable collection:
-                    return new CollectionArgument(collection.Cast<object>());
-                default:
-                    return new ValueArgument(value);
-            }
-        }
+                null => new NullArgument(),
+                IEnumerable collection => new CollectionArgument(collection.Cast<object>()),
+                _ => new ValueArgument(value)
+            };
     }
 }

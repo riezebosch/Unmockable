@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard1.3</TargetFramework>
         <RootNamespace>Unmockable</RootNamespace>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

@@ -10,19 +10,9 @@ namespace Unmockable.Result
 
         public INextResult<T> Next { get; set; } = Default();
 
-        private static INextResult<T> Default()
-        {
-            if (typeof(T) == typeof(Nothing))
-            {
-                return new ValueResult<T>(default(T));
-            }
-
-            if (typeof(T) == typeof(Task))
-            {
-                return new ValueResult<T>((T)(object)Task.CompletedTask);
-            }
-
-            return null;
-        }
+        private static INextResult<T> Default() =>
+            typeof(T) == typeof(Nothing) ? new ValueResult<T>(default) :
+            typeof(T) == typeof(Task) ? new ValueResult<T>((T) (object) Task.CompletedTask) :
+            null;
     }
 }

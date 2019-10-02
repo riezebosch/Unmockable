@@ -5,22 +5,15 @@ namespace Unmockable.Matchers
 {
     internal static class ArgMatcherFactory
     {
-        public static IArgumentMatcher Create(Expression arg)
-        {
-            if (arg is MethodCallExpression call && call.Method.DeclaringType == typeof(Arg))
+        public static IArgumentMatcher Create(Expression arg) => arg switch
             {
-                switch (call.Method.Name)
+                MethodCallExpression call when call.Method.DeclaringType == typeof(Arg) => call.Method.Name switch
                 {
-                    case "Ignore":
-                        return new IgnoreArgument();
-                    case "Equals":
-                        return new EqualsArgument(call.Arguments[0]);
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-
-            return null;
-        }
+                    nameof(Arg.Ignore) => (IArgumentMatcher)new IgnoreArgument(),
+                    nameof(Arg.Equals) => new EqualsArgument(call.Arguments[0]),
+                    _ => throw new NotImplementedException()
+                },
+                _ => null
+            };
     }
 }
