@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Unmockable.Result;
 
 namespace Unmockable.Setup
 {
@@ -14,19 +15,19 @@ namespace Unmockable.Setup
 
         IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result)
         {
-            Results.Add(Task.FromResult(result));
+            Results = new ValueResult<Task<TResult>>(Task.FromResult(result));
             return this;
         }
         
         IResult<T, TResult> IResult<T, TResult>.Then(TResult result)
         {
-            Results.Add(Task.FromResult(result));
+            Results = Results.Add(new ValueResult<Task<TResult>>(Task.FromResult(result)));
             return this;
         }
         
         IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>()
         {
-            Results.Add<TException>();
+            Results = Results.Add(new ExceptionResult<Task<TResult>,TException>());
             return this;
         }
     }

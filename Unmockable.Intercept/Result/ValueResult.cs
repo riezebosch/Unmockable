@@ -1,15 +1,24 @@
 namespace Unmockable.Result
 {
-    internal class ValueResult<T> : INextResult<T>
+    internal class ValueResult<T> : IResult<T>
     {
-        public T Result { get; }
+        private readonly T _result;
 
-        public INextResult<T>? Next { get; set; }
+        public T Result
+        {
+            get
+            {
+                IsDone = true;
+                return _result;
+            }
+        }
+
+        public bool IsDone { get; private set; }
+        public IResult<T> Add(IResult<T> next) => new MultipleResult<T>().Add(this).Add(next);
 
         public ValueResult(T result)
         {
-            Result = result;
-            Next = this;
+            _result = result;
         }
     }
 }

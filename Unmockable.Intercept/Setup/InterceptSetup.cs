@@ -1,7 +1,6 @@
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Unmockable.Exceptions;
 using Unmockable.Result;
 
 namespace Unmockable.Setup
@@ -12,7 +11,7 @@ namespace Unmockable.Setup
         IResult<T, TResult>,
         IActionResult<T>
     {
-        protected ResultContext<TResult> Results { get; } = new ResultContext<TResult>();
+        protected IResult<TResult> Results { get; set; } 
 
         private readonly IIntercept<T> _intercept;
 
@@ -22,6 +21,9 @@ namespace Unmockable.Setup
 
         public InterceptSetup(IIntercept<T> intercept, LambdaExpression expression)
         {
+            Results = typeof(TResult) == typeof(Task) ? (IResult<TResult>)new ActionResult() :
+                typeof(TResult) == typeof(Nothing) ? (IResult<TResult>)new VoidResult() :
+                new NoSetupResult<TResult>(expression);
             Expression = expression;
             _intercept = intercept;
         }
@@ -34,30 +36,28 @@ namespace Unmockable.Setup
         
         public IIntercept<T> Throws<TException>() where TException : Exception, new()
         {
-            Results.Add<TException>();
+            Results = new ExceptionResult<TResult, TException>();
             return _intercept;
         }
         
         IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>()
         {
-            Results.Add<TException>();
+            Results = Results.Add(new ExceptionResult<TResult,TException>());
             return this;
         }
 
         IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result)
         {
-            Results.Add(result);
+            Results = Results.Add(new ValueResult<TResult>(result));
             return this;
         }
         
         IResult<T, TResult> IResult<T, TResult>.Then(TResult result)
         {
-            Results.Add(result);
+            Results = Results.Add(new ValueResult<TResult>(result));
             return this;
         }
-        
-        public TResult Execute() => Results.HasNext 
-            ? Results.Next()
-            : throw new NoResultsSetupException(Expression.ToString());
+
+        public TResult Execute() => Results.Result;
     }
 }
