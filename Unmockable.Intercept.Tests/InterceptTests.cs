@@ -202,6 +202,22 @@ namespace Unmockable.Tests
             }
             
             [Fact]
+            public static void MoreThen()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(m => m.Foo())
+                    .Returns(5)
+                    .Then(6);
+
+                var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
+                sut.Execute(m => m.Foo());
+                sut.Execute(m => m.Foo());
+                sut.Invoking(x => x.Execute(m => m.Foo()))
+                    .Should()
+                    .Throw<OutOfSetupException>();
+            }
+            
+            [Fact]
             public static void AsyncThen()
             {
                 var mock = new Intercept<SomeUnmockableObject>();

@@ -1,18 +1,17 @@
 using System.Collections.Generic;
-using System.Linq;
+using Unmockable.Exceptions;
 
 namespace Unmockable.Result
 {
     internal class MultipleResult<T> : IResult<T>
     {
-        private readonly IList<IResult<T>> _results = new List<IResult<T>>();
-        private int _current;
+        private readonly Queue<IResult<T>> _results = new Queue<IResult<T>>();
 
-        public T Result => _results[_current++].Result;
-        public bool IsDone => _results.All(x => x.IsDone);
+        public T Result => _results.Count > 0 ? _results.Dequeue().Result : throw new OutOfSetupException();
+        public bool IsDone => _results.Count == 0;
         public IResult<T> Add(IResult<T> next)
         {
-            _results.Add(next);
+            _results.Enqueue(next);
             return this;
         }
     }
