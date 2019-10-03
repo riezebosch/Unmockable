@@ -4,7 +4,7 @@ namespace Unmockable.Matchers
 {
     internal class IgnoreArgument : IArgumentMatcher, IEquatable<IArgumentMatcher>
     {
-        public override int GetHashCode() => throw new NotImplementedException();
+        public override int GetHashCode() => throw new InvalidOperationException();
         
         public bool Equals(IArgumentMatcher? other) => true;
 

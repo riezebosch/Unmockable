@@ -12,7 +12,7 @@ namespace Unmockable.Matchers
                 {
                     nameof(Arg.Ignore) => (IArgumentMatcher)new IgnoreArgument(),
                     nameof(Arg.Where) => new LambdaArgument(call.Arguments.Single()),
-                    _ => throw new NotImplementedException()
+                    _ => throw new InvalidOperationException()
                 },
                 _ => null
             };

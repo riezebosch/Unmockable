@@ -11,7 +11,7 @@ namespace Unmockable.Matchers
 
         public ArgumentsMatcher(IEnumerable<Expression> arguments) => _arguments = arguments.Select(ToMatcher);
 
-        public override int GetHashCode() => throw new NotImplementedException();
+        public override int GetHashCode() => throw new InvalidOperationException();
 
         public override string ToString() => string.Join(", ", _arguments);
 

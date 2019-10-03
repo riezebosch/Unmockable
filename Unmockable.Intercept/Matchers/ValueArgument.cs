@@ -7,7 +7,7 @@ namespace Unmockable.Matchers
         public object Value { get; }
         public ValueArgument(object value) => Value = value;
 
-        public override int GetHashCode() => throw new NotImplementedException();
+        public override int GetHashCode() => throw new InvalidOperationException();
 
         public override string ToString() => Value.ToString();
 

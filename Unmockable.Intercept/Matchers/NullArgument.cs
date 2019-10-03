@@ -4,7 +4,7 @@ namespace Unmockable.Matchers
 {
     internal class NullArgument : IArgumentMatcher, IEquatable<NullArgument>
     {
-        public override int GetHashCode() => throw new NotImplementedException();
+        public override int GetHashCode() => throw new InvalidOperationException();
 
         public override string ToString() => "null";
 

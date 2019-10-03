@@ -11,11 +11,11 @@ namespace Unmockable.Matchers
         public CollectionArgument(IEnumerable<object> collection) : base(collection) =>
             _collection = collection.Select(ValueMatcherFactory.Create);
 
-        public override int GetHashCode() => throw new NotImplementedException();
+        public override int GetHashCode() => throw new InvalidOperationException();
 
         public override string ToString() => $"[{string.Join(", ", _collection)}]";
 
-        public bool Equals(CollectionArgument? other) => other != null && _collection.SequenceEqual(other!._collection);
+        public bool Equals(CollectionArgument? other) => other != null && _collection.SequenceEqual(other._collection);
 
         public override bool Equals(object obj) => Equals(obj as CollectionArgument);
     }

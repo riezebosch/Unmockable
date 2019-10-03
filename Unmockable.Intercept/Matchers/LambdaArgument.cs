@@ -9,7 +9,7 @@ namespace Unmockable.Matchers
         
         public LambdaArgument(Expression pred) => _pred = pred;
         
-        public override int GetHashCode() => throw new NotImplementedException();
+        public override int GetHashCode() => throw new InvalidOperationException();
 
         public bool Equals(ValueArgument? other) => other != null && (bool) ((Delegate) Expression.Lambda(_pred).Compile().DynamicInvoke()).DynamicInvoke(other.Value);
 
