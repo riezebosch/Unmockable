@@ -35,42 +35,24 @@ namespace Unmockable.Setup
         
         IFuncResult<T, TResultNew> ISetupFuncAsync<T>.Setup<TResultNew>(Expression<Func<T, Task<TResultNew>>> m) => _intercept.Setup(m);
 
-        IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>()
-        {
-            Results = Results.Add(new ExceptionResult<TResult,TException>());
-            return this;
-        }
-        
-        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>()
-        {
-            Results = Results.Add(new ExceptionResult<TResult,TException>());
-            return this;
-        }
-        
-        IVoidResult<T> IActionResult<T>.Throws<TException>()
-        {
-            Results = Results.Add(new ExceptionResult<TResult,TException>());
-            return this;
-        }
+        IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>() => Add(new ExceptionResult<TResult, TException>());
 
-        IVoidResult<T> IVoidResult<T>.ThenThrows<TException>()
-        {
-            Results = Results.Add(new ExceptionResult<TResult,TException>());
-            return this;
-        }
-
-        IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result)
-        {
-            Results = Results.Add(new FuncResult<TResult>(result));
-            return this;
-        }
+        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>() => Add(new ExceptionResult<TResult,TException>());
         
-        IResult<T, TResult> IResult<T, TResult>.Then(TResult result)
-        {
-            Results = Results.Add(new FuncResult<TResult>(result));
-            return this;
-        }
+        IVoidResult<T> IActionResult<T>.Throws<TException>() => Add(new ExceptionResult<TResult,TException>());
+
+        IVoidResult<T> IVoidResult<T>.ThenThrows<TException>() => Add(new ExceptionResult<TResult,TException>());
+
+        IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result) => Add(new FuncResult<TResult>(result));
+        
+        IResult<T, TResult> IResult<T, TResult>.Then(TResult result) => Add(new FuncResult<TResult>(result));
 
         public TResult Execute() => Results.Result;
+        
+        private InterceptSetup<T, TResult>  Add(IResult<TResult> result)
+        {
+            Results = Results.Add(result);
+            return this;
+        }
     }
 }
