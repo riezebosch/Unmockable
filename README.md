@@ -169,7 +169,7 @@ I tried to add caching here, but that turns out not to be a sinecure.
 
 Collection arguments are unwrapped when matching the actual call with provided setups! Value types, anonymous types _and_ reference types with a custom `GetHashCode()` should be safe.
 
-Custom matching is done with `Arg.Ignore<T>()` and `Arg.Equals<T>(x => true/false)`, though the recommendation
+Custom matching is done with `Arg.Ignore<T>()` and `Arg.Where<T>(x => ...)`, though the recommendation
  is to be explicit. 
 
 ## Statics

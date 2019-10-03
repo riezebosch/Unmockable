@@ -50,9 +50,10 @@ namespace Unmockable.Tests
         public static void OnlyMethodCallsSupported()
         {
             Expression<Func<int>> m = () => 3;
-            var ex = Assert.Throws<NotSupportedExpressionException>(() => m.ToMatcher());
-
-            ex.Message.Should().Contain(m.ToString());
+             m.Invoking(x => x.ToMatcher())
+                 .Should()
+                 .Throw<NotSupportedExpressionException>()
+                 .WithMessage(m.ToString());
         }
 
         [Fact]
@@ -69,6 +70,24 @@ namespace Unmockable.Tests
         {
             Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
             Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(4, null);
+
+            m.ToMatcher().Should().NotBe(n.ToMatcher());
+        }
+        
+        [Fact]
+        public static void NullDoesNotEqualValue()
+        {
+            Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
+            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(3, new Person());
+
+            m.ToMatcher().Should().NotBe(n.ToMatcher());
+        }
+        
+        [Fact]
+        public static void ValueDoesNotEqualNull()
+        {
+            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(3, new Person());
+            Expression<Func<SomeUnmockableObject, int>> n = x => x.Foo(3, null);
 
             m.ToMatcher().Should().NotBe(n.ToMatcher());
         }
@@ -89,6 +108,15 @@ namespace Unmockable.Tests
             Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(new[] {new[] {1, 2}, new[] {3, 4}});
 
             m.ToMatcher().Should().Be(n.ToMatcher());
+        }
+        
+        [Fact]
+        public static void CollectionDoNotMatchIgnore()
+        {
+            Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(new[] {1, 2, 3});
+            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(Arg.Ignore<IEnumerable<int>>());
+
+            m.ToMatcher().Should().NotBe(n.ToMatcher());
         }
 
         [Fact]
@@ -113,16 +141,25 @@ namespace Unmockable.Tests
         [Fact]
         public static void EqualsArgument()
         {
-            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(3, Arg.Equals<Person>(p => p.Age == 32));
+            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(3, Arg.Where<Person>(p => p.Age == 32));
             Expression<Func<SomeUnmockableObject, int>> n = x => x.Foo(3, new Person {Age = 32});
 
             m.ToMatcher().Should().Be(n.ToMatcher());
+        }
+        
+        [Fact]
+        public static void EqualsArgumentDoesNotEqualIgnoreArgument()
+        {
+            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(3, Arg.Where<Person>(p => p.Age == 32));
+            Expression<Func<SomeUnmockableObject, int>> n = x => x.Foo(3, Arg.Ignore<Person>());
+
+            m.ToMatcher().Should().NotBe(n.ToMatcher());
         }
 
         [Fact]
         public static void EqualsArgumentString()
         {
-            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(3, Arg.Equals<Person>(p => p.Age == 32));
+            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(3, Arg.Where<Person>(p => p.Age == 32));
             m.ToMatcher()
                 .ToString()
                 .Should()

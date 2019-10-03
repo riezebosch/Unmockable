@@ -6,9 +6,9 @@ namespace Unmockable.Matchers
     {
         public override int GetHashCode() => throw new NotImplementedException();
         
-        public bool Equals(IArgumentMatcher other) => true;
+        public bool Equals(IArgumentMatcher? other) => true;
 
-        public override bool Equals(object obj) => obj is IArgumentMatcher other && Equals(other);
+        public override bool Equals(object obj) => Equals(obj as IArgumentMatcher);
 
         public override string ToString() => "<ignore>";
     }

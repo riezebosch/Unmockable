@@ -6,15 +6,15 @@ namespace Unmockable.Tests
     public static class ArgTest
     {
         [Fact]
-        public static void ArgIgnore()
+        public static void IgnoreShouldNotBeExecuted()
         {
             Assert.Throws<PlaceholderException>(() => Arg.Ignore<int>());
         }
         
         [Fact]
-        public static void ArgEquals()
+        public static void WhereShouldNotBeExecuted()
         {
-            Assert.Throws<PlaceholderException>(() => Arg.Equals<int>(x => x == 3));
+            Assert.Throws<PlaceholderException>(() => Arg.Where<int>(x => x == 3));
         }
     }
 }

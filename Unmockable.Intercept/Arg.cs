@@ -7,6 +7,6 @@ namespace Unmockable
     {
         public static T Ignore<T>() => throw new PlaceholderException();
 
-        public static T Equals<T>(Func<T, bool> pred) => throw new PlaceholderException();
+        public static T Where<T>(Func<T, bool> pred) => throw new PlaceholderException();
     }
 }

@@ -17,12 +17,12 @@ namespace Unmockable.Matchers
         public override int GetHashCode() =>
             _body.Method.DeclaringType.GetHashCode() ^ _body.Method.Name.GetHashCode();
 
-        public bool Equals(MethodMatcher other) => other != null && 
+        public bool Equals(MethodMatcher? other) => other != null && 
             _body.Method.DeclaringType == other._body.Method.DeclaringType &&
             _body.Method.Name.Equals(other._body.Method.Name) &&
             _arguments.Equals(other._arguments);
 
-        public override bool Equals(object obj) => obj is MethodMatcher other && Equals(other);  
+        public override bool Equals(object obj) => Equals(obj as MethodMatcher);  
 
         public override string ToString() => $"{_body.Method.Name}({_arguments})";
     }
