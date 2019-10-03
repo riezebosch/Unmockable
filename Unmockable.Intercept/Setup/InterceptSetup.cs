@@ -20,11 +20,9 @@ namespace Unmockable.Setup
         
         public bool IsExecuted => Results.IsDone;
 
-        public InterceptSetup(IIntercept<T> intercept, LambdaExpression expression)
+        public InterceptSetup(IIntercept<T> intercept, LambdaExpression expression, IResult<TResult> result)
         {
-            Results = typeof(TResult) == typeof(Task) ? (IResult<TResult>)new AsyncActionResult() :
-                typeof(TResult) == typeof(Nothing) ? (IResult<TResult>)new ActionResult() :
-                new NoSetupResult<TResult>(expression);
+            Results = result;
             Expression = expression;
             _intercept = intercept;
         }

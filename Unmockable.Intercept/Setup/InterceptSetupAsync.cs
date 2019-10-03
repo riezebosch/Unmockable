@@ -9,7 +9,7 @@ namespace Unmockable.Setup
         IFuncResult<T, TResult>,
         IResult<T, TResult>
     {
-        public InterceptSetupAsync(IIntercept<T> intercept, LambdaExpression expression) : base(intercept, expression)
+        public InterceptSetupAsync(IIntercept<T> intercept, LambdaExpression expression) : base(intercept, expression, new NoSetupResult<Task<TResult>>(expression))
         {
         }
 
