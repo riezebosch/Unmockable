@@ -291,11 +291,14 @@ namespace Unmockable.Tests
             public static void FuncThrows()
             {
                 var mock = new Intercept<SomeUnmockableObject>();
-                mock.Setup(m => m.Foo()).Throws<FileNotFoundException>();
+                mock
+                    .Setup(m => m.Foo())
+                    .Throws<FileNotFoundException>();
 
-                Assert.Throws<FileNotFoundException>(() => mock
-                    .As<IUnmockable<SomeUnmockableObject>>()
-                    .Execute(m => m.Foo()));
+                var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
+                sut.Invoking(x => x.Execute(m => m.Foo()))
+                    .Should()
+                    .Throw<FileNotFoundException>();
 
                 mock.Verify();
             }
