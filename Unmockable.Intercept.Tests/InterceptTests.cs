@@ -126,6 +126,18 @@ namespace Unmockable.Tests
                     .Throw<NoSetupException>()
                     .WithMessage("Foo([1, 2, 3, 4])");
             }
+            
+            [Fact]
+            public static void NoSetupNull()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+
+                mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Invoking(x => x.Execute(m => m.Foo(3, null)))
+                    .Should()
+                    .Throw<NoSetupException>()
+                    .WithMessage("Foo(3, null)");
+            }
 
             [Fact]
             public static void SetupChain()
