@@ -4,7 +4,12 @@ namespace Unmockable.Setup
 {
     public interface IActionResult<T> : IIntercept<T>
     {
-        IIntercept<T> Throws<TException>() 
+        IVoidResult<T> Throws<TException>() 
             where TException: Exception, new();
+    }
+
+    public interface IVoidResult<T> : IIntercept<T>
+    {
+        IVoidResult<T> ThenThrows<TException>() where TException : Exception, new();
     }
 }

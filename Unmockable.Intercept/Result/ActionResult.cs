@@ -1,19 +1,20 @@
-using System.Threading.Tasks;
+using System;
+using Unmockable.Setup;
 
 namespace Unmockable.Result
 {
-    internal class ActionResult : IResult<Task>
+    internal class ActionResult : IResult<Nothing>
     {
-        public Task Result
+        public Nothing Result
         {
             get
             {
                 IsDone = true;
-                return Task.CompletedTask;
+                return Nothing.Empty;
             }
         }
 
         public bool IsDone { get; private set; }
-        public IResult<Task> Add(IResult<Task> next) => new MultipleResult<Task>().Add(next);
+        public IResult<Nothing> Add(IResult<Nothing> next) => throw new NotImplementedException();
     }
 }

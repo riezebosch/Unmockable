@@ -1,5 +1,3 @@
-using System;
-
 namespace Unmockable.Result
 {
     internal interface IResult<T>

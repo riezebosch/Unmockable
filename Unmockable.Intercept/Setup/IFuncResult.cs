@@ -6,7 +6,7 @@ namespace Unmockable.Setup
     {
         IResult<T, TResult> Returns(TResult result);
         
-        IIntercept<T> Throws<TException>() 
+        IResult<T, TResult> Throws<TException>() 
             where TException: Exception, new();
     }
 }
