@@ -1,4 +1,3 @@
-using System;
 using Unmockable.Setup;
 
 namespace Unmockable.Result
@@ -15,6 +14,6 @@ namespace Unmockable.Result
         }
 
         public bool IsDone { get; private set; }
-        public IResult<Nothing> Add(IResult<Nothing> next) => throw new NotImplementedException();
+        public IResult<Nothing> Add(IResult<Nothing> next) => next;
     }
 }

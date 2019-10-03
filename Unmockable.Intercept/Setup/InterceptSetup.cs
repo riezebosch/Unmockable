@@ -37,7 +37,7 @@ namespace Unmockable.Setup
 
         IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>()
         {
-            Results = new ExceptionResult<TResult, TException>();
+            Results = Results.Add(new ExceptionResult<TResult,TException>());
             return this;
         }
         
@@ -49,7 +49,7 @@ namespace Unmockable.Setup
         
         IVoidResult<T> IActionResult<T>.Throws<TException>()
         {
-            Results = new ExceptionResult<TResult, TException>();
+            Results = Results.Add(new ExceptionResult<TResult,TException>());
             return this;
         }
 

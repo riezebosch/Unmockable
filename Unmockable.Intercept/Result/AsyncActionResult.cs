@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 
 namespace Unmockable.Result
@@ -15,6 +14,6 @@ namespace Unmockable.Result
         }
 
         public bool IsDone { get; private set; }
-        public IResult<Task> Add(IResult<Task> next) => throw new NotImplementedException();
+        public IResult<Task> Add(IResult<Task> next) => next;
     }
 }

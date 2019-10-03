@@ -21,7 +21,7 @@ namespace Unmockable.Setup
 
         IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>()
         {
-            Results = new ExceptionResult<Task<TResult>, TException>();
+            Results = Results.Add(new ExceptionResult<Task<TResult>,TException>());
             return this;
         }
 
