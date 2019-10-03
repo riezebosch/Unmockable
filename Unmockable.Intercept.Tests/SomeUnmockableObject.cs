@@ -14,6 +14,7 @@ namespace Unmockable.Tests
         public int Foo(IEnumerable<IEnumerable<int>> _) => Dummy;
         public int Foo(int i, Person p) => Dummy = p.Age + i;
         public Task<int> FooAsync() => Task.FromResult(Dummy);
+        public Task<int> FooAsync(int i) => Task.FromResult(i);
         public void Bar(int i) => Dummy = i;
         public async Task BarAsync() => await FooAsync();
     }

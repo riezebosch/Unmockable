@@ -151,6 +151,23 @@ namespace Unmockable.Tests
                     .Should()
                     .Be(1);
             }
+
+            [Fact]
+            public static async Task FuncSetupAfterSetup()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock
+                    .Setup(x => x.FooAsync(Arg.Ignore<int>()))
+                    .Returns(4)
+                    .Setup(x => x.FooAsync(1))
+                    .Returns(3);
+                
+                var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
+                await sut.Execute(r => r.FooAsync(1));
+                await sut.Execute(r => r.FooAsync(2));
+                
+                mock.Verify();
+            }
         }
 
         public static class Result
