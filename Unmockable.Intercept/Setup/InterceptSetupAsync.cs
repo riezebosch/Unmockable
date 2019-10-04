@@ -13,13 +13,13 @@ namespace Unmockable.Setup
         {
         }
 
-        IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result) => Add(new FuncResult<Task<TResult>>(Task.FromResult(result)));
+        IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result) => Add(new FuncResult<Task<TResult>>(Task.FromResult(result), Expression));
 
-        IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>() => Add(new ExceptionResult<Task<TResult>,TException>());
+        IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>() => Add(new ExceptionResult<Task<TResult>,TException>(Expression));
 
-        IResult<T, TResult> IResult<T, TResult>.Then(TResult result) => Add(new FuncResult<Task<TResult>>(Task.FromResult(result)));
+        IResult<T, TResult> IResult<T, TResult>.Then(TResult result) => Add(new FuncResult<Task<TResult>>(Task.FromResult(result), Expression));
         
-        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>() => Add(new ExceptionResult<Task<TResult>,TException>());
+        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>() => Add(new ExceptionResult<Task<TResult>,TException>(Expression));
         
         private IResult<T, TResult> Add(IResult<Task<TResult>> result)
         {
