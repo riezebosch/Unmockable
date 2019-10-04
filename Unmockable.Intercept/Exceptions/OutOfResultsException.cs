@@ -2,7 +2,7 @@ using System;
 
 namespace Unmockable.Exceptions
 {
-    public class OutOfSetupException : Exception
+    public class OutOfResultsException : Exception
     {
     }
 }

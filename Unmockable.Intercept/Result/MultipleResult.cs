@@ -7,7 +7,7 @@ namespace Unmockable.Result
     {
         private readonly Queue<IResult<T>> _results = new Queue<IResult<T>>();
 
-        public T Result => _results.Count > 0 ? _results.Dequeue().Result : throw new OutOfSetupException();
+        public T Result => _results.Count > 0 ? _results.Dequeue().Result : throw new OutOfResultsException();
         public bool IsDone => _results.Count == 0;
         public IResult<T> Add(IResult<T> next)
         {

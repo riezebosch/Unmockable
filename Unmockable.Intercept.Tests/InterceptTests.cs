@@ -243,7 +243,7 @@ namespace Unmockable.Tests
                 sut.Execute(m => m.Foo());
                 sut.Invoking(x => x.Execute(m => m.Foo()))
                     .Should()
-                    .Throw<OutOfSetupException>();
+                    .Throw<OutOfResultsException>();
             }
             
             [Fact]
