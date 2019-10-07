@@ -171,6 +171,56 @@ Collection arguments are unwrapped when matching the actual call with provided s
 
 Custom matching is done with `Arg.Ignore<T>()` and `Arg.Where<T>(x => ...)`, though the recommendation
  is to be explicit. 
+ 
+## Nested unmockables
+
+But what if your mocked [unmockable object returns an unmockable object](https://docs.microsoft.com/en-us/azure/cosmos-db/tutorial-develop-table-dotnet#create-a-table)?!
+ 
+```c#
+public static async Task<CloudTable> CreateTableAsync(string tableName)
+{
+    var storageAccount = CloudStorageAccount.Parse(...);
+    
+    var tableClient = storageAccount.CreateCloudTableClient(new TableClientConfiguration());
+    var table = tableClient.GetTableReference(tableName);
+    await table.CreateIfNotExistsAsync();
+}
+```
+
+Literally wrap the call with an unmockable object:
+
+```c#
+public static async Task<IUnmockable<CloudTable>> CreateTableAsync(
+    IUnmockable<CloudStorageAccount> storageAccount, string tableName)
+{
+    var tableClient = storageAccount.Wrap(x => x.CreateCloudTableClient(new TableClientConfiguration()));
+    var table = tableClient.Wrap(x => x.GetTableReference(tableName));
+    await table.Execute(x => x.CreateIfNotExistsAsync());
+    
+    return table;
+}
+```
+
+Setup your test to return the interceptor(s) for unmockable objects:
+
+```c#
+// Arrange
+var table = new Intercept<CloudTable>();
+table.Setup(x => x.CreateIfNotExistsAsync())
+    .Returns(true);
+
+var tableClient = new Intercept<CloudTableClient>(); 
+tableClient.Wrap(x => x.GetTableReference("some-table", table);
+
+var storageAccount = new Intercept<CloudStorageAccount>();
+storageAccount.Wrap(x => x.CreateCloudTableClient(Arg.Ignore<TableClientConfiguration>(), tableClient);
+
+// Act
+await CreateTableAsync(storageAccount, "some-table")
+
+// Assert
+table.Verify();
+```
 
 ## Statics
 
