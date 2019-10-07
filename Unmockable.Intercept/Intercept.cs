@@ -22,6 +22,18 @@ namespace Unmockable
 
         void IUnmockable<T>.Execute(Expression<Action<T>> m) => _setups.Load<Nothing>(m).Execute();
 
+        IUnmockable<TResult> IUnmockable<T>.Wrap<TResult>(Expression<Func<T, TResult>> expression) =>
+            _setups.Load<IUnmockable<TResult>>(expression).Execute();
+
+        Task<IUnmockable<TResult>> IUnmockable<T>.Wrap<TResult>(Expression<Func<T, Task<TResult>>> m) => 
+            _setups.Load<Task<IUnmockable<TResult>>>(m).Execute();
+
+        public void Wrap<TResult>(Expression<Func<T, TResult>> expression, IUnmockable<TResult> with) =>
+            _setups.Store(new Wrap<TResult>(expression, with));
+        
+        public void Wrap<TResult>(Expression<Func<T, Task<TResult>>> expression, IUnmockable<TResult> with) =>
+            _setups.Store(new AsyncWrap<TResult>(expression, with));
+
         public void Verify() => _setups.Verify();
     }
 }

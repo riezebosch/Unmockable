@@ -18,5 +18,9 @@ namespace Unmockable.Tests
         public Task<int> FooAsync(int i) => Task.FromResult(i);
         public void Bar(int i) => Dummy = i;
         public async Task BarAsync() => await FooAsync();
+
+        public SomeUnmockableObject Nested() => new SomeUnmockableObject();
+        
+        public Task<SomeUnmockableObject> NestedAsync() => Task.FromResult(new SomeUnmockableObject());
     }
 }
