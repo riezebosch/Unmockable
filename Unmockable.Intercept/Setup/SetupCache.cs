@@ -32,7 +32,6 @@ namespace Unmockable.Setup
             var not = _setups
                 .Values
                 .Where(x => !x.IsExecuted)
-                .Select(x => x.Expression)
                 .ToList();
             if (not.Any())
             {

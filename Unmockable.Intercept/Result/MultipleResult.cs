@@ -14,12 +14,14 @@ namespace Unmockable.Result
             _expression = expression;
         }
 
-        public T Result => _results.Count > 0 ? _results.Dequeue().Result : throw new OutOfResultsException(_expression);
+        public T Result => !IsDone ? _results.Dequeue().Result : throw new OutOfResultsException(_expression);
         public bool IsDone => _results.Count == 0;
         public IResult<T> Add(IResult<T> next)
         {
             _results.Enqueue(next);
             return this;
         }
+
+        public override string ToString() => string.Join(", ", _results);
     }
 }

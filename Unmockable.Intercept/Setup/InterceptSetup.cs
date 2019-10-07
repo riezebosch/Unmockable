@@ -52,5 +52,7 @@ namespace Unmockable.Setup
             Results = Results.Add(result);
             return this;
         }
+
+        public override string ToString() => $"{Expression}: {Results}";
     }
 }

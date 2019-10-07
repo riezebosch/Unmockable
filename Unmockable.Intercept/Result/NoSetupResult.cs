@@ -12,5 +12,6 @@ namespace Unmockable.Result
         public T Result => throw new NoResultsSetupException(_expression.ToString());
         public bool IsDone => false;
         public IResult<T> Add(IResult<T> next) => next;
+        public override string ToString() => "no results setup";
     }
 }

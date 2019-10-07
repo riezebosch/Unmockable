@@ -134,8 +134,8 @@ namespace Unmockable.Tests
             Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(Arg.Ignore<int>());
             m.ToMatcher()
                 .ToString()
-                .Should().
-                Contain("<ignore>");
+                .Should()
+                .Contain("<ignore>");
         }
 
         [Fact]

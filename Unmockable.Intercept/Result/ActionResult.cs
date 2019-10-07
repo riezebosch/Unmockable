@@ -15,5 +15,6 @@ namespace Unmockable.Result
 
         public bool IsDone { get; private set; }
         public IResult<Nothing> Add(IResult<Nothing> next) => next;
+        public override string ToString() => "void";
     }
 }
