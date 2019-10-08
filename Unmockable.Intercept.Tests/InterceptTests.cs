@@ -71,6 +71,19 @@ namespace Unmockable.Tests
 
                 mock.Verify();
             }
+
+            [Fact]
+            public static void Property()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(m => m.Dummy)
+                    .Returns(4);
+
+                mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Execute(m => m.Dummy);
+
+                mock.Verify();
+            }
             
             [Fact]
             public static void IgnoreArgument()
@@ -137,6 +150,18 @@ namespace Unmockable.Tests
                     .Should()
                     .Throw<NoSetupException>()
                     .WithMessage("SomeUnmockableObject.Foo(3, null)");
+            }
+            
+            [Fact]
+            public static void NoSetupProperty()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+
+                mock.As<IUnmockable<SomeUnmockableObject>>()
+                    .Invoking(x => x.Execute(m => m.Dummy))
+                    .Should()
+                    .Throw<NoSetupException>()
+                    .WithMessage("SomeUnmockableObject.Dummy");
             }
 
             [Fact]
@@ -532,6 +557,19 @@ namespace Unmockable.Tests
                     .Should()
                     .Throw<NotExecutedException>()
                     .WithMessage("m => m.BarAsync(): Task");
+            }
+            
+            [Fact]
+            public static void PropertyNotExecuted()
+            {
+                var mock = new Intercept<SomeUnmockableObject>();
+                mock.Setup(m => m.Dummy)
+                    .Returns(4);
+
+                mock.Invoking(x => x.Verify())
+                    .Should()
+                    .Throw<NotExecutedException>()
+                    .WithMessage("m => m.Dummy: 4");
             }
 
             [Fact]

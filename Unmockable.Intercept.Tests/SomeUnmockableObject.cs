@@ -7,6 +7,7 @@ namespace Unmockable.Tests
     public class SomeUnmockableObject
     {
         public int Dummy { get; set; }
+        public double Other { get; set; }
 
         public int Foo() => Dummy;
         public int Foo(int i) => Dummy = i;
