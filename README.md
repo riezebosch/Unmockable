@@ -234,10 +234,11 @@ await CreateTableAsync(storageAccount, "some-table")
 table.Verify();
 ```
 
-## Statics
+## Static classes
 
-I first added and then removed support for 'wrapping' static classes and invoking static methods.
-Because it is not an unmockable _object_! If you're dependent, let's say, on `DateTime.Now` you can already create an overloaded method that accepts the DateTime. You don't need a framework for that.
+At first I added but then I removed support for 'wrapping' static classes and invoking static methods.
+In the end, it is not an unmockable _object_! If you're dependent, let's say, on `DateTime.Now` you can add an method overload
+that accepts a specific DateTime. You don't need this framework for that.
 
 ```c#
 public void DoSomething(DateTime now)
@@ -260,5 +261,8 @@ public void DoSomething() => DoSomething(() => DateTime.Now)
 ```
 
 If you don't like this change in your public API, you can extract an interface and only
-include the second method (which you should be doing anyway) or you mark the top method internal and
-make it visible to your test project using `[InternalsVisibleTo]`.
+include the second method (which I a good idea anyway) or you mark the top method internal and
+expose it to your test project with the `[InternalsVisibleTo]` attribute.
+
+
+Happy coding!
