@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Unmockable.Matchers
 {
     internal class NullArgument : IArgumentMatcher, IEquatable<NullArgument>
     {
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode() => throw new InvalidOperationException();
 
         public override string ToString() => "null";

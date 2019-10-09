@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Unmockable.Matchers
 {
@@ -7,6 +8,7 @@ namespace Unmockable.Matchers
         public object Value { get; }
         public ValueArgument(object value) => Value = value;
 
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode() => throw new InvalidOperationException();
 
         public override string ToString() => Value.ToString();

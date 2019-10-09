@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Unmockable.Matchers
@@ -8,7 +9,8 @@ namespace Unmockable.Matchers
         private readonly Expression _pred;
         
         public LambdaArgument(Expression pred) => _pred = pred;
-        
+
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode() => throw new InvalidOperationException();
 
         public bool Equals(ValueArgument? other) => other != null && (bool) ((Delegate) Expression.Lambda(_pred).Compile().DynamicInvoke()).DynamicInvoke(other.Value);

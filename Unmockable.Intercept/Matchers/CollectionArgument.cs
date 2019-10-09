@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Unmockable.Matchers
@@ -11,6 +12,7 @@ namespace Unmockable.Matchers
         public CollectionArgument(IEnumerable<object> collection) : base(collection) =>
             _collection = collection.Select(ValueMatcherFactory.Create);
 
+        [ExcludeFromCodeCoverage]
         public override int GetHashCode() => throw new InvalidOperationException();
 
         public override string ToString() => $"[{string.Join(", ", _collection)}]";

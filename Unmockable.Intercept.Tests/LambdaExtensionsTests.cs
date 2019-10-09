@@ -183,5 +183,14 @@ namespace Unmockable.Tests
 
             m.ToMatcher().Should().NotBe(n.ToMatcher());
         }
+        
+        [Fact]
+        public static void PropertyNotEqualsMethod()
+        {
+            Expression<Func<SomeUnmockableObject, int>> m = x => x.Dummy;
+            Expression<Func<SomeUnmockableObject, int>> n = x => x.Foo();
+
+            m.ToMatcher().Should().NotBe(n.ToMatcher());
+        }
     }
 }
