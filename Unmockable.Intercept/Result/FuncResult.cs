@@ -25,6 +25,6 @@ namespace Unmockable.Result
             _expression = expression;
         }
 
-        public override string ToString() => Result.ToString();
+        public override string ToString() => Result!.ToString();
     }
 }

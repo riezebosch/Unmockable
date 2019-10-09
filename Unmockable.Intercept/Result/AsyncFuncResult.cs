@@ -24,6 +24,6 @@ namespace Unmockable.Result
         }
         public bool IsDone { get; private set; }
         public IResult<Task<T>> Add(IResult<Task<T>> next) => new MultipleResult<Task<T>>(_expression).Add(this).Add(next);
-        public override string ToString() => _result.ToString();
+        public override string ToString() => _result!.ToString();
     }
 }
