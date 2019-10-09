@@ -72,29 +72,5 @@ namespace Unmockable.Wrap.Tests
         {
             new object().Wrap().Should().BeOfType<Wrap<object>>();
         }
-        
-        [Fact]
-        public static void WrapNested()
-        {
-            var item = new SomeUnmockableObject { Dummy = 15 };
-
-            var wrap = item.Wrap();
-            wrap.Execute(x => x.Dummy).Should().Be(15);
-            
-            var nested = wrap.Wrap(x => x.Nested());
-            nested.Execute(x => x.Dummy).Should().NotBe(15);
-        }
-        
-        [Fact]
-        public static async Task WrapNestedAsync()
-        {
-            var item = new SomeUnmockableObject { Dummy = 15 };
-
-            var wrap = item.Wrap();
-            wrap.Execute(x => x.Dummy).Should().Be(15);
-            
-            var nested = await wrap.Wrap(x => x.NestedAsync());
-            nested.Execute(x => x.Dummy).Should().NotBe(15);
-        }
     }
 }

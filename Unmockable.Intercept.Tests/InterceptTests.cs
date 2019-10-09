@@ -42,7 +42,7 @@ namespace Unmockable.Tests
 
                 mock.Verify();
             }
-
+            
             [Fact]
             public static async Task FuncAsync()
             {
@@ -59,7 +59,7 @@ namespace Unmockable.Tests
 
                 mock.Verify();
             }
-
+            
             [Fact]
             public static async Task ActionAsync()
             {
@@ -84,7 +84,7 @@ namespace Unmockable.Tests
 
                 mock.Verify();
             }
-
+            
             [Fact]
             public static void IgnoreArgument()
             {
@@ -114,7 +114,7 @@ namespace Unmockable.Tests
 
                 mock.Verify();
             }
-
+            
             [Fact]
             public static void NoSetup()
             {
@@ -139,7 +139,7 @@ namespace Unmockable.Tests
                     .Throw<NoSetupException>()
                     .WithMessage("SomeUnmockableObject.Foo([1, 2, 3, 4])");
             }
-
+            
             [Fact]
             public static void NoSetupNull()
             {
@@ -151,7 +151,7 @@ namespace Unmockable.Tests
                     .Throw<NoSetupException>()
                     .WithMessage("SomeUnmockableObject.Foo(3, null)");
             }
-
+            
             [Fact]
             public static void NoSetupProperty()
             {
@@ -172,8 +172,7 @@ namespace Unmockable.Tests
                     .Setup(m => m.Foo(5)).Returns(2)
                     .Setup(y => y.Foo(4)).Throws<NotSupportedException>()
                     .Setup(x => x.Bar(5))
-                    .Setup(x => x.Foo(3)).Returns(1).Then(4).Then(6).ThenThrows<NotImplementedException>().Then(6)
-                    .ThenThrows<FileNotFoundException>();
+                    .Setup(x => x.Foo(3)).Returns(1).Then(4).Then(6).ThenThrows<NotImplementedException>().Then(6).ThenThrows<FileNotFoundException>();
 
                 mock
                     .Setup(x => x.Bar(3))
@@ -184,7 +183,7 @@ namespace Unmockable.Tests
                 sut.Execute(r => r.Foo(5))
                     .Should()
                     .Be(2);
-
+                
                 sut.Execute(q => q.Foo(3))
                     .Should()
                     .Be(1);
@@ -199,11 +198,11 @@ namespace Unmockable.Tests
                     .Returns(4)
                     .Setup(x => x.FooAsync(1))
                     .Returns(3);
-
+                
                 var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
                 await sut.Execute(r => r.FooAsync(1));
                 await sut.Execute(r => r.FooAsync(2));
-
+                
                 mock.Verify();
             }
         }
@@ -222,7 +221,7 @@ namespace Unmockable.Tests
                     .Throw<NoResultsSetupException>()
                     .WithMessage("m => m.Foo()");
             }
-
+            
             [Fact]
             public static async Task NoResultAsync()
             {
@@ -248,14 +247,14 @@ namespace Unmockable.Tests
                 sut.Execute(m => m.Foo())
                     .Should()
                     .Be(5);
-
+                    
                 sut.Execute(m => m.Foo())
                     .Should()
                     .Be(6);
-
+                
                 mock.Verify();
             }
-
+            
             [Fact]
             public static void MoreThen()
             {
@@ -272,7 +271,7 @@ namespace Unmockable.Tests
                     .Throw<OutOfResultsException>()
                     .WithMessage("m => m.Foo()");
             }
-
+            
             [Fact]
             public static void AsyncThen()
             {
@@ -286,15 +285,15 @@ namespace Unmockable.Tests
                     .Result
                     .Should()
                     .Be(5);
-
+                    
                 sut.Execute(m => m.FooAsync())
                     .Result
                     .Should()
                     .Be(6);
-
+                
                 mock.Verify();
             }
-
+            
             [Fact]
             public static void Multiple()
             {
@@ -311,7 +310,7 @@ namespace Unmockable.Tests
                     .Should().Be(3);
             }
         }
-
+        
         public static class Throws
         {
             [Fact]
@@ -344,7 +343,7 @@ namespace Unmockable.Tests
 
                 mock.Verify();
             }
-
+            
             [Fact]
             public static void ActionThrowsThenThrows()
             {
@@ -379,7 +378,7 @@ namespace Unmockable.Tests
 
                 mock.Verify();
             }
-
+            
             [Fact]
             public static async Task FuncAsyncThrowsThenThrows()
             {
@@ -398,7 +397,7 @@ namespace Unmockable.Tests
 
                 mock.Verify();
             }
-
+            
             [Fact]
             public static async Task ActionAsyncThrows()
             {
@@ -424,14 +423,14 @@ namespace Unmockable.Tests
 
                 var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
                 sut.Execute(m => m.Foo());
-
+                
                 sut.Invoking(x => x.Execute(m => m.Foo()))
-                    .Should()
-                    .Throw<FileNotFoundException>();
-
+                   .Should()
+                   .Throw<FileNotFoundException>();
+                
                 mock.Verify();
             }
-
+            
             [Fact]
             public static async Task AsyncThenThrows()
             {
@@ -445,11 +444,11 @@ namespace Unmockable.Tests
                 await sut.Invoking(x => x.Execute(m => m.FooAsync()))
                     .Should()
                     .ThrowAsync<FileNotFoundException>();
-
+                
                 mock.Verify();
             }
         }
-
+        
         public static class Verify
         {
             [Fact]
@@ -459,7 +458,7 @@ namespace Unmockable.Tests
                 mock
                     .Setup(m => m.Foo())
                     .Returns(5);
-
+                
                 mock.As<IUnmockable<SomeUnmockableObject>>()
                     .Execute(x => x.Foo());
 
@@ -478,7 +477,7 @@ namespace Unmockable.Tests
                     .Throw<NotExecutedException>()
                     .WithMessage("m => m.Foo(): 3");
             }
-
+            
             [Fact]
             public static void MultipleNotExecuted()
             {
@@ -492,7 +491,7 @@ namespace Unmockable.Tests
                     .Throw<NotExecutedException>()
                     .WithMessage("m => m.Foo(): 3, 4");
             }
-
+            
             [Fact]
             public static void MultipleNotAllExecuted()
             {
@@ -509,7 +508,7 @@ namespace Unmockable.Tests
                     .Throw<NotExecutedException>()
                     .WithMessage("m => m.Foo(): 4");
             }
-
+            
             [Fact]
             public static void ExceptionNotExecuted()
             {
@@ -522,7 +521,7 @@ namespace Unmockable.Tests
                     .Throw<NotExecutedException>()
                     .WithMessage("m => m.Foo(): FileNotFoundException");
             }
-
+            
             [Fact]
             public static void ActionNotExecuted()
             {
@@ -534,7 +533,7 @@ namespace Unmockable.Tests
                     .Throw<NotExecutedException>()
                     .WithMessage("m => m.Bar(Ignore()): void");
             }
-
+            
             [Fact]
             public static void AsyncFuncNotExecuted()
             {
@@ -547,7 +546,7 @@ namespace Unmockable.Tests
                     .Throw<NotExecutedException>()
                     .WithMessage("m => m.FooAsync(3): 5");
             }
-
+            
             [Fact]
             public static void AsyncActionNotExecuted()
             {
@@ -559,7 +558,7 @@ namespace Unmockable.Tests
                     .Throw<NotExecutedException>()
                     .WithMessage("m => m.BarAsync(): Task");
             }
-
+            
             [Fact]
             public static void PropertyNotExecuted()
             {
@@ -583,77 +582,6 @@ namespace Unmockable.Tests
                     .Should()
                     .Throw<NotExecutedException>()
                     .WithMessage("m => m.Foo(): no results setup");
-            }
-        }
-        
-        public static class Wrap
-        {
-            [Fact]
-            public static void NestedUnmockable()
-            {
-                // Arrange
-                var nested = new Intercept<SomeUnmockableObject>();
-
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Wrap(m => m.Nested(), nested);
-
-                // Act
-                var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
-                var result = sut.Wrap(x => x.Nested());
-
-                // Assert
-                result.Should().Be(nested);
-                mock.Verify();
-            }
-            
-            [Fact]
-            public static async Task NestedAsync()
-            {
-                // Arrange
-                var nested = new Intercept<SomeUnmockableObject>();
-
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Wrap(m => m.NestedAsync(), nested);
-
-                // Act
-                var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
-                var result = await sut.Wrap(x => x.NestedAsync());
-
-                // Assert
-                result.Should().Be(nested);
-                mock.Verify();
-            }
-            
-            [Fact]
-            public static void ThrowsNoSetup()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
-                sut.Invoking(x => x.Wrap(m => m.Nested()))
-                    .Should()
-                    .Throw<NoSetupException>();
-            }
-            
-            [Fact]
-            public static void ThrowsNotExecuted()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Wrap(m => m.Nested(), new Intercept<SomeUnmockableObject>());
-
-                mock.Invoking(x => x.Verify())
-                    .Should()
-                    .Throw<NotExecutedException>();
-            }
-            
-            [Fact]
-            public static void AsyncThrowsNotExecuted()
-            {
-                var mock = new Intercept<SomeUnmockableObject>();
-                mock.Wrap(m => m.NestedAsync(), new Intercept<SomeUnmockableObject>());
-
-                mock.Invoking(x => x.Verify())
-                    .Should()
-                    .Throw<NotExecutedException>();
             }
         }
     }

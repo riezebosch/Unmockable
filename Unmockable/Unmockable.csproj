@@ -10,7 +10,7 @@
         <NeutralLanguage>en-US</NeutralLanguage>
         <AssemblyTitle>Unmockable</AssemblyTitle>
         <Description>Inject wrappers around unmockable objects. Use *Unmockable.Wrap* to wrap  and *Unmockable.Intercept* to intercept calls to the unmockable object.</Description>
-        <PackageReleaseNotes>Support for wrapping unmockables returned from unmockables.</PackageReleaseNotes>
+        <PackageReleaseNotes>removed the wrapping of unmockables.</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>unmockable;mock;wrapper;dependency;solid;inversion;virtual;interface</PackageTags>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

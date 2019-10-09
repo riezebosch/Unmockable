@@ -10,8 +10,5 @@ namespace Unmockable.Wrap.Tests
         public int Foo(int i) => Dummy = i;
         public Task<int> FooAsync() => Task.FromResult(Dummy);
         public void Bar(int i) => Dummy = i;
-
-        public SomeUnmockableObject Nested() => new SomeUnmockableObject();
-        public Task<SomeUnmockableObject> NestedAsync() => Task.Run(() => new SomeUnmockableObject());
     }
 }
