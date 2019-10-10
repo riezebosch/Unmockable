@@ -19,4 +19,9 @@
       <ProjectReference Include="..\Unmockable.DependencyInjection\Unmockable.DependencyInjection.csproj" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <CollectCoverage>true</CollectCoverage>
+        <CoverletOutputFormat>opencover</CoverletOutputFormat>
+        <Exclude>[xunit*]*</Exclude>
+    </PropertyGroup>
 </Project>

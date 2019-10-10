@@ -20,5 +20,11 @@
     <ItemGroup>
       <ProjectReference Include="..\Unmockable.Intercept\Unmockable.Intercept.csproj" />
     </ItemGroup>
+    
+    <PropertyGroup>
+        <CollectCoverage>true</CollectCoverage>
+        <CoverletOutputFormat>opencover</CoverletOutputFormat>
+        <Exclude>[xunit*]*</Exclude>
+    </PropertyGroup>
 
 </Project>

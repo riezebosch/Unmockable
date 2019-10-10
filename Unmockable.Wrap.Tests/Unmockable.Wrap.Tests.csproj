@@ -19,4 +19,10 @@
     <ItemGroup>
       <ProjectReference Include="..\Unmockable.Wrap\Unmockable.Wrap.csproj" />
     </ItemGroup>
+
+    <PropertyGroup>
+        <CollectCoverage>true</CollectCoverage>
+        <CoverletOutputFormat>opencover</CoverletOutputFormat>
+        <Exclude>[xunit*]*</Exclude>
+    </PropertyGroup>
 </Project>
