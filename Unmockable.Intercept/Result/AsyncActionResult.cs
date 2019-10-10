@@ -1,20 +1,14 @@
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Unmockable.Result
 {
-    internal class AsyncActionResult : IResult<Task>
+    internal class AsyncActionResult : FuncResult<Task>
     {
-        public Task Result
+        public AsyncActionResult(LambdaExpression expression) : base(Task.CompletedTask, expression)
         {
-            get
-            {
-                IsDone = true;
-                return Task.CompletedTask;
-            }
         }
-
-        public bool IsDone { get; private set; }
-        public IResult<Task> Add(IResult<Task> next) => next;
+        public override IResult<Task> Add(IResult<Task> next) => next;
         public override string ToString() => "Task";
     }
 }

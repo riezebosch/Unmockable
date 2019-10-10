@@ -1,20 +1,14 @@
+using System.Linq.Expressions;
 using Unmockable.Setup;
 
 namespace Unmockable.Result
 {
-    internal class ActionResult : IResult<Nothing>
+    internal class ActionResult : FuncResult<Nothing>
     {
-        public Nothing Result
+        public ActionResult(LambdaExpression expression) : base(Nothing.Empty, expression)
         {
-            get
-            {
-                IsDone = true;
-                return Nothing.Empty;
-            }
         }
-
-        public bool IsDone { get; private set; }
-        public IResult<Nothing> Add(IResult<Nothing> next) => next;
+        public override IResult<Nothing> Add(IResult<Nothing> next) => next;
         public override string ToString() => "void";
     }
 }
