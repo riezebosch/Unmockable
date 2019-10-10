@@ -22,7 +22,7 @@
         <NeutralLanguage>en-US</NeutralLanguage>
         <AssemblyTitle>Unmockable</AssemblyTitle>
         <Description>Intercept calls on wrappers around unmockable objects.</Description>
-        <PackageReleaseNotes></PackageReleaseNotes>
+        <PackageReleaseNotes>Target framework is now: netstandard2.0</PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>unmockable;mock;wrapper;dependency;solid;inversion;virtual;interface</PackageTags>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
