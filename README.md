@@ -1,4 +1,5 @@
 [![build status](https://ci.appveyor.com/api/projects/status/layshtg2fh5fu5fu/branch/master?svg=true)](https://ci.appveyor.com/project/riezebosch/unmockable/branch/master)
+[![codecov](https://codecov.io/gh/riezebosch/unmockable/branch/master/graph/badge.svg)](https://codecov.io/gh/riezebosch/unmockable)
 [![nuget](https://img.shields.io/nuget/v/Unmockable.svg)](https://www.nuget.org/packages/Unmockable/)
 
 # 📢 Shout-out
