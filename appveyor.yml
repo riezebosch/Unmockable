@@ -3,6 +3,12 @@ pull_requests:
   do_not_increment_build_number: true
 image: Ubuntu1804
 configuration: Release
+only_commits:
+  files:
+    - Unmockable/**/*
+    - Unmockable.DependencyInjection/**/*
+    - Unmockable.Wrap/**/*
+    - Unmockable.Intercept/**/*
 environment:
   CODECOV_TOKEN: 7b0a3c86-501a-43d0-8e16-ee996773a3ac
 dotnet_csproj:
