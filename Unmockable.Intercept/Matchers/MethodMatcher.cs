@@ -14,8 +14,7 @@ namespace Unmockable.Matchers
             _arguments = new ArgumentsMatcher(_body.Arguments);
         }
 
-        public override int GetHashCode() =>
-            _body.Method.DeclaringType!.GetHashCode() ^ _body.Method.Name.GetHashCode();
+        public override int GetHashCode() => HashCode.Combine(_body.Method.DeclaringType, _body.Method.Name);
 
         public bool Equals(MethodMatcher? other) => other != null && 
             _body.Method.DeclaringType == other._body.Method.DeclaringType &&
