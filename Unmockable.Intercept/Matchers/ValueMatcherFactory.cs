@@ -6,11 +6,13 @@ namespace Unmockable.Matchers
 {
     internal static class ValueMatcherFactory
     {
-        public static IArgumentMatcher Create(Expression arg) => Create(Expression.Lambda(arg).Compile().DynamicInvoke());
+        public static IArgumentMatcher Create(Expression arg) => 
+            Create(Expression.Lambda(arg).Compile().DynamicInvoke());
 
-        public static IArgumentMatcher Create(object value) => value switch
+        public static IArgumentMatcher Create(object value) => 
+            value switch
             {
-                null => new NullArgument() as IArgumentMatcher,
+                null => NullArgument.Single,
                 IEnumerable collection => new CollectionArgument(collection.Cast<object>()),
                 _ => new ValueArgument(value)
             };

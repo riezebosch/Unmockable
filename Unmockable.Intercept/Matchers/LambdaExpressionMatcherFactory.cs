@@ -1,10 +1,9 @@
 using System.Linq.Expressions;
 using Unmockable.Exceptions;
-using Unmockable.Matchers;
 
-namespace Unmockable
+namespace Unmockable.Matchers
 {
-    internal static class LambdaExtensions
+    internal static class LambdaExpressionMatcherFactory
     {
         public static IUnmockableMatcher ToMatcher(this LambdaExpression m) => m.Body switch
         {

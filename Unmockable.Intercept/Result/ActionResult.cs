@@ -7,7 +7,6 @@ namespace Unmockable.Result
         public ActionResult(LambdaExpression expression) : base(new Void(), expression)
         {
         }
-        public override IResult<Void> Add(IResult<Void> next) => next;
-        public override string ToString() => "void";
+        public override IResult<Void> NewResult(IResult<Void> next) => next;
     }
 }

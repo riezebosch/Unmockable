@@ -12,47 +12,56 @@ namespace Unmockable.Setup
         IVoidResult<T>,
         IActionResult<T>
     {
-        protected IResult<TResult> Results { get; set; } 
+        protected IResult<TResult> Current { get; set; } 
 
-        private readonly IIntercept<T> _intercept;
+        private readonly IIntercept<T> _parent;
 
         public LambdaExpression Expression { get; }
         
-        public bool IsExecuted => Results.IsDone;
+        public bool IsExecuted => Current.IsDone;
 
-        public InterceptSetup(IIntercept<T> intercept, LambdaExpression expression, IResult<TResult> result)
+        public InterceptSetup(IIntercept<T> parent, LambdaExpression expression, IResult<TResult> result)
         {
-            Results = result;
+            _parent = parent;
             Expression = expression;
-            _intercept = intercept;
+            Current = result;
         }
 
-        IActionResult<T> ISetupAction<T>.Setup(Expression<Action<T>> m) => _intercept.Setup(m);
+        IActionResult<T> ISetupAction<T>.Setup(Expression<Action<T>> m) => 
+            _parent.Setup(m);
 
-        IFuncResult<T, TNewResult> ISetupFunc<T>.Setup<TNewResult>(Expression<Func<T, TNewResult>> m) => _intercept.Setup(m);
+        IFuncResult<T, TNew> ISetupFunc<T>.Setup<TNew>(Expression<Func<T, TNew>> m) => 
+            _parent.Setup(m);
         
-        IFuncResult<T, TResultNew> ISetupFuncAsync<T>.Setup<TResultNew>(Expression<Func<T, Task<TResultNew>>> m) => _intercept.Setup(m);
+        IFuncResult<T, TNew> ISetupFuncAsync<T>.Setup<TNew>(Expression<Func<T, Task<TNew>>> m) => 
+            _parent.Setup(m);
 
-        IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>() => Add(new ExceptionResult<TResult, TException>(Expression));
+        IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>() => 
+            NewResult(new ExceptionResult<TResult, TException>(Expression));
 
-        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>() => Add(new ExceptionResult<TResult,TException>(Expression));
+        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>() => 
+            NewResult(new ExceptionResult<TResult,TException>(Expression));
         
-        IVoidResult<T> IActionResult<T>.Throws<TException>() => Add(new ExceptionResult<TResult,TException>(Expression));
+        IVoidResult<T> IActionResult<T>.Throws<TException>() => 
+            NewResult(new ExceptionResult<TResult,TException>(Expression));
 
-        IVoidResult<T> IVoidResult<T>.ThenThrows<TException>() => Add(new ExceptionResult<TResult,TException>(Expression));
+        IVoidResult<T> IVoidResult<T>.ThenThrows<TException>() => 
+            NewResult(new ExceptionResult<TResult,TException>(Expression));
 
-        IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result) => Add(new FuncResult<TResult>(result, Expression));
+        IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result) => 
+            NewResult(new FuncResult<TResult>(result, Expression));
         
-        IResult<T, TResult> IResult<T, TResult>.Then(TResult result) => Add(new FuncResult<TResult>(result, Expression));
+        IResult<T, TResult> IResult<T, TResult>.Then(TResult result) => 
+            NewResult(new FuncResult<TResult>(result, Expression));
 
-        public TResult Execute() => Results.Result;
+        public TResult Execute() => Current.Result;
         
-        private InterceptSetup<T, TResult>  Add(IResult<TResult> result)
+        private InterceptSetup<T, TResult>  NewResult(IResult<TResult> result)
         {
-            Results = Results.Add(result);
+            Current = Current.NewResult(result);
             return this;
         }
 
-        public override string ToString() => $"{Expression}: {Results}";
+        public override string ToString() => $"{Expression}: {Current}";
     }
 }

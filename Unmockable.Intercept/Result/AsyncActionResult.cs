@@ -8,7 +8,7 @@ namespace Unmockable.Result
         public AsyncActionResult(LambdaExpression expression) : base(Task.CompletedTask, expression)
         {
         }
-        public override IResult<Task> Add(IResult<Task> next) => next;
+        public override IResult<Task> NewResult(IResult<Task> next) => next;
         public override string ToString() => "Task";
     }
 }

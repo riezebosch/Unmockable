@@ -1,17 +1,13 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-
 namespace Unmockable.Matchers
 {
-    internal class NullArgument : IArgumentMatcher, IEquatable<NullArgument>
+    internal class NullArgument : IArgumentMatcher
     {
-        [ExcludeFromCodeCoverage]
-        public override int GetHashCode() => throw new InvalidOperationException();
-
+        private NullArgument()
+        {
+        }
+        
         public override string ToString() => "null";
 
-        public bool Equals(NullArgument other) => true;
-
-        public override bool Equals(object obj) => obj is NullArgument other && Equals(other);
+        public static IArgumentMatcher Single { get; } = new NullArgument();
     }
 }

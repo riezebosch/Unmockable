@@ -138,7 +138,7 @@ namespace Unmockable.Tests.Intercept
             mock.As<IUnmockable<SomeUnmockableObject>>()
                 .Invoking(x => x.Execute(m => m.Foo()))
                 .Should()
-                .Throw<NoSetupException>()
+                .Throw<SetupNotFoundException>()
                 .WithMessage("SomeUnmockableObject.Foo()");
         }
 
@@ -151,7 +151,7 @@ namespace Unmockable.Tests.Intercept
             mock.As<IUnmockable<SomeUnmockableObject>>()
                 .Invoking(x => x.Execute(m => m.Foo(items)))
                 .Should()
-                .Throw<NoSetupException>()
+                .Throw<SetupNotFoundException>()
                 .WithMessage("SomeUnmockableObject.Foo([1, 2, 3, 4])");
         }
             
@@ -163,7 +163,7 @@ namespace Unmockable.Tests.Intercept
             mock.As<IUnmockable<SomeUnmockableObject>>()
                 .Invoking(x => x.Execute(m => m.Foo(3, null)))
                 .Should()
-                .Throw<NoSetupException>()
+                .Throw<SetupNotFoundException>()
                 .WithMessage("SomeUnmockableObject.Foo(3, null)");
         }
             
@@ -175,7 +175,7 @@ namespace Unmockable.Tests.Intercept
             mock.As<IUnmockable<SomeUnmockableObject>>()
                 .Invoking(x => x.Execute(m => m.Dummy))
                 .Should()
-                .Throw<NoSetupException>()
+                .Throw<SetupNotFoundException>()
                 .WithMessage("SomeUnmockableObject.Dummy");
         }
 

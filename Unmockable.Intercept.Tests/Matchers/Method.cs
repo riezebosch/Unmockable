@@ -2,9 +2,10 @@ using System;
 using System.Linq.Expressions;
 using FluentAssertions;
 using Unmockable.Exceptions;
+using Unmockable.Matchers;
 using Xunit;
 
-namespace Unmockable.Tests.LambdaExtensions
+namespace Unmockable.Tests.Matchers
 {
     public static class Method
     {

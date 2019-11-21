@@ -44,7 +44,8 @@ namespace Unmockable.Tests.Intercept
             var mock = new Intercept<SomeUnmockableObject>();
             mock.Setup(m => m.Bar(5))
                 .Throws<FileNotFoundException>()
-                .ThenThrows<DirectoryNotFoundException>();
+                .ThenThrows<DirectoryNotFoundException>()
+                .ThenThrows<InvalidDataException>();
 
             var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
             sut.Invoking(x => x.Execute(m => m.Bar(5)))
@@ -54,6 +55,10 @@ namespace Unmockable.Tests.Intercept
             sut.Invoking(x => x.Execute(m => m.Bar(5)))
                 .Should()
                 .Throw<DirectoryNotFoundException>();
+            
+            sut.Invoking(x => x.Execute(m => m.Bar(5)))
+                .Should()
+                .Throw<InvalidDataException>();
 
             mock.Verify();
         }

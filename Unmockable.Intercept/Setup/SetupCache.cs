@@ -21,7 +21,7 @@ namespace Unmockable.Setup
             var key = m.ToMatcher();
             if (!_setups.TryGetValue(key, out var setup))
             {
-                throw new NoSetupException(key.ToString());
+                throw new SetupNotFoundException(key.ToString());
             }
 
             return (ISetup<TResult>)setup;

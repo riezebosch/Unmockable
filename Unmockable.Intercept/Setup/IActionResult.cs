@@ -7,9 +7,4 @@ namespace Unmockable.Setup
         IVoidResult<T> Throws<TException>() 
             where TException: Exception, new();
     }
-
-    public interface IVoidResult<T> : IIntercept<T>
-    {
-        IVoidResult<T> ThenThrows<TException>() where TException : Exception, new();
-    }
 }

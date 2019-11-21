@@ -4,6 +4,6 @@ namespace Unmockable.Result
     {
         T Result { get; }
         bool IsDone { get; }
-        IResult<T> Add(IResult<T> next);
+        IResult<T> NewResult(IResult<T> next);
     }
 }
