@@ -70,7 +70,7 @@ public class SomeLogic
 }
 ```
 
-Execute using an expression:
+Wrap the execution of a method in an expression:
 
 ```c#
 public async Task DoSomething(int input)
@@ -90,8 +90,7 @@ and the [`AzureServiceTokenProvider`](https://github.com/Azure/azure-sdk-for-net
 Inject an interceptor from a test using [Unmockable.Intercept](https://www.nuget.org/packages/Unmockable.Intercept/):
 
 ```c#
-var client = new Intercept<HttpClient>();
-client
+var client = Interceptor.For<HttpClient>()
     .Setup(x => x.DownloadAsync(...))
     .Returns(...);
 
@@ -100,6 +99,8 @@ await target.DoSomething(3);
 
 client.Verify();
 ```
+
+**Note:** Since `v3` the API has changed in `Interceptor.For` to generate an interceptor for some unmockable.
 
 Only strict 'mocks' are supported, meaning all invocations require setup, and all setups demand invocation.
 Using strict mocks saves you from `NullReferenceExceptions` and makes verification easy.
@@ -204,5 +205,6 @@ If you don't like this change in your public API, you can extract an interface a
 include the second method (which is a good idea anyway), or you mark the overloaded method internal and
 expose it to your test project with the `[InternalsVisibleTo]` attribute.
 
+---
 
 Happy coding!

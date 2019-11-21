@@ -10,8 +10,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void NoResult()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Foo());
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo());
 
             mock.As<IUnmockable<SomeUnmockableObject>>()
                 .Invoking(x => x.Execute(m => m.Foo()))
@@ -23,8 +24,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static async Task NoResultAsync()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.FooAsync());
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.FooAsync());
 
             await mock.As<IUnmockable<SomeUnmockableObject>>()
                 .Invoking(x => x.Execute(m => m.FooAsync()))
@@ -36,8 +38,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void Then()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Foo())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo())
                 .Returns(5)
                 .Then(6);
 
@@ -56,8 +59,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void MoreThen()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Foo())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo())
                 .Returns(5)
                 .Then(6);
 
@@ -73,8 +77,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void AsyncThen()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.FooAsync())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.FooAsync())
                 .Returns(5)
                 .Then(6);
 
@@ -95,8 +100,8 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void MoreInvocationsOnSingleResult()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
                 .Setup(m => m.Foo())
                 .Returns(3);
 

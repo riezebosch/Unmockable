@@ -10,13 +10,14 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void FuncThrows()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
                 .Setup(m => m.Foo())
                 .Throws<FileNotFoundException>();
 
-            var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
-            sut.Invoking(x => x.Execute(m => m.Foo()))
+            mock
+                .As<IUnmockable<SomeUnmockableObject>>()
+                .Invoking(x => x.Execute(m => m.Foo()))
                 .Should()
                 .Throw<FileNotFoundException>();
 
@@ -26,12 +27,14 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void ActionThrows()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Bar(5))
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Bar(5))
                 .Throws<FileNotFoundException>();
 
-            var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
-            sut.Invoking(x => x.Execute(m => m.Bar(5)))
+            mock
+                .As<IUnmockable<SomeUnmockableObject>>()
+                .Invoking(x => x.Execute(m => m.Bar(5)))
                 .Should()
                 .Throw<FileNotFoundException>();
 
@@ -41,8 +44,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void ActionThrowsThenThrows()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Bar(5))
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Bar(5))
                 .Throws<FileNotFoundException>()
                 .ThenThrows<DirectoryNotFoundException>()
                 .ThenThrows<InvalidDataException>();
@@ -66,12 +70,13 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static async Task FuncAsyncThrows()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(x => x.FooAsync())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.FooAsync())
                 .Throws<FileNotFoundException>();
 
-            var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
-            await sut.Invoking(x => x.Execute(m => m.FooAsync()))
+            await mock.As<IUnmockable<SomeUnmockableObject>>()
+                .Invoking(x => x.Execute(m => m.FooAsync()))
                 .Should()
                 .ThrowAsync<FileNotFoundException>();
 
@@ -81,8 +86,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static async Task FuncAsyncThrowsThenThrows()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(x => x.FooAsync())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.FooAsync())
                 .Throws<FileNotFoundException>()
                 .ThenThrows<DirectoryNotFoundException>();
 
@@ -100,8 +106,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static async Task ActionAsyncThrows()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(x => x.BarAsync())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.BarAsync())
                 .Throws<FileNotFoundException>();
 
             var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
@@ -115,8 +122,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void ThenThrows()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Foo())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo())
                 .Returns(5)
                 .ThenThrows<FileNotFoundException>();
 
@@ -133,8 +141,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static async Task AsyncThenThrows()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.FooAsync())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.FooAsync())
                 .Returns(5)
                 .ThenThrows<FileNotFoundException>();
 

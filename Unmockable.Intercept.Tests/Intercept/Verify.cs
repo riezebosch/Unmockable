@@ -10,8 +10,8 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void Executed()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
                 .Setup(m => m.Foo())
                 .Returns(5);
                 
@@ -24,8 +24,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void NotExecuted()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Foo())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo())
                 .Returns(3);
 
             mock.Invoking(x => x.Verify())
@@ -37,8 +38,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void MultipleNotExecuted()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Foo())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo())
                 .Returns(3)
                 .Then(4);
 
@@ -51,8 +53,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void MultipleNotAllExecuted()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Foo())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo())
                 .Returns(3)
                 .Then(4);
 
@@ -68,8 +71,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void ExceptionNotExecuted()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Foo())
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo())
                 .Throws<FileNotFoundException>();
 
             mock.Invoking(x => x.Verify())
@@ -81,8 +85,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void ActionNotExecuted()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Bar(Arg.Ignore<int>()));
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Bar(Arg.Ignore<int>()));
 
             mock.Invoking(x => x.Verify())
                 .Should()
@@ -93,8 +98,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void AsyncFuncNotExecuted()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.FooAsync(3))
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.FooAsync(3))
                 .Returns(5);
 
             mock.Invoking(x => x.Verify())
@@ -106,8 +112,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void AsyncActionNotExecuted()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.BarAsync());
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.BarAsync());
 
             mock.Invoking(x => x.Verify())
                 .Should()
@@ -118,8 +125,9 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void PropertyNotExecuted()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
-            mock.Setup(m => m.Dummy)
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Dummy)
                 .Returns(4);
 
             mock.Invoking(x => x.Verify())
@@ -131,7 +139,7 @@ namespace Unmockable.Tests.Intercept
         [Fact]
         public static void NoResultNotExecuted()
         {
-            var mock = new Intercept<SomeUnmockableObject>();
+            var mock = Interceptor.For<SomeUnmockableObject>();
             mock.Setup(m => m.Foo());
 
             mock.Invoking(x => x.Verify())

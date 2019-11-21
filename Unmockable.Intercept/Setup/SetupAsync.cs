@@ -4,12 +4,12 @@ using Unmockable.Result;
 
 namespace Unmockable.Setup
 {
-    internal class InterceptSetupAsync<T, TResult> : 
-        InterceptSetup<T, Task<TResult>>, 
+    internal class SetupAsync<T, TResult> : 
+        Setup<T, Task<TResult>>, 
         IFuncResult<T, TResult>,
         IResult<T, TResult>
     {
-        public InterceptSetupAsync(IIntercept<T> parent, LambdaExpression expression) : base(parent, expression, new UninitializedResult<Task<TResult>>(expression))
+        public SetupAsync(IIntercept<T> parent, LambdaExpression expression) : base(parent, expression, new UninitializedResult<Task<TResult>>(expression))
         {
         }
 
