@@ -1,14 +1,13 @@
 using System.Linq.Expressions;
-using Unmockable.Setup;
 
 namespace Unmockable.Result
 {
-    internal class ActionResult : FuncResult<Nothing>
+    internal class ActionResult : FuncResult<Void>
     {
-        public ActionResult(LambdaExpression expression) : base(Nothing.Empty, expression)
+        public ActionResult(LambdaExpression expression) : base(new Void(), expression)
         {
         }
-        public override IResult<Nothing> Add(IResult<Nothing> next) => next;
+        public override IResult<Void> Add(IResult<Void> next) => next;
         public override string ToString() => "void";
     }
 }

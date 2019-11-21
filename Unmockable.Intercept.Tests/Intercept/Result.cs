@@ -16,7 +16,7 @@ namespace Unmockable.Tests.Intercept
             mock.As<IUnmockable<SomeUnmockableObject>>()
                 .Invoking(x => x.Execute(m => m.Foo()))
                 .Should()
-                .Throw<NoResultsSetupException>()
+                .Throw<UninitializedFuncException>()
                 .WithMessage("m => m.Foo()");
         }
             
@@ -29,7 +29,7 @@ namespace Unmockable.Tests.Intercept
             await mock.As<IUnmockable<SomeUnmockableObject>>()
                 .Invoking(x => x.Execute(m => m.FooAsync()))
                 .Should()
-                .ThrowAsync<NoResultsSetupException>()
+                .ThrowAsync<UninitializedFuncException>()
                 .WithMessage("m => m.FooAsync()");
         }
 
