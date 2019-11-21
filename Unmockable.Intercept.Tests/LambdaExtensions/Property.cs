@@ -33,5 +33,14 @@ namespace Unmockable.Tests.LambdaExtensions
 
             m.ToMatcher().Should().NotBe(n.ToMatcher());
         }
+        
+        [Fact]
+        public static void NotEqualsOtherType()
+        {
+            Expression<Func<SomeUnmockableObject, int>> m = x => x.Dummy;
+            Expression<Func<SomeUnmockableOther, int>> n = x => x.Dummy;
+
+            m.ToMatcher().Should().NotBe(n.ToMatcher());
+        }
     }
 }
