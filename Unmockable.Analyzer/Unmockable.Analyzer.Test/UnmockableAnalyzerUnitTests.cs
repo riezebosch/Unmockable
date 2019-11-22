@@ -42,7 +42,7 @@ namespace Unmockable.Analyzer.Test
             var expected = new DiagnosticResult
             {
                 Id = "UnmockableAnalyzer",
-                Message = String.Format("Type name '{0}' contains lowercase letters", "TypeName"),
+                Message = "Member 'TypeName' is virtual",
                 Severity = DiagnosticSeverity.Warning,
                 Locations =
                     new[] {
