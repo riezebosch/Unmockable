@@ -27,16 +27,21 @@ namespace Unmockable.Analyzer.Test
         {
             var test = @"
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Diagnostics;
+    using Unmockable;
 
     namespace ConsoleApplication1
     {
+        class SomeObject
+        {
+            public int Foo() => 3;
+        }
+
         class TypeName
-        {   
+        {
+            public int Do(IUnmockable<SomeObject> some)
+            {
+                return some.Execute(m => m.Foo());
+            }
         }
     }";
             var expected = new DiagnosticResult
