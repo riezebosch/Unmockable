@@ -7,7 +7,7 @@ namespace Unmockable.Matchers
     {
         public static IUnmockableMatcher ToMatcher(this LambdaExpression m) => m.Body switch
         {
-            MethodCallExpression body => (IUnmockableMatcher)new MethodMatcher(body),
+            MethodCallExpression body => new MethodMatcher(body),
             MemberExpression body => new PropertyMatcher(body),
             _ => throw new NotSupportedExpressionException(m.ToString())
         };

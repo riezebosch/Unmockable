@@ -153,8 +153,56 @@ I tried to add caching here, but that turns out not to be a sinecure.
 ## Matchers
 
 Collection arguments get unwrapped when matching the actual call with provided setups! Value types, anonymous types _and_
-classes with a custom `GetHashCode()` & `Equals()` should be safe. You can do custom matching with `Arg.Ignore<T>()` and `Arg.Where<T>(x => ...)`, though the recommendation
- is to be explicit.
+classes with a custom `GetHashCode()` & `Equals()` should be safe. You can do custom matching with `Arg.Ignore<T>()`, `Arg.Where<T>(x => ...)` and `Arg.With<T>(x => ...)`,
+though the recommendation is to be explicit as possible.
+ 
+  matcher | description  
+ ---------|:-------------
+ Ignore   | ignore the actual value
+ Where    | match the actual value using the predicate
+ With     | do something like an assertion on the actual value
+
+Using explicit values in the setup:
+
+```c#
+Interceptor
+    .For<SomeUnmockableObject>()
+    .Setup(m => m.Foo(3))
+    .Returns(5);
+```
+
+When the actual value doesn't matter or is hard or impossible to setup:
+
+```c#
+Interceptor
+    .For<SomeUnmockableObject>()
+    .Setup(m => m.Foo(Arg.Ignore<int>()))
+    .Returns(5);
+```
+
+If you need some more complex matching:
+
+```c#
+Interceptor
+    .For<SomeUnmockableObject>()
+    .Setup(m => m.Foo(Arg.Where<int>(x => x > 5 && x <= 10)))
+    .Returns(5);
+```
+
+Assertion on the arguments is done using the `With` matcher.
+This is a bit of a combination of `Ignore` and `Where`,
+since you receive the value in the lambda but do not provide a result for the matcher.
+
+The assertion should throw an exception when the actual value does not meet your expectations.
+
+```c#
+Interceptor
+    .For<SomeUnmockableObject>()
+    .Setup(m => m.Foo(Arg.With<int>(x => x.Should().Be(3, ""))))
+    .Returns(5);
+```
+
+Mind that you need to specify values for all optionals also since expression trees may not contain calls that uses optional arguments. 
 
 ## Optional arguments not allowed in expressions
 

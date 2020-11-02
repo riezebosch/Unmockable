@@ -20,7 +20,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="..\README.md">
+        <Content Include="../README.md">
             <Pack>true</Pack>
             <PackagePath>\</PackagePath>
         </Content>

@@ -9,8 +9,9 @@ namespace Unmockable.Matchers
             arg is MethodCallExpression call && call.Method.DeclaringType == typeof(Arg)
                 ? call.Method.Name switch
                 {
-                    nameof(Arg.Ignore) => (IArgumentMatcher)new IgnoreArgument(),
+                    nameof(Arg.Ignore) => new IgnoreArgument() as IArgumentMatcher,
                     nameof(Arg.Where) => new LambdaArgument(call.Arguments[0]),
+                    nameof(Arg.With) => new ActionArgument(call.Arguments[0]),
                     _ => throw new InvalidOperationException()
                 }
                 : null;

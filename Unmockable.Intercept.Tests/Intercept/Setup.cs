@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Unmockable.Exceptions;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Unmockable.Tests.Intercept
 {
@@ -119,6 +120,36 @@ namespace Unmockable.Tests.Intercept
                 .Be(5);
 
             mock.Verify();
+        }
+        
+        [Fact]
+        public static void With()
+        {
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo(Arg.With<int>(x => x.Should().Be(3, "that's what it's always been"))))
+                .Returns(5);
+
+            mock.As<IUnmockable<SomeUnmockableObject>>()
+                .Execute(x => x.Foo(3))
+                .Should()
+                .Be(5);
+
+            mock.Verify();
+        }
+        
+        [Fact]
+        public static void WithException()
+        {
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(m => m.Foo(Arg.With<int>(x => x.Should().Be(3, ""))))
+                .Returns(5);
+
+            mock.As<IUnmockable<SomeUnmockableObject>>()
+                .Invoking(x => x.Execute(m => m.Foo(13)))
+                .Should()
+                .Throw<XunitException>();
         }
 
         [Fact]

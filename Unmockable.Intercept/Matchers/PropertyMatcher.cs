@@ -14,6 +14,6 @@ namespace Unmockable.Matchers
             && _body.Member.Name == other._body.Member.Name;
         public override int GetHashCode() => HashCode.Combine(_body.Member.DeclaringType, _body.Member.Name);
         public override bool Equals(object obj) => Equals(obj as PropertyMatcher);
-        public override string ToString() => $"{_body.Member.DeclaringType.Name}.{_body.Member.Name}";
+        public override string ToString() => $"{_body.Member.DeclaringType!.Name}.{_body.Member.Name}";
     }
 }
