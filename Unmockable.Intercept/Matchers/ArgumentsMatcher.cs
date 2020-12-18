@@ -9,11 +9,14 @@ namespace Unmockable.Matchers
     {
         private readonly IEnumerable<IArgumentMatcher> _arguments;
 
-        public ArgumentsMatcher(IEnumerable<Expression> arguments) => _arguments = arguments.Select(ToMatcher);
+        public ArgumentsMatcher(IEnumerable<Expression> arguments) => 
+            _arguments = arguments.Select(ToMatcher);
 
-        public override string ToString() => string.Join(", ", _arguments);
+        public override string ToString() => 
+            string.Join(", ", _arguments);
 
-        public bool Equals(ArgumentsMatcher other) => _arguments!.SequenceEqual(other._arguments);
+        public bool Equals(ArgumentsMatcher other) =>
+            _arguments!.SequenceEqual(other._arguments);
 
         private static IArgumentMatcher ToMatcher(Expression arg) =>
             ArgMatcherFactory.Create(arg) ?? ValueMatcherFactory.Create(arg);

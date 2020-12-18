@@ -8,7 +8,7 @@ namespace Unmockable.Setup
 {
     internal class SetupCache
     {
-        private readonly IDictionary<IUnmockableMatcher, ISetup> _setups = new Dictionary<IUnmockableMatcher, ISetup>();
+        private readonly IDictionary<IMemberMatcher, ISetup> _setups = new Dictionary<IMemberMatcher, ISetup>();
 
         public TItem Store<TItem>(TItem setup) where TItem: ISetup
         {
@@ -19,12 +19,9 @@ namespace Unmockable.Setup
         public ISetup<TResult> Load<TResult>(LambdaExpression m)
         {
             var key = m.ToMatcher();
-            if (!_setups.TryGetValue(key, out var setup))
-            {
-                throw new SetupNotFoundException(key.ToString());
-            }
-
-            return (ISetup<TResult>)setup;
+            return _setups.TryGetValue(key, out var setup)
+                ? (ISetup<TResult>) setup
+                : throw new SetupNotFoundException(key.ToString());
         }
 
         public void Verify()

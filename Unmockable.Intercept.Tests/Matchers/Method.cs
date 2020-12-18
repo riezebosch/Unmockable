@@ -24,7 +24,7 @@ namespace Unmockable.Tests.Matchers
             Expression<Func<int>> m = () => 3;
             m.Invoking(x => x.ToMatcher())
                 .Should()
-                .Throw<NotSupportedExpressionException>()
+                .Throw<UnsupportedExpressionException>()
                 .WithMessage(m.ToString());
         }
         

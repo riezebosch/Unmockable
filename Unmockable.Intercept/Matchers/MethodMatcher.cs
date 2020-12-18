@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Unmockable.Matchers
 {
-    internal class MethodMatcher : IUnmockableMatcher, IEquatable<MethodMatcher>
+    internal class MethodMatcher : IMemberMatcher, IEquatable<MethodMatcher>
     {
         private readonly MethodCallExpression _body;
         private readonly ArgumentsMatcher _arguments;

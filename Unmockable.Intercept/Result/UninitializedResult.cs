@@ -11,7 +11,7 @@ namespace Unmockable.Result
 
         public T Result => throw new UninitializedFuncException(_expression.ToString());
         public bool IsDone => false;
-        public IResult<T> NewResult(IResult<T> next) => next;
+        public IResult<T> Next(IResult<T> next) => next;
         public override string ToString() => "no results setup";
     }
 }

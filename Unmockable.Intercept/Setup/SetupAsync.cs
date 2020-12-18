@@ -9,21 +9,26 @@ namespace Unmockable.Setup
         IFuncResult<T, TResult>,
         IResult<T, TResult>
     {
-        public SetupAsync(IIntercept<T> parent, LambdaExpression expression) : base(parent, expression, new UninitializedResult<Task<TResult>>(expression))
+        public SetupAsync(IIntercept<T> interceptor, LambdaExpression expression) :
+            base(interceptor, expression, new UninitializedResult<Task<TResult>>(expression))
         {
         }
 
-        IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result) => NewResult(new AsyncFuncResult<TResult>(result, Expression));
+        IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result) => 
+            Return(new AsyncFuncResult<TResult>(result, Expression));
 
-        IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>() => NewResult(new ExceptionResult<Task<TResult>,TException>(Expression));
+        IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>() => 
+            Return(new ExceptionResult<Task<TResult>,TException>(Expression));
 
-        IResult<T, TResult> IResult<T, TResult>.Then(TResult result) => NewResult(new AsyncFuncResult<TResult>(result, Expression));
+        IResult<T, TResult> IResult<T, TResult>.Then(TResult result) => 
+            Return(new AsyncFuncResult<TResult>(result, Expression));
         
-        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>() => NewResult(new ExceptionResult<Task<TResult>,TException>(Expression));
+        IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>() => 
+            Return(new ExceptionResult<Task<TResult>,TException>(Expression));
         
-        private IResult<T, TResult> NewResult(IResult<Task<TResult>> result)
+        private IResult<T, TResult> Return(IResult<Task<TResult>> result)
         {
-            Current = Current.NewResult(result);
+            Current = Current.Next(result);
             return this;
         }
     }

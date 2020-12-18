@@ -7,10 +7,8 @@ namespace Unmockable.Result
     {
         private readonly LambdaExpression _expression;
 
-        public ExceptionResult(LambdaExpression expression)
-        {
+        public ExceptionResult(LambdaExpression expression) => 
             _expression = expression;
-        }
 
         public T Result
         {
@@ -22,7 +20,9 @@ namespace Unmockable.Result
         }
 
         public bool IsDone { get; private set; }
-        public IResult<T> NewResult(IResult<T> next) => new MultipleResults<T>(_expression).NewResult(this).NewResult(next);
-        public override string ToString() => typeof(TException).Name;
+        public IResult<T> Next(IResult<T> next) => 
+            new MultipleResults<T>(_expression).Next(this).Next(next);
+        public override string ToString() => 
+            typeof(TException).Name;
     }
 }

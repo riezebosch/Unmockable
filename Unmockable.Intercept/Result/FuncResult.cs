@@ -24,10 +24,10 @@ namespace Unmockable.Result
             _expression = expression;
         }
 
-        public virtual IResult<T> NewResult(IResult<T> next) => 
+        public virtual IResult<T> Next(IResult<T> next) => 
             new MultipleResults<T>(_expression)
-                .NewResult(this)
-                .NewResult(next);
+                .Next(this)
+                .Next(next);
         public override string ToString() => Result!.ToString();
     }
 }

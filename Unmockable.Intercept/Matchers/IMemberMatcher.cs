@@ -1,6 +1,6 @@
 namespace Unmockable.Matchers
 {
-    internal interface IUnmockableMatcher
+    internal interface IMemberMatcher
     {
         // Only using Equals and GetHashCode on implementing classes
     }

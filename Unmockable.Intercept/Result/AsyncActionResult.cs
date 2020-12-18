@@ -5,10 +5,11 @@ namespace Unmockable.Result
 {
     internal class AsyncActionResult : FuncResult<Task>
     {
-        public AsyncActionResult(LambdaExpression expression) : base(Task.CompletedTask, expression)
+        public AsyncActionResult(LambdaExpression expression) : 
+            base(Task.CompletedTask, expression)
         {
         }
-        public override IResult<Task> NewResult(IResult<Task> next) => next;
+        public override IResult<Task> Next(IResult<Task> next) => next;
         public override string ToString() => "Task";
     }
 }

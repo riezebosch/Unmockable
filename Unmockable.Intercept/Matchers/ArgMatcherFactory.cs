@@ -10,8 +10,8 @@ namespace Unmockable.Matchers
                 ? call.Method.Name switch
                 {
                     nameof(Arg.Ignore) => new IgnoreArgument() as IArgumentMatcher,
-                    nameof(Arg.Where) => new LambdaArgument(call.Arguments[0]),
-                    nameof(Arg.With) => new ActionArgument(call.Arguments[0]),
+                    nameof(Arg.Where) => new WhereArgument((LambdaExpression) call.Arguments[0]),
+                    nameof(Arg.With) => new WithArgument((LambdaExpression) call.Arguments[0]),
                     _ => throw new InvalidOperationException()
                 }
                 : null;
