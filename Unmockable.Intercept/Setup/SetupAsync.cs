@@ -16,19 +16,16 @@ namespace Unmockable.Setup
 
         IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result) => 
             Return(new AsyncFuncResult<TResult>(result, Expression));
-
         IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>() => 
             Return(new ExceptionResult<Task<TResult>,TException>(Expression));
-
         IResult<T, TResult> IResult<T, TResult>.Then(TResult result) => 
             Return(new AsyncFuncResult<TResult>(result, Expression));
-        
         IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>() => 
             Return(new ExceptionResult<Task<TResult>,TException>(Expression));
         
         private IResult<T, TResult> Return(IResult<Task<TResult>> result)
         {
-            Current = Current.Next(result);
+            Result = Result.Add(result);
             return this;
         }
     }

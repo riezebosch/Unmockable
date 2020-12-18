@@ -9,6 +9,6 @@ namespace Unmockable.Result
         {
         }
         
-        public override IResult<Void> Next(IResult<Void> next) => next;
+        public override IResult<Void> Add(IResult<Void> result) => result;
     }
 }

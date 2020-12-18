@@ -7,7 +7,7 @@ namespace Unmockable.Result
         private readonly T _result;
         private readonly LambdaExpression _expression;
 
-        public T Result
+        public T Value
         {
             get
             {
@@ -24,10 +24,11 @@ namespace Unmockable.Result
             _expression = expression;
         }
 
-        public virtual IResult<T> Next(IResult<T> next) => 
+        public virtual IResult<T> Add(IResult<T> result) => 
             new MultipleResults<T>(_expression)
-                .Next(this)
-                .Next(next);
-        public override string ToString() => Result!.ToString();
+                .Add(this)
+                .Add(result);
+        public override string ToString() => 
+            Value!.ToString();
     }
 }

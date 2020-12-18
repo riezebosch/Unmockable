@@ -10,6 +10,6 @@ namespace Unmockable.Result
         {
         }
 
-        public override string ToString() => Result.Result!.ToString();
+        public override string ToString() => Value.Result!.ToString();
     }
 }

@@ -9,7 +9,9 @@ namespace Unmockable.Result
             base(Task.CompletedTask, expression)
         {
         }
-        public override IResult<Task> Next(IResult<Task> next) => next;
-        public override string ToString() => "Task";
+        public override IResult<Task> Add(IResult<Task> result) => 
+            result;
+        public override string ToString() => 
+            "Task";
     }
 }

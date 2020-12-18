@@ -12,19 +12,20 @@ namespace Unmockable.Setup
         IVoidResult<T>,
         IActionResult<T>
     {
-        protected IResult<TResult> Current { get; set; } 
+        protected IResult<TResult> Result { get; set; } 
 
         private readonly IIntercept<T> _interceptor;
 
         public LambdaExpression Expression { get; }
         
-        public bool IsExecuted => Current.IsDone;
+        public bool IsExecuted => 
+            Result.IsDone;
 
         public Setup(IIntercept<T> interceptor, LambdaExpression expression, IResult<TResult> result)
         {
             _interceptor = interceptor;
             Expression = expression;
-            Current = result;
+            Result = result;
         }
         IFuncResult<T, TNew> ISetupFunc<T>.Setup<TNew>(Expression<Func<T, TNew>> m) => 
             _interceptor.Setup(m);
@@ -50,7 +51,7 @@ namespace Unmockable.Setup
             Return(new ExceptionResult<TResult,TException>(Expression));
 
         TResult ISetup<TResult>.Execute() => 
-            Current.Result;
+            Result.Value;
         
         void IIntercept<T>.Verify() => 
             _interceptor.Verify();
@@ -60,11 +61,12 @@ namespace Unmockable.Setup
         void IUnmockable<T>.Execute(Expression<Action<T>> m) => 
             _interceptor.Execute(m);
 
-        public override string ToString() => $"{Expression}: {Current}";
+        public override string ToString() => 
+            $"{Expression}: {Result}";
 
         private Setup<T, TResult>  Return(IResult<TResult> result)
         {
-            Current = Current.Next(result);
+            Result = Result.Add(result);
             return this;
         }
     }
