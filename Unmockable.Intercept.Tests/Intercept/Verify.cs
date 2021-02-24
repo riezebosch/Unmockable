@@ -32,7 +32,7 @@ namespace Unmockable.Tests.Intercept
             mock.Invoking(x => x.Verify())
                 .Should()
                 .Throw<NotExecutedException>()
-                .WithMessage("m => m.Foo(): 3");
+                .WithMessage("Foo(): 3");
         }
             
         [Fact]
@@ -47,7 +47,7 @@ namespace Unmockable.Tests.Intercept
             mock.Invoking(x => x.Verify())
                 .Should()
                 .Throw<NotExecutedException>()
-                .WithMessage("m => m.Foo(): 3, 4");
+                .WithMessage("Foo(): 3, 4");
         }
             
         [Fact]
@@ -65,7 +65,7 @@ namespace Unmockable.Tests.Intercept
             mock.Invoking(x => x.Verify())
                 .Should()
                 .Throw<NotExecutedException>()
-                .WithMessage("m => m.Foo(): 4");
+                .WithMessage("Foo(): 4");
         }
             
         [Fact]
@@ -79,7 +79,7 @@ namespace Unmockable.Tests.Intercept
             mock.Invoking(x => x.Verify())
                 .Should()
                 .Throw<NotExecutedException>()
-                .WithMessage("m => m.Foo(): FileNotFoundException");
+                .WithMessage("Foo(): FileNotFoundException");
         }
             
         [Fact]
@@ -92,7 +92,7 @@ namespace Unmockable.Tests.Intercept
             mock.Invoking(x => x.Verify())
                 .Should()
                 .Throw<NotExecutedException>()
-                .WithMessage("m => m.Bar(Ignore()): void");
+                .WithMessage("Bar(ignore): void");
         }
             
         [Fact]
@@ -106,7 +106,7 @@ namespace Unmockable.Tests.Intercept
             mock.Invoking(x => x.Verify())
                 .Should()
                 .Throw<NotExecutedException>()
-                .WithMessage("m => m.FooAsync(3): 5");
+                .WithMessage("FooAsync(3): 5");
         }
             
         [Fact]
@@ -119,7 +119,7 @@ namespace Unmockable.Tests.Intercept
             mock.Invoking(x => x.Verify())
                 .Should()
                 .Throw<NotExecutedException>()
-                .WithMessage("m => m.BarAsync(): Task");
+                .WithMessage("BarAsync(): Task");
         }
             
         [Fact]
@@ -133,7 +133,7 @@ namespace Unmockable.Tests.Intercept
             mock.Invoking(x => x.Verify())
                 .Should()
                 .Throw<NotExecutedException>()
-                .WithMessage("m => m.Dummy: 4");
+                .WithMessage("Dummy: 4");
         }
 
         [Fact]
@@ -145,7 +145,7 @@ namespace Unmockable.Tests.Intercept
             mock.Invoking(x => x.Verify())
                 .Should()
                 .Throw<NotExecutedException>()
-                .WithMessage("m => m.Foo(): no results setup");
+                .WithMessage("Foo(): no results setup");
         }
     }
 }

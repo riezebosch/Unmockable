@@ -177,19 +177,20 @@ namespace Unmockable.Tests.Intercept
                 .Invoking(x => x.Execute(m => m.Foo()))
                 .Should()
                 .Throw<SetupNotFoundException>()
-                .WithMessage("SomeUnmockableObject.Foo()");
+                .WithMessage("Foo()");
         }
 
         [Fact]
         public static void NoSetupEnumerable()
         {
+            var items = new[] {1, 2, 3, 4};
             Interceptor
                 .For<SomeUnmockableObject>()
                 .As<IUnmockable<SomeUnmockableObject>>()
-                .Invoking(x => x.Execute(m => m.Foo(new[] {1, 2, 3, 4})))
+                .Invoking(x => x.Execute(m => m.Foo(items)))
                 .Should()
                 .Throw<SetupNotFoundException>()
-                .WithMessage("SomeUnmockableObject.Foo([1, 2, 3, 4])");
+                .WithMessage("Foo([1, 2, 3, 4])");
         }
             
         [Fact]
@@ -201,7 +202,7 @@ namespace Unmockable.Tests.Intercept
                 .Invoking(x => x.Execute(m => m.Foo(3, null)))
                 .Should()
                 .Throw<SetupNotFoundException>()
-                .WithMessage("SomeUnmockableObject.Foo(3, null)");
+                .WithMessage("Foo(3, null)");
         }
             
         [Fact]
@@ -213,7 +214,7 @@ namespace Unmockable.Tests.Intercept
                 .Invoking(x => x.Execute(m => m.Dummy))
                 .Should()
                 .Throw<SetupNotFoundException>()
-                .WithMessage("SomeUnmockableObject.Dummy");
+                .WithMessage("Dummy");
         }
 
         [Fact]

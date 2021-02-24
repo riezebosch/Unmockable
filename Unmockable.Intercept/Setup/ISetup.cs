@@ -1,10 +1,10 @@
-using System.Linq.Expressions;
+using Unmockable.Matchers;
 
 namespace Unmockable.Setup
 {
     internal interface ISetup
     {
-        LambdaExpression Expression { get; }
+        IMemberMatcher Expression { get; }
         bool IsExecuted { get; }
     }
 

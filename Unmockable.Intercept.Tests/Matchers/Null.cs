@@ -1,7 +1,5 @@
-using System;
-using System.Linq.Expressions;
 using FluentAssertions;
-using Unmockable.Matchers;
+using Unmockable.Exceptions;
 using Xunit;
 
 namespace Unmockable.Tests.Matchers
@@ -9,39 +7,25 @@ namespace Unmockable.Tests.Matchers
     public static class Null
     {
         [Fact]
-        public static void EqualsNull()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
-            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(3, null);
+        public static void EqualsNull() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Foo(3, null))
+                .Returns(5)
+                .Execute(x => x.Foo(3, null))
+                .Should()
+                .Be(5);
 
-            m.ToMatcher().Should().Be(n.ToMatcher());
-        }
-
-        [Fact]
-        public static void NotInterfereWithOtherArguments()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
-            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(4, null);
-
-            m.ToMatcher().Should().NotBe(n.ToMatcher());
-        }
+        
         
         [Fact]
-        public static void NotEqualValue()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3, null);
-            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(3, new Person());
-
-            m.ToMatcher().Should().NotBe(n.ToMatcher());
-        }
-        
-        [Fact]
-        public static void ValueDoesNotEqualNull()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(3, new Person());
-            Expression<Func<SomeUnmockableObject, int>> n = x => x.Foo(3, null);
-
-            m.ToMatcher().Should().NotBe(n.ToMatcher());
-        }
+        public static void ValueDoesNotEqualNull() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Foo(3, null))
+                .Returns(5)
+                .Invoking(m => m.Execute(x => x.Foo(3, new Person())))
+                .Should()
+                .Throw<SetupNotFoundException>();
     }
 }

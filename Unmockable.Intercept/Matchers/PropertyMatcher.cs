@@ -17,6 +17,6 @@ namespace Unmockable.Matchers
         public override bool Equals(object obj) =>
             Equals(obj as PropertyMatcher);
         public override string ToString() =>
-            $"{_body.Member.DeclaringType!.Name}.{_body.Member.Name}";
+            _body.Member.Name;
     }
 }

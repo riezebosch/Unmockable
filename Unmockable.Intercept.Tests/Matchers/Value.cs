@@ -21,19 +21,26 @@ namespace Unmockable.Tests.Matchers
         public static void EqualsCapturedOuterVariable()
         {
             const int i = 3;
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
-            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(i);
-
-            m.ToMatcher().Should().Be(n.ToMatcher());
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Foo(3))
+                .Returns(5)
+                .Execute(x => x.Foo(i))
+                .Should()
+                .Be(5);
         }
 
         [Fact]
         public static void EqualsResult()
         {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
-            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(new Func<int>(() => 3)());
-
-            m.ToMatcher().Should().Be(n.ToMatcher());
+            Func<int> func = () => 3;
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Foo(3))
+                .Returns(5)
+                .Execute(x => x.Foo(func()))
+                .Should()
+                .Be(5);
         }
     }
 }

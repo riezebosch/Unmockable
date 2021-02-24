@@ -1,8 +1,5 @@
-using System;
-using System.Linq.Expressions;
 using FluentAssertions;
 using Unmockable.Exceptions;
-using Unmockable.Matchers;
 using Xunit;
 
 namespace Unmockable.Tests.Matchers
@@ -10,32 +7,32 @@ namespace Unmockable.Tests.Matchers
     public static class Method
     {
         [Fact]
-        public static void EqualsMethod()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo();
-            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo();
-
-            m.ToMatcher().Should().Be(n.ToMatcher());
-        }
+        public static void EqualsMethod() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Foo())
+                .Returns(5)
+                .Execute(x => x.Foo())
+                .Should()
+                .Be(5);
 
         [Fact]
-        public static void OnlyMethodCallsSupported()
-        {
-            Expression<Func<int>> m = () => 3;
-            m.Invoking(x => x.ToMatcher())
+        public static void OnlyMethodCallsSupported() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Invoking(m => m.Setup(x => 3))
                 .Should()
                 .Throw<UnsupportedExpressionException>()
-                .WithMessage(m.ToString());
-        }
-        
+                .WithMessage("x => 3");
+
         [Fact]
-        public static void NotEqualsFromOtherType()
-        {
-            Expression<Func<int>> m = () => int.Parse("a");
-            Expression<Func<double>> n = () => double.Parse("a");
-
-            m.ToMatcher().Should().NotBe(n.ToMatcher());
-        }
-
+        public static void NotEqualsFromOtherType() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => int.Parse("a"))
+                .Returns(5)
+                .Invoking(m => m.Execute(x => double.Parse("a")))
+                .Should()
+                .Throw<SetupNotFoundException>();
     }
 }

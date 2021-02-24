@@ -24,6 +24,6 @@ namespace Unmockable.Matchers
 
         public override bool Equals(object obj) => Equals(obj as MethodMatcher);  
 
-        public override string ToString() => $"{_body.Method.DeclaringType!.Name}.{_body.Method.Name}({_arguments})";
+        public override string ToString() => $"{_body.Method.Name}({_arguments})";
     }
 }

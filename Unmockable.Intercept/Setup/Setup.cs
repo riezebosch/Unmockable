@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Unmockable.Matchers;
 using Unmockable.Result;
 
 namespace Unmockable.Setup
@@ -16,12 +17,12 @@ namespace Unmockable.Setup
 
         private readonly IIntercept<T> _interceptor;
 
-        public LambdaExpression Expression { get; }
+        public IMemberMatcher Expression { get; }
         
         public bool IsExecuted => 
             Result.IsDone;
 
-        public Setup(IIntercept<T> interceptor, LambdaExpression expression, IResult<TResult> result)
+        public Setup(IIntercept<T> interceptor, IMemberMatcher expression, IResult<TResult> result)
         {
             _interceptor = interceptor;
             Expression = expression;
@@ -38,17 +39,17 @@ namespace Unmockable.Setup
             _interceptor.Setup(m);
 
         IResult<T, TResult> IFuncResult<T, TResult>.Returns(TResult result) => 
-            Return(new FuncResult<TResult>(result, Expression));
+            Return(new FuncResult<TResult>(result));
         IResult<T, TResult> IFuncResult<T, TResult>.Throws<TException>() => 
-            Return(new ExceptionResult<TResult, TException>(Expression));
+            Return(new ExceptionResult<TResult, TException>());
         IResult<T, TResult> IResult<T, TResult>.Then(TResult result) => 
-            Return(new FuncResult<TResult>(result, Expression));
+            Return(new FuncResult<TResult>(result));
         IResult<T, TResult> IResult<T, TResult>.ThenThrows<TException>() => 
-            Return(new ExceptionResult<TResult,TException>(Expression));
+            Return(new ExceptionResult<TResult,TException>());
         IVoidResult<T> IActionResult<T>.Throws<TException>() => 
-            Return(new ExceptionResult<TResult,TException>(Expression));
+            Return(new ExceptionResult<TResult,TException>());
         IVoidResult<T> IVoidResult<T>.ThenThrows<TException>() => 
-            Return(new ExceptionResult<TResult,TException>(Expression));
+            Return(new ExceptionResult<TResult,TException>());
 
         TResult ISetup<TResult>.Execute() => 
             Result.Value;
@@ -66,7 +67,7 @@ namespace Unmockable.Setup
 
         private Setup<T, TResult>  Return(IResult<TResult> result)
         {
-            Result = Result.Add(result);
+            Result = Result.Add(result, Expression);
             return this;
         }
     }

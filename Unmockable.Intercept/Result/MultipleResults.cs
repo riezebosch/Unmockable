@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Unmockable.Exceptions;
+using Unmockable.Matchers;
 
 namespace Unmockable.Result
 {
     internal class MultipleResults<T> : IResult<T>
     {
-        private readonly LambdaExpression _expression;
+        private readonly IMemberMatcher _expression;
         private readonly Queue<IResult<T>> _results = new Queue<IResult<T>>();
 
-        public MultipleResults(LambdaExpression expression) => 
+        public MultipleResults(IMemberMatcher expression) => 
             _expression = expression;
 
         public T Value => 
@@ -20,7 +20,7 @@ namespace Unmockable.Result
         public bool IsDone => 
             !_results.Any();
         
-        public IResult<T> Add(IResult<T> result)
+        public IResult<T> Add(IResult<T> result, IMemberMatcher matcher)
         {
             _results.Enqueue(result);
             return this;

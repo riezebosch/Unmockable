@@ -1,7 +1,5 @@
-using System;
-using System.Linq.Expressions;
 using FluentAssertions;
-using Unmockable.Matchers;
+using Unmockable.Exceptions;
 using Xunit;
 
 namespace Unmockable.Tests.Matchers
@@ -9,39 +7,33 @@ namespace Unmockable.Tests.Matchers
     public static class Property
     {
         [Fact]
-        public static void EqualsProperty()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Dummy;
-            Expression<Func<SomeUnmockableObject, int>> n = x => x.Dummy;
+        public static void EqualsProperty() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup( x => x.Dummy)
+                .Returns(5)
+                .Execute( x => x.Dummy)
+                .Should()
+                .Be(5);
 
-            m.ToMatcher().Should().Be(n.ToMatcher());
-        }
-        
         [Fact]
-        public static void NotEqualsOtherProperty()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Dummy;
-            Expression<Func<SomeUnmockableObject, double>> n = x => x.Other;
+        public static void NotEqualsOtherProperty() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Dummy)
+                .Returns(5)
+                .Invoking(m => m.Execute(x => x.Other))
+                .Should()
+                .Throw<SetupNotFoundException>();
 
-            m.ToMatcher().Should().NotBe(n.ToMatcher());
-        }
-        
         [Fact]
-        public static void NotEqualsMethod()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Dummy;
-            Expression<Func<SomeUnmockableObject, int>> n = x => x.Foo();
-
-            m.ToMatcher().Should().NotBe(n.ToMatcher());
-        }
-        
-        [Fact]
-        public static void NotEqualsOtherType()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Dummy;
-            Expression<Func<SomeUnmockableOther, int>> n = x => x.Dummy;
-
-            m.ToMatcher().Should().NotBe(n.ToMatcher());
-        }
+        public static void NotEqualsMethod() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Dummy)
+                .Returns(5)
+                .Invoking(m => m.Execute(x => x.Foo()))
+                .Should()
+                .Throw<SetupNotFoundException>();
     }
 }

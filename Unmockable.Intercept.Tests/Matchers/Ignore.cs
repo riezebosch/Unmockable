@@ -1,7 +1,4 @@
-using System;
-using System.Linq.Expressions;
 using FluentAssertions;
-using Unmockable.Matchers;
 using Xunit;
 
 namespace Unmockable.Tests.Matchers
@@ -9,22 +6,22 @@ namespace Unmockable.Tests.Matchers
     public static class Ignore
     {
         [Fact]
-        public static void IgnoreValue()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(Arg.Ignore<int>());
-            Expression<Func<SomeUnmockableObject, int>> n = x => x.Foo(3);
+        public static void IgnoreValue() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Foo(Arg.Ignore<int>()))
+                .Returns(5)
+                .Execute(x => x.Foo(3))
+                .Should()
+                .Be(5);
 
-            m.ToMatcher().Should().Be(n.ToMatcher());
-        }
-        
         [Fact]
-        public static void String()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(Arg.Ignore<int>());
-            m.ToMatcher()
+        public static void String() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Foo(Arg.Ignore<int>()))
                 .ToString()
                 .Should()
-                .Contain("<ignore>");
-        }
+                .Contain("Foo(ignore): no results setup");
     }
 }

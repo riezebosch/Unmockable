@@ -9,7 +9,7 @@ namespace Unmockable.Matchers
         {
             MethodCallExpression body => new MethodMatcher(body),
             MemberExpression body => new PropertyMatcher(body),
-            _ => throw new UnsupportedExpressionException(m.ToString())
+            _ => throw new UnsupportedExpressionException(m)
         };
     }
 }

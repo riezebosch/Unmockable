@@ -1,14 +1,14 @@
-using System.Linq.Expressions;
+using Unmockable.Matchers;
 
 namespace Unmockable.Result
 {
     internal class ActionResult : FuncResult<Void>
     {
-        public ActionResult(LambdaExpression expression) : 
-            base(new Void(), expression)
+        public ActionResult() : 
+            base(new Void())
         {
         }
         
-        public override IResult<Void> Add(IResult<Void> result) => result;
+        public override IResult<Void> Add(IResult<Void> result, IMemberMatcher matcher) => result;
     }
 }

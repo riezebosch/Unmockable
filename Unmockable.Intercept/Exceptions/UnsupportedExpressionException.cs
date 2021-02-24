@@ -1,10 +1,12 @@
 using System;
+using System.Linq.Expressions;
 
 namespace Unmockable.Exceptions
 {
     public class UnsupportedExpressionException : Exception
     {
-        public UnsupportedExpressionException(string message) : base(message)
+        public UnsupportedExpressionException(LambdaExpression message):
+            base(message.ToString())
         {
         }
     }

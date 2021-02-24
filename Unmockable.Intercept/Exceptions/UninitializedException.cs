@@ -3,9 +3,9 @@ using Unmockable.Matchers;
 
 namespace Unmockable.Exceptions
 {
-    public class SetupNotFoundException : Exception
+    public class UninitializedException : Exception
     {
-        internal SetupNotFoundException(IMemberMatcher message):
+        internal UninitializedException(IMemberMatcher message):
             base(message.ToString())
         {
         }

@@ -1,11 +1,10 @@
-using System.Linq.Expressions;
+using Unmockable.Matchers;
 
 namespace Unmockable.Result
 {
     internal class FuncResult<T> : IResult<T>
     {
         private readonly T _result;
-        private readonly LambdaExpression _expression;
 
         public T Value
         {
@@ -18,16 +17,12 @@ namespace Unmockable.Result
 
         public bool IsDone { get; private set; }
 
-        public FuncResult(T result, LambdaExpression expression)
-        {
-            _result = result;
-            _expression = expression;
-        }
+        public FuncResult(T result) => _result = result;
 
-        public virtual IResult<T> Add(IResult<T> result) => 
-            new MultipleResults<T>(_expression)
-                .Add(this)
-                .Add(result);
+        public virtual IResult<T> Add(IResult<T> result, IMemberMatcher matcher) => 
+            new MultipleResults<T>(matcher)
+                .Add(this, matcher)
+                .Add(result, matcher);
         public override string ToString() => 
             Value!.ToString();
     }

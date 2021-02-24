@@ -14,10 +14,14 @@ namespace Unmockable.Tests.Matchers
         public static void Execute()
         {
             var args = new Stack<int>();
-            Expression<Func<SomeUnmockableObject, int>> m = y => y.Foo(Arg.With<int>(x => args.Push(x)));
-            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(3);
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup( y => y.Foo(Arg.With<int>(x => args.Push(x))))
+                .Returns(3)
+                .Execute( y => y.Foo(3))
+                .Should()
+                .Be(3);
             
-            m.ToMatcher().Should().Be(n.ToMatcher());
             args.Should()
                 .BeEquivalentTo(3);
         }

@@ -1,11 +1,12 @@
 using System;
-using System.Linq.Expressions;
+using Unmockable.Matchers;
 
 namespace Unmockable.Exceptions
 {
     public class OutOfResultsException : Exception
     {
-        public OutOfResultsException(LambdaExpression expression) : base(expression.ToString())
+        internal OutOfResultsException(IMemberMatcher expression):
+            base(expression.ToString())
         {
         }
     }
