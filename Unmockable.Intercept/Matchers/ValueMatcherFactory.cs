@@ -13,7 +13,7 @@ namespace Unmockable.Matchers
             value switch
             {
                 null => NullArgument.Single,
-                IEnumerable collection => new CollectionArgument(collection.Cast<object>()),
+                IEnumerable collection => new CollectionArgument(collection),
                 _ => new ValueArgument(value)
             };
     }

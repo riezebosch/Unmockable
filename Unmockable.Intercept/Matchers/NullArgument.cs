@@ -1,6 +1,7 @@
 namespace Unmockable.Matchers
 {
-    internal class NullArgument : IArgumentMatcher
+    internal class NullArgument:
+        IArgumentMatcher
     {
         private NullArgument()
         {

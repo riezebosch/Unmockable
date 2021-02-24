@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace Unmockable.Matchers
     {
         private readonly IEnumerable<IArgumentMatcher> _collection;
 
-        public CollectionArgument(IEnumerable<object> collection) : base(collection) =>
-            _collection = collection.Select(ValueMatcherFactory.Create);
+        public CollectionArgument(IEnumerable collection) : base(collection) =>
+            _collection = collection.Cast<object>().Select(ValueMatcherFactory.Create);
 
         [ExcludeFromCodeCoverage]
         public override int GetHashCode() =>

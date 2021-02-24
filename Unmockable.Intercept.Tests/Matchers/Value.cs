@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using FluentAssertions;
+using Unmockable.Exceptions;
 using Unmockable.Matchers;
 using Xunit;
 
@@ -9,14 +10,24 @@ namespace Unmockable.Tests.Matchers
     public static class Value
     {
         [Fact]
-        public static void EqualsValue()
-        {
-            Expression<Func<SomeUnmockableObject, int>> m = x => x.Foo(3);
-            Expression<Func<SomeUnmockableObject, int>> n = y => y.Foo(4);
+        public static void EqualsValue() => Interceptor
+            .For<SomeUnmockableObject>()
+            .Setup(x => x.Foo(3))
+            .Returns(5)
+            .Execute(y => y.Foo(3))
+            .Should()
+            .Be(5);
 
-            m.ToMatcher().Should().NotBe(n.ToMatcher());
-        }
+        [Fact]
+        public static void NotEqualsValue() => Interceptor
+            .For<SomeUnmockableObject>()
+            .Setup(x => x.Foo(3))
+            .Returns(5)
+            .Invoking(x => x.Execute(y => y.Foo(4)))
+            .Should()
+            .Throw<SetupNotFoundException>();
 
+        
         [Fact]
         public static void EqualsCapturedOuterVariable()
         {
