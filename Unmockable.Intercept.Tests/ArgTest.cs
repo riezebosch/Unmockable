@@ -1,4 +1,3 @@
-using System;
 using Unmockable.Exceptions;
 using Xunit;
 
@@ -12,11 +11,11 @@ namespace Unmockable.Tests
 
         [Fact]
         public static void WhereShouldNotBeExecuted() => 
-            Assert.Throws<PlaceholderException>(() => Arg.Where<int>(x => x == 3));
+            Assert.Throws<PlaceholderException>(() => Arg.Where<int>(_ => false));
         
         [Fact]
         public static void WithShouldNotBeExecuted() => 
-            Assert.Throws<PlaceholderException>(() => Arg.With<int>(x => throw new Exception()));
+            Assert.Throws<PlaceholderException>(() => Arg.With<int>(_ => { }));
 
     }
 }

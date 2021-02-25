@@ -1,8 +1,6 @@
 using System;
-using System.Linq.Expressions;
 using FluentAssertions;
 using Unmockable.Exceptions;
-using Unmockable.Matchers;
 using Xunit;
 
 namespace Unmockable.Tests.Matchers
