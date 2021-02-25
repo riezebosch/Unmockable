@@ -42,7 +42,7 @@ namespace Unmockable.Matchers
         public override string ToString() =>
             _pred.ToString();
 
-        private void InvokeAndUnwrap(object value)
+        private void InvokeAndUnwrap(object? value)
         {
             try
             {
