@@ -2,6 +2,7 @@
 [![codecov](https://codecov.io/gh/riezebosch/unmockable/branch/master/graph/badge.svg)](https://codecov.io/gh/riezebosch/unmockable)
 [![maintainability](https://api.codeclimate.com/v1/badges/17981601c69dcbaffd3b/maintainability)](https://codeclimate.com/github/riezebosch/Unmockable/maintainability)
 [![nuget](https://img.shields.io/nuget/v/Unmockable.svg)](https://www.nuget.org/packages/Unmockable/)
+[![stryker](https://img.shields.io/endpoint?style=flat&label=stryker&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Friezebosch%2FUnmockable%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/riezebosch/Unmockable/master)
 
 # 📢 Shout-out
 

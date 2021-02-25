@@ -1,0 +1,8 @@
+{
+  "stryker-config": {
+    "project-file": "Unmockable.Intercept.csproj",
+    "dashboard-project": "github.com/riezebosch/Unmockable",
+    "dashboard-version": "master",
+    "dashboard-module": "Intercept"
+  }
+}
