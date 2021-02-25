@@ -7,15 +7,19 @@ namespace Unmockable.Matchers
     {
         private readonly MemberExpression _body;
 
-        public PropertyMatcher(MemberExpression body) => _body = body;
-        public bool Equals(PropertyMatcher? other) => 
-            other != null
-            && _body.Member.DeclaringType == other._body.Member.DeclaringType
-            && _body.Member.Name == other._body.Member.Name;
+        public PropertyMatcher(MemberExpression body) =>
+            _body = body;
+        
         public override int GetHashCode() =>
-            HashCode.Combine(_body.Member.DeclaringType, _body.Member.Name);
+            _body.Member.GetHashCode();
+        
         public override bool Equals(object obj) =>
             Equals(obj as PropertyMatcher);
+
+        public bool Equals(PropertyMatcher? other) => 
+            other != null
+            && _body.Member == other._body.Member;
+        
         public override string ToString() =>
             _body.Member.Name;
     }
