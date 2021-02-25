@@ -37,7 +37,7 @@ for:
     - bash <(curl -s https://codecov.io/bash)
     - dotnet tool restore && cd Unmockable.Intercept.Tests && dotnet dotnet-stryker --reporters "['json']"
     - cmd: >
-        find . -name mutation-report.json | tail -1 | xargs -I% curl -X PUT https://dashboard.stryker-mutator.io/api/reports/github.com/riezebosch/Unmockable/master  -H 'Content-Type: application/json' -H 'Host: dashboard.stryker-mutator.io' -H 'X-Api-Key: '"$STRYKER_DASHBOARD_API_KEY"'' -d @%\n
+        find . -name mutation-report.json | sort | tail -1 | xargs -I% curl -X PUT https://dashboard.stryker-mutator.io/api/reports/github.com/riezebosch/Unmockable/master  -H 'Content-Type: application/json' -H 'Host: dashboard.stryker-mutator.io' -H 'X-Api-Key: '"$STRYKER_DASHBOARD_API_KEY"'' -d @%\n
   deploy:
   - provider: NuGet
     api_key:
