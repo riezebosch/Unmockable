@@ -22,10 +22,10 @@ namespace Unmockable.Matchers
         public override string ToString() =>
             $"[{string.Join(", ", _collection)}]";
 
-        public bool Equals(CollectionArgument? other) =>
-            other != null && _collection.SequenceEqual(other._collection);
+        public bool Equals(CollectionArgument other) =>
+            _collection.SequenceEqual(other._collection);
 
         public override bool Equals(object obj) =>
-            Equals(obj as CollectionArgument);
+            Equals((CollectionArgument) obj);
     }
 }

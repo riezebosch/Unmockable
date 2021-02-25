@@ -20,11 +20,10 @@ namespace Unmockable.Matchers
             _body.Method.GetHashCode();
 
         public override bool Equals(object obj) => 
-            Equals(obj as MethodMatcher);  
+            Equals((MethodMatcher) obj);  
 
-        public bool Equals(MethodMatcher? other) => 
-            other != null
-            && _body.Method == other._body.Method 
+        public bool Equals(MethodMatcher other) => 
+            _body.Method == other._body.Method 
             && _arguments.Equals(other._arguments);
 
         public override string ToString() => 

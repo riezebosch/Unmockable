@@ -14,11 +14,10 @@ namespace Unmockable.Matchers
             _body.Member.GetHashCode();
         
         public override bool Equals(object obj) =>
-            Equals(obj as PropertyMatcher);
+            Equals((PropertyMatcher) obj);
 
-        public bool Equals(PropertyMatcher? other) => 
-            other != null
-            && _body.Member == other._body.Member;
+        public bool Equals(PropertyMatcher other) => 
+            _body.Member == other._body.Member;
         
         public override string ToString() =>
             _body.Member.Name;
