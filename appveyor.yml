@@ -1,7 +1,7 @@
 version: 3.0.{build}
 pull_requests:
   do_not_increment_build_number: true
-image: Ubuntu1804
+image: Ubuntu2004
 configuration: Release
 only_commits:
   files:
@@ -9,8 +9,6 @@ only_commits:
     - Unmockable.DependencyInjection/**/*
     - Unmockable.Wrap/**/*
     - Unmockable.Intercept/**/*
-environment:
-  CODECOV_TOKEN: 7b0a3c86-501a-43d0-8e16-ee996773a3ac
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -23,10 +21,21 @@ build:
   publish_nuget: true
   verbosity: minimal
 after_test:
-  - bash <(curl -s https://codecov.io/bash)
-deploy:
-- provider: NuGet
-  api_key:
-    secure: y2c/jyVXBMLBd0ffsnuN6XjhjIS7rg1+cIbBgewTR2N6nHxby45w5/0trQYJ5hmR
-  on:
-    branch: master
+  - dotnet tool restore && cd Unmockable.Intercept.Tests && dotnet dotnet-stryker
+
+for:
+-  
+  branches:
+    only: 
+      - master
+  environment:
+    CODECOV_TOKEN: 7b0a3c86-501a-43d0-8e16-ee996773a3ac
+    STRYKER_DASHBOARD_API_KEY:
+      secure: Q9eJLUa7+LuR77kztd8ae81l1anHg6OnC53TP2texciRqb/pr34Pi4bAVKJNMP/X
+  after_test:
+    - bash <(curl -s https://codecov.io/bash)
+    - dotnet tool restore && cd Unmockable.Intercept.Tests && dotnet dotnet-stryker --reporters "['dashboard']" --dashboard-project github.com/Unmockable/Intercept/master
+  deploy:
+  - provider: NuGet
+    api_key:
+      secure: y2c/jyVXBMLBd0ffsnuN6XjhjIS7rg1+cIbBgewTR2N6nHxby45w5/0trQYJ5hmR
