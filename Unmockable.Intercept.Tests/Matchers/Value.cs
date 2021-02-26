@@ -25,7 +25,15 @@ namespace Unmockable.Tests.Matchers
             .Should()
             .Throw<SetupNotFoundException>();
 
-        
+        [Fact]
+        public static void Null() => Interceptor
+            .For<SomeUnmockableObject>()
+            .Setup(x => x.Foo(3, new Person()))
+            .Returns(5)
+            .Invoking(x => x.Execute(y => y.Foo(3, null)))
+            .Should()
+            .Throw<SetupNotFoundException>();
+  
         [Fact]
         public static void EqualsCapturedOuterVariable()
         {

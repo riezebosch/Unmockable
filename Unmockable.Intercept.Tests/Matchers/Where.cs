@@ -7,7 +7,7 @@ namespace Unmockable.Tests.Matchers
     public static class Where
     {
         [Fact]
-        public static void Matches() =>
+        public static void True() =>
             Interceptor
                 .For<SomeUnmockableObject>()
                 .Setup(x => x.Foo(3, Arg.Where<Person>(p => p.Age == 32)))
@@ -17,7 +17,7 @@ namespace Unmockable.Tests.Matchers
                 .Be(5);
 
         [Fact]
-        public static void NotMatches() =>
+        public static void False() =>
             Interceptor
                 .For<SomeUnmockableObject>()
                 .Setup(x => x.Foo(3, Arg.Where<Person>(p => p.Age == 32)))
@@ -27,6 +27,18 @@ namespace Unmockable.Tests.Matchers
                 .Throw<SetupNotFoundException>()
                 .WithMessage("Foo(3, Unmockable.Tests.Person)");
 
+        [Fact]
+        public static void Null() =>
+            Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Foo(3, Arg.Where<Person>(p => p.Age == 32)))
+                .Returns(5)
+                .Invoking(x => x.Execute(y => y.Foo(3, null)))
+                .Should()
+                .Throw<SetupNotFoundException>()
+                .WithMessage("Foo(3, null)");
+
+        
         [Fact]
         public static void Verify() =>
             Interceptor
