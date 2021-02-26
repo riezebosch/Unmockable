@@ -78,6 +78,22 @@ namespace Unmockable.Tests.Intercept
                 
             mock.Verify();
         }
+        
+        [Fact]
+        public static async Task FuncAsyncFuncTaskAsync()
+        {
+            var mock = Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.FooAsync(Arg.Ignore<int>()))
+                .Returns(4)
+                .Setup(x => x.BarAsync());
+                
+            var sut = mock.As<IUnmockable<SomeUnmockableObject>>();
+            await sut.Execute(r => r.FooAsync(1));
+            await sut.Execute(r => r.BarAsync());
+                
+            mock.Verify();
+        }
 
         [Fact]
         public static async Task ActionAsync()
