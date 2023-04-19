@@ -21,7 +21,7 @@ namespace Unmockable.Tests.Matchers
                 .Be(3);
             
             args.Should()
-                .BeEquivalentTo(3);
+                .BeEquivalentTo(new[] { 3 });
         }
         
         [Fact]
