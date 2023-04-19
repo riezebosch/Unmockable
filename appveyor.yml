@@ -21,7 +21,7 @@ build:
   publish_nuget: true
   verbosity: minimal
 after_test:
-  - dotnet tool restore && cd Unmockable.Intercept.Tests && dotnet dotnet-stryker
+  - dotnet tool restore && dotnet dotnet-stryker
 
 for:
 -  
@@ -34,8 +34,8 @@ for:
     STRYKER_DASHBOARD_API_KEY:
       secure: nVeLgEf6Jdls8IC7Gqlfhjr9sL6jvJWBB0ZY77KU4aTKbRIdBnd/dPl0QXI2JKWE
   after_test:
-    - bash <(curl -s https://codecov.io/bash)
-    - dotnet tool restore && cd Unmockable.Intercept.Tests && dotnet dotnet-stryker --reporters "['dashboard']" --dashboard-api-key $STRYKER_DASHBOARD_API_KEY --dashboard-project github.com/riezebosch/Unmockable/master
+    - curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov && ./codecov -t ${CODECOV_TOKEN} -f **/*.cobertura.xml
+    - dotnet tool restore && dotnet stryker --reporter dashboard --dashboard-api-key $STRYKER_DASHBOARD_API_KEY -c 4  
   deploy:
   - provider: NuGet
     api_key:

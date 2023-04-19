@@ -1,0 +1,9 @@
+{
+    "stryker-config":
+    {
+        "project-info": {
+            "name": "github.com/riezebosch/Unmockable",
+            "version": "main"
+        }
+    }
+}

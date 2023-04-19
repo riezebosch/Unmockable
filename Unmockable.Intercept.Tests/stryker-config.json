@@ -1,5 +1,0 @@
-{
-  "stryker-config": {
-    "project-file": "Unmockable.Intercept.csproj"
-  }
-}
