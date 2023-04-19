@@ -1,8 +1,8 @@
-[![build status](https://ci.appveyor.com/api/projects/status/layshtg2fh5fu5fu/branch/master?svg=true)](https://ci.appveyor.com/project/riezebosch/unmockable/branch/master)
-[![codecov](https://codecov.io/gh/riezebosch/unmockable/branch/master/graph/badge.svg)](https://codecov.io/gh/riezebosch/unmockable)
+[![build status](https://ci.appveyor.com/api/projects/status/layshtg2fh5fu5fu/branch/main?svg=true)](https://ci.appveyor.com/project/riezebosch/unmockable/branch/main)
+[![codecov](https://codecov.io/gh/riezebosch/unmockable/branch/main/graph/badge.svg)](https://codecov.io/gh/riezebosch/unmockable)
 [![maintainability](https://api.codeclimate.com/v1/badges/17981601c69dcbaffd3b/maintainability)](https://codeclimate.com/github/riezebosch/Unmockable/maintainability)
 [![nuget](https://img.shields.io/nuget/v/Unmockable.svg)](https://www.nuget.org/packages/Unmockable/)
-[![stryker](https://img.shields.io/endpoint?style=flat&label=stryker&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Friezebosch%2FUnmockable%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/riezebosch/Unmockable/master)
+[![stryker](https://img.shields.io/endpoint?style=flat&label=stryker&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Friezebosch%2FUnmockable%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/riezebosch/Unmockable/main)
 
 # 📢 Shout-out
 
@@ -84,7 +84,7 @@ public async Task DoSomething(int input)
 around this type. Technically it is mockable, as long as you are not afraid of message handlers.
 
 Concrete unmockable types (pun intented) I had to deal with recently are the [`ExtensionManagementHttpClient`](https://docs.microsoft.com/en-us/dotnet/api/microsoft.visualstudio.services.extensionmanagement.webapi.extensionmanagementhttpclient)
-and the [`AzureServiceTokenProvider`](https://github.com/Azure/azure-sdk-for-net/blob/master/src/SdkCommon/AppAuthentication/Azure.Services.AppAuthentication/AzureServiceTokenProvider.cs).
+and the [`AzureServiceTokenProvider`](https://github.com/Azure/azure-sdk-for-net/blob/main/src/SdkCommon/AppAuthentication/Azure.Services.AppAuthentication/AzureServiceTokenProvider.cs).
 
 ### ↪️ Intercept
 

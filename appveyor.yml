@@ -27,7 +27,7 @@ for:
 -  
   branches:
     only: 
-      - master
+      - main
       - stryker
   environment:
     CODECOV_TOKEN: 7b0a3c86-501a-43d0-8e16-ee996773a3ac
@@ -41,4 +41,4 @@ for:
     api_key:
       secure: y2c/jyVXBMLBd0ffsnuN6XjhjIS7rg1+cIbBgewTR2N6nHxby45w5/0trQYJ5hmR
     on:
-      branch: master
+      branch: main
