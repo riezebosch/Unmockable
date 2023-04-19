@@ -55,6 +55,19 @@ namespace Unmockable.Tests.Matchers
                 .Be(5);
 
         [Fact]
+        public static void NullInvoked()
+        {
+            var act = () => Interceptor
+                .For<SomeUnmockableObject>()
+                .Setup(x => x.Foo(3, Arg.With<Person>(y => Assert.Fail("expected"))))
+                .Returns(5)
+                .Execute(x => x.Foo(3, null));
+
+            act.Should().Throw<FailException>()
+                .WithMessage("Assert.Fail(): expected");
+        }
+
+        [Fact]
         public static void Collection() => 
             Interceptor
                 .For<SomeUnmockableObject>()
