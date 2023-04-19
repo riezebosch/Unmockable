@@ -20,6 +20,8 @@ dotnet_csproj:
 build:
   publish_nuget: true
   verbosity: minimal
+test_script:
+  - dotnet test -s test.runsettings
 after_test:
   - dotnet tool restore && dotnet dotnet-stryker
 

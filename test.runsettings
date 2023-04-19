@@ -1,0 +1,18 @@
+<RunSettings>
+    <DataCollectionRunSettings>
+        <DataCollectors>
+            <DataCollector friendlyName="Code Coverage" uri="datacollector://Microsoft/CodeCoverage/2.0">
+                <Configuration>
+                    <Format>Cobertura</Format>
+                    <CodeCoverage>
+                        <Sources>
+                            <Include>
+                                <Source>Unmockable.*</Source>
+                            </Include>
+                        </Sources>
+                    </CodeCoverage>
+                </Configuration>
+            </DataCollector>
+        </DataCollectors>
+    </DataCollectionRunSettings>
+</RunSettings>
