@@ -27,4 +27,8 @@
         <RepositoryUrl>https://github.com/riezebosch/Unmockable.git</RepositoryUrl>
         <Version>0.0.1</Version>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath="" />
+    </ItemGroup>
 </Project>
