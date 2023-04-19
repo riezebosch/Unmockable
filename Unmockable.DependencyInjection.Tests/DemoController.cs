@@ -7,14 +7,11 @@ namespace Unmockable.DependencyInjection.Tests
     {
         private readonly IUnmockable<HttpClient> _client;
 
-        public DemoController(IUnmockable<HttpClient> client)
-        {
-            _client = client;
-        }
+        public DemoController(IUnmockable<HttpClient> client) => _client = client;
 
         public async Task<string> Do()
         {
-            var result = await _client.Execute(x => x.GetAsync("https://none-existing-website/api/users"));
+            var result = await _client.Execute(x => x.GetAsync("https://google.com"));
             return await result.Content.ReadAsStringAsync();
         }
     }

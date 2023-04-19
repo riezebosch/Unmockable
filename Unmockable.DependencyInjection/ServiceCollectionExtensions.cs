@@ -8,7 +8,7 @@ namespace Unmockable
         public static IServiceCollection AddUnmockables(this IServiceCollection collection)
         {
             collection
-                .Select(x => x.ImplementationType ?? x.ServiceType)
+                .Select(x => x.ServiceType)
                 .Select(x => new ServiceDescriptor(
                     typeof(IUnmockable<>).MakeGenericType(x),
                     typeof(Wrap<>).MakeGenericType(x), 
